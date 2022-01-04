@@ -27,7 +27,7 @@ class CreateForm extends GeneratorCommand
     protected $type = 'Form';
 
     private $myPath = "App\Forms";
-    private $stubDir = 'Modules\CreatorModule\src\stubs\cruds\create_form.stub';
+    private $stubDir = 'stubs\cruds\create_form.stub';
     private $extension = 'php';
 
 

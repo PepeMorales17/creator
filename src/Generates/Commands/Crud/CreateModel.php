@@ -28,7 +28,7 @@ class CreateModel extends GeneratorCommand
 
 
     private $myPath = "App\Models";
-    private $stubDir = 'Modules\CreatorModule\src\stubs\cruds\model.stub';
+    private $stubDir = 'stubs\cruds\model.stub';
     private $extension = 'php';
 
 
@@ -39,8 +39,7 @@ class CreateModel extends GeneratorCommand
      */
     public function handle()
     {
-        //$this->setRelations();
-
+        //dd($this->getStub());
         if (parent::handle() === false && !$this->option('force')) {
             return;
         }

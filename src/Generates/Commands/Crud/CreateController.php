@@ -27,7 +27,7 @@ class CreateController extends GeneratorCommand
     protected $type = 'Controller';
 
     private $myPath = "App\Http\Controllers";
-    private $stubDir = 'Modules\CreatorModule\src\stubs\cruds\controller.stub';
+    private $stubDir = 'stubs\cruds\controller.stub';
     private $extension = 'php';
 
 

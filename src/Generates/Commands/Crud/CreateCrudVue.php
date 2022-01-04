@@ -26,7 +26,7 @@ class CreateCrudVue extends GeneratorCommand
     protected $type = 'CrudVue';
 
     private $myPath = "Resources\Js\Pages";
-    private $stubDir = 'Modules\CreatorModule\src\stubs\cruds\crud_vue.stub';
+    private $stubDir = 'stubs\cruds\crud_vue.stub';
     private $extension = 'vue';
 
 

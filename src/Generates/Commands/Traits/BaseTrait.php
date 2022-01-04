@@ -78,9 +78,11 @@ trait BaseTrait
     {
         //dd(app_path(trim($stub, '/')));
         //C:\xampp\htdocs\laravel\trading\trading\Pp\Creatorstubs\cruds\controller.stub
-        return file_exists($customPath = app_path(trim($stub, '/')))
-            ? $customPath
-            : app_path($stub);
+        // return file_exists($customPath = app_path(trim($stub, '/')))
+        //     ? $customPath
+        //     : app_path($stub);
+
+        return dirname(__DIR__,3).'\\'.trim($stub, '/');
     }
 
 

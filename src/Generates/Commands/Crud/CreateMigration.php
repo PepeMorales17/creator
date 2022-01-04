@@ -30,7 +30,7 @@ class CreateMigration  extends GeneratorCommand
 
 
     private $myPath = 'database\migrations';
-    private $stubDir = 'Modules\CreatorModule\src\stubs\cruds\migrate.stub';
+    private $stubDir = 'stubs\cruds\migrate.stub';
 
 
     /**

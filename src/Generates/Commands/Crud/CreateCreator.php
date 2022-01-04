@@ -26,7 +26,7 @@ class CreateCreator extends GeneratorCommand
     protected $type = 'Creator';
 
     private $myPath = "Pp\Creator\Generates\Commands";
-    private $stubDir = 'Modules\CreatorModule\src\stubs\creator.stub';
+    private $stubDir = 'stubs\creator.stub';
     private $extension = 'php';
 
 
