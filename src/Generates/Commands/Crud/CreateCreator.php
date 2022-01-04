@@ -14,7 +14,7 @@ class CreateCreator extends GeneratorCommand
      *
      * @var string
      */
-    protected $signature = 'create:creator {name} {folder} {stub}';
+    protected $signature = 'create:creator {name} {folder} {stub} {--module}';
 
     /**
      * The console command description.
