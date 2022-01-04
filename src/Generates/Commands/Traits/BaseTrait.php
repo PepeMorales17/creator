@@ -21,6 +21,9 @@ trait BaseTrait
     private function getCrudClass()
     {
         $class = 'Pp\Creator\Cruds\\' . Str::studly($this->getTable()) . 'Crud';
+        if (!class_exists($class)) {
+            $class = 'App\Creator\Cruds\\' . Str::studly($this->getTable()) . 'Crud';
+        }
         return new $class();
     }
 
