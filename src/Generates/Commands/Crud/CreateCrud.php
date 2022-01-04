@@ -53,7 +53,7 @@ class CreateCrud extends GeneratorCommand
     protected function buildClass($name)
     {
         $class = parent::buildClass($name);
-        $class = str_replace('Pp\Creator\Generates\Commands\Crud', $this->rootNamespace(), $class);
+        $class = str_replace('{{namespace}}', $this->rootNamespace(), $class);
         $class = str_replace('{{name:plural}}', Str::studly(Str::plural($this->argument('name'))), $class);
 
         return $class;

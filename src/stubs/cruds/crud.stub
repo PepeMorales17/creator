@@ -1,6 +1,6 @@
 <?php
 
-namespace Pp\Creator\Cruds;
+namespace {{namespace}};
 
 use Pp\Creator\Generates\Crud;
 
