@@ -3,7 +3,7 @@
 namespace Pp\Creator\Generates\Commands\Crud;
 
 
-use Pp\CreatorTraits\BaseTrait;
+use Pp\Creator\Generates\Commands\Traits\BaseTrait;
 use Illuminate\Console\GeneratorCommand;
 use Illuminate\Support\Str;
 
