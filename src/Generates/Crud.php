@@ -30,6 +30,9 @@ abstract class Crud
             ] : []
         );
         $props = array_merge($props, $p);
+        // if() {
+        //     dd($props);
+        // }
         return compact('id', 'label', 'type', 'props');
     }
 

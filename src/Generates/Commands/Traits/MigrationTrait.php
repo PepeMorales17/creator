@@ -76,7 +76,7 @@ trait MigrationTrait
 
     private function makeNull($col, $input)
     {
-        if (Arr::get($col, 'props.optional')) {
+        if (Arr::get($input, 'props.optional')) {
             $col .= '->nullable()';
         }
         return $col;
