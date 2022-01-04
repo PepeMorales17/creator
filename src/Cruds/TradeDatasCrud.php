@@ -21,9 +21,13 @@ class TradeDatasCrud extends Crud
             $this->attr('trade_id', 'foreignId', 'Trade Id'),
             $this->attr('executed_at', 'timestamp', 'Fecha'),
             $this->attr('spread_id', 'foreignId', 'Spread'),
-            $this->attr('side', 'enum', 'Side'),
+            $this->attr('side', 'enum', 'Side', [
+                'enum' => ["BUY", "SELL"]
+            ]),
             $this->attr('quantity', 'double', 'Qty'),
-            $this->attr('effect', 'enum', 'Efecto'),
+            $this->attr('effect', 'enum', 'Efecto', [
+                'enum' => ["OPEN", "CLOSE"]
+            ]),
             $this->attr('price', 'double', 'Precio'),
             $this->attr('net_price', 'double', 'Precio Neto'),
             $this->attr('trade_order_type_id', 'foreignId', 'Tipo'),

@@ -44,6 +44,19 @@ trait MigrationTrait
             'id' => '$table->id()',
             'foreignId' => $this->foreignId($input),
             'string:short' => '$table->string(' . "'" . $input["id"] . "'" . ', 20)',
+            'enum' => '$table->enum(' . "'" . $input["id"] . "'" . ', ' . str_replace(
+                '"',
+                "'",
+                str_replace(
+                    '[',
+                    'arropen',
+                    str_replace(
+                        ']',
+                        'arrclose',
+                        json_encode(Arr::get($input, 'props.enum'))
+                    )
+                )
+            ) . ')',
             default => $this->basicCol($input)
         };
         //if (!!$col) return $col;
@@ -113,7 +126,7 @@ trait MigrationTrait
         $tables = collect(array_merge(
             [$this->getTable()],
             collect($this->getCrudClass()->addTablesBeforeMigrate())->keys()->toArray()
-        ))->map(function($item) {
+        ))->map(function ($item) {
             $t = "Schema::dropIfExists('{{name}}');";
             $t = str_replace('{{name}}', $item, $t);
             return $t;

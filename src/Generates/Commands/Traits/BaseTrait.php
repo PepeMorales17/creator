@@ -55,6 +55,8 @@ trait BaseTrait
             $str = str_replace('),', '),\n', $str);
         }
         $str = str_replace(['*"', '"*'], "", $str);
+        $str = str_replace('arrclose', "]", $str);
+        $str = str_replace('arropen', "[", $str);
         $str = str_replace('},', "}", $str);
         $str = str_replace('\n', " \r\n", $str);
         return $str;
