@@ -26,7 +26,7 @@ class CreateCrud extends GeneratorCommand
 
     protected $type = 'Crud';
 
-    private $myPath = "Pp\Creator\Cruds";
+    private $myPath = "App\Creator\Cruds";
     private $stubDir = 'stubs\cruds\crud.stub';
     private $extension = 'php';
 
