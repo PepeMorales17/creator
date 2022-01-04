@@ -19,7 +19,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Pp\\Creator\\src\\CreatorServiceProvider"
+                "src\\CreatorServiceProvider"
             ]
         }
     }
