@@ -1,0 +1,30 @@
+<?php
+
+namespace {{namespace}};
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+{{namespaces}}
+
+class {{name}} extends Model
+{
+    use HasFactory;
+
+    protected $fillable = {{fillable}};
+
+    protected $hidden = {{hidden}};
+
+    const SELECTS = {{selects}};
+
+    // Scopes
+
+    public function scopeView($query) {
+        $query->select(...self::SELECTS);
+    }
+
+    // Relaciones
+
+    {{relations}}
+
+}

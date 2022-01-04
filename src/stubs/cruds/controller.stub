@@ -1,0 +1,82 @@
+<?php
+
+namespace {{namespace}};
+
+use App\Http\Controllers\Controller;
+use Pp\Creator\Traits\Controllers\CrudTrait;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+{{useModel}};
+{{useForm}};
+
+class {{name}}Controller extends Controller
+{
+    use CrudTrait;
+
+    protected $view = '{{folder}}/Crud{{name}}';
+    protected $redirect_route = '{{name:camel}}.index';
+    protected $menu = 'menus.{{name:camel}}';
+
+
+    public function inputs()
+    {
+        return (new Create{{name}}Form())->getFormWithEmptyValue();
+    }
+
+    public function validateRequest(array $data)
+    {
+        $id = $data['id'] ?? null;
+        return Validator::make(
+            $data,
+            [
+               {{validations}}
+            ],
+        )->validated();
+    }
+
+    public function index()
+    {
+        return $this->justRenderIndex({{name}}::view()->get());
+    }
+
+    public function store(Request $request)
+    {
+        $data = $this->validateRequest($request->all());
+
+        DB::transaction(function () use ($data) {
+            {{name}}::create($data);
+        });
+
+        return $this->mainRedirect('{{name}} guardado');
+    }
+
+    public function show($id)
+    {
+        $model = {{name}}::view()->findOrFail($id);
+        return $this->justShow($model);
+    }
+
+    public function edit({{name}} ${{name:camel}})
+    {
+        return $this->justEdit((new Create{{name}}Form())->getFormToEditWithEmptyValue(), ${{name:camel}});
+    }
+
+    public function update(Request $request, {{name}} ${{name:camel}})
+    {
+        $data = $this->validateRequest($request->all());
+        DB::transaction(function () use ($data, ${{name:camel}}) {
+            ${{name:camel}}->update($data);
+        });
+
+        return $this->mainRedirect('{{name}} editado');
+    }
+
+    public function destroy({{name}} ${{name:camel}})
+    {
+        DB::transaction(function () use (${{name:camel}}) {
+            ${{name:camel}}->delete();
+        });
+        return $this->mainRedirect('{{name}} borrado');
+    }
+}

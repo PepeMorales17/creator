@@ -1,0 +1,35 @@
+<?php
+
+namespace Pp\Creator\Cruds;
+
+use Pp\Creator\Generates\Crud;
+
+class {{name:plural}}Crud extends Crud
+{
+
+
+    public static function menu()
+    {
+    }
+
+    public function attrs()
+    {
+
+        return [
+            $this->attr('id', 'id', 'Id'),
+        ];
+    }
+
+    protected function externalRelations()
+    {
+        return [
+
+        ];
+    }
+
+    public function addTablesBeforeMigrate()
+    {
+        return [
+        ];
+    }
+}
