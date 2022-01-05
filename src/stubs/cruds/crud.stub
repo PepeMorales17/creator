@@ -15,7 +15,7 @@ class {{name:plural}}Crud extends Crud
             "icon" => "",
             "description" => "Todos los {{name:plural}}",
             "namespace" => "{{name}}",
-            "parent_id" => "",
+            "parent_id" => null,
         ];
     }
 

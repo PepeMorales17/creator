@@ -4,9 +4,8 @@ namespace Pp\Creator\Generates\Commands\Crud;
 
 use Pp\Creator\Generates\Commands\Traits\BaseTrait;
 use Illuminate\Console\GeneratorCommand;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Pp\Creator\Models\Menu;
 
 class CreateController extends GeneratorCommand
 {
@@ -62,14 +61,13 @@ class CreateController extends GeneratorCommand
         $class = str_replace('{{useModel}}', 'use ' . str_replace('Http\Controllers', 'Models', $this->rootNamespace()) . '\\' . $this->studly(), $class);
         $class = str_replace('{{useForm}}', 'use ' . str_replace('Http\Controllers', 'Forms', $this->rootNamespace()) . '\Create' . $this->studly() . 'Form', $class);
         $class = str_replace('{{folder}}', $this->folder(), $class);
+        $this->createMenu();
         return $class;
     }
 
     protected function createMenu()
     {
-        DB::table('menus')->create([
-            $this->getCrudClass()->menu()
-        ]);
+        Menu::create($this->getCrudClass()->menu());
     }
 
     public function fileName()
