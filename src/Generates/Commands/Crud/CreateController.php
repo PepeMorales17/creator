@@ -5,6 +5,7 @@ namespace Pp\Creator\Generates\Commands\Crud;
 use Pp\Creator\Generates\Commands\Traits\BaseTrait;
 use Illuminate\Console\GeneratorCommand;
 use Illuminate\Support\Str;
+use Pp\Creator\Models\Menu;
 
 class CreateController extends GeneratorCommand
 {
@@ -69,7 +70,9 @@ class CreateController extends GeneratorCommand
 
     protected function createMenu()
     {
-        $this->getCrudClass()->menu();
+        if (!Menu::where('namespace','profile_type.index')->exists()) {
+            $this->getCrudClass()->menu();
+        }
     }
 
     public function fileName()
