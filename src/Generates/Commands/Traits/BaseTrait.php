@@ -20,9 +20,9 @@ trait BaseTrait
 
     private function getCrudClass()
     {
-        $class = 'Pp\Creator\Cruds\\'.($this->folder() ? "\\".$this->folder() : null ) . Str::studly($this->getTable()) . 'Crud';
+        $class = 'Pp\Creator\Cruds\\'.($this->folder() ? "\\".$this->folder()."\\" : null ) . Str::studly($this->getTable()) . 'Crud';
         if (!class_exists($class)) {
-            $class = 'App\Creator\Cruds\\'.($this->folder() ? "\\".$this->folder() : null ) . Str::studly($this->getTable()) . 'Crud';
+            $class = 'App\Creator\Cruds\\'.($this->folder() ? "\\".$this->folder()."\\" : null ) . Str::studly($this->getTable()) . 'Crud';
         }
         if(!class_exists($class)){
             throw new \Exception('CrudClass not found');
