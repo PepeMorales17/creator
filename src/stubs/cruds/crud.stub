@@ -19,15 +19,12 @@ class {{name:plural}}Crud extends Crud
         ];
     }
 
-    public function menus()
-    {
-        return [
+    const MENUS = [
             'crud' => [
                 '{{name}}.index' => ['name' => 'Lista', 'route' => '{{name}}.index', 'title' => 'Listado de {{name}}s'],
                 '{{name}}.create' => ['name' => 'Crear', 'route' => '{{name}}.create', 'title' => 'Crear {{name}}'],
             ]
-        ];
-    }
+    ];
 
     public function attrs()
     {
