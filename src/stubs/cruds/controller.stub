@@ -17,6 +17,7 @@ class {{name}}Controller extends Controller
     protected $redirect_route = '{{name:camel}}.index';
     protected $form;
     protected $type = '{{name:plural}}';
+    protected $folder = '{{folder}}';
 
     public function __construct() {
        $this->form = new Create{{name}}Form();

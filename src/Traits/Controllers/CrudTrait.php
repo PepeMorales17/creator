@@ -9,7 +9,7 @@ trait CrudTrait
 {
     private function menu()
     {
-        $class = 'App\Creator\Cruds\\'.$this->type.'Crud';
+        $class = 'App\Creator\Cruds\\'.($this->folder != '' ? ($this->folder.'\\') : null ).$this->type.'Crud';
         return $class::MENUS;
     }
 
