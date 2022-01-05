@@ -39,8 +39,30 @@ class CreatorInit extends Command
     {
         $this->configInertiaProps();
         $this->configAppJs();
+        $this->allowMigrationSubFolders();
         $this->info('Run npm install @heroicons/vue');
         return 0;
+    }
+
+    public function allowMigrationSubFolders()
+    {
+        $dir = app_path('Providers\AppServiceProvider.php');
+        if (!file_exists($dir)) {
+            $this->error('El arhivo Providers\AppServiceProvider.php no existe.');
+            return;
+        }
+        $file = file_get_contents($dir);
+    //     dd(strpos($file, 'public function boot()
+    // {'));
+        $file = str_replace('public function boot()
+    {', 'public function boot()
+            {
+                $mainPath = database_path("migrations");
+        $directories = glob($mainPath . "/*" , GLOB_ONLYDIR);
+        $paths = array_merge([$mainPath], $directories);
+
+        $this->loadMigrationsFrom($paths);', $file);
+        file_put_contents($dir, $file);
     }
 
     public function configInertiaProps()
