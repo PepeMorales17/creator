@@ -30,7 +30,7 @@ class Menu extends Model
         "menus.name as Nombre",
         "menus.icon as Icono",
         "menus.description as Descripcion",
-        "menus.route as Ruta",
+        //"menus.route as Ruta",
         "menus.namespace as Nombre ruta",
         "menus.parent_id as Relacion"
     ];
