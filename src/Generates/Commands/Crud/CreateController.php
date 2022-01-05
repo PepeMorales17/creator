@@ -39,6 +39,8 @@ class CreateController extends GeneratorCommand
      */
     public function handle()
     {
+        $this->getCrudClass();
+
         if (parent::handle() === false && !$this->option('force')) {
             return;
         }

@@ -40,7 +40,8 @@ class CreateMigration  extends GeneratorCommand
      */
     public function handle()
     {
-        //dd($this->resolvePath());
+        $this->getCrudClass();
+
         $dir = base_path($this->resolvePath()) . '\\' . $this->folder();
         if (is_dir($dir)) {
 

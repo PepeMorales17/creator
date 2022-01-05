@@ -38,7 +38,7 @@ class CreateForm extends GeneratorCommand
      */
     public function handle()
     {
-        //dd($this->resolveArray($this->setInputs(), false));
+        $this->getCrudClass();
 
         if (parent::handle() === false && !$this->option('force')) {
             return;

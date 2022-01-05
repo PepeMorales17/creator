@@ -39,7 +39,8 @@ class CreateModel extends GeneratorCommand
      */
     public function handle()
     {
-        //dd($this->getStub());
+        $this->getCrudClass();
+
         if (parent::handle() === false && !$this->option('force')) {
             return;
         }

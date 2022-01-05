@@ -24,6 +24,9 @@ trait BaseTrait
         if (!class_exists($class)) {
             $class = 'App\Creator\Cruds\\' . Str::studly($this->getTable()) . 'Crud';
         }
+        if(!class_exists($class)){
+            throw new \Exception('CrudClass not found');
+        }
         return new $class();
     }
 
