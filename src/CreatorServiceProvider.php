@@ -38,7 +38,8 @@ class CreatorServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__.'/resources/js' => base_path('resources/js'),
-            __DIR__.'/resources/Pages' => base_path('resources/js/Pages')
+            __DIR__.'/resources/Pages' => base_path('resources/js/Pages'),
+            __DIR__.'/resources/AppLayout.vue' => base_path('resources\js\Layouts\AppLayout.vue')
         ], 'pp-creator-js');
 
         if ($this->app->runningInConsole()) {

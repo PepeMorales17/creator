@@ -40,6 +40,11 @@ class CreatorInit extends Command
         $this->configInertiaProps();
         $this->configAppJs();
         $this->allowMigrationSubFolders();
+        $this->info('Publicando...');
+        $this->call('vendor:publish', [
+            '--tag' => 'pp-creator-js',
+            '--force' => true
+        ]);
         $this->info('Run npm install @heroicons/vue');
         return 0;
     }
@@ -63,6 +68,7 @@ class CreatorInit extends Command
 
         $this->loadMigrationsFrom($paths);', $file);
         file_put_contents($dir, $file);
+        $this->info($dir.' Publicado');
     }
 
     public function configInertiaProps()
@@ -74,7 +80,9 @@ class CreatorInit extends Command
         }
         $file = file_get_contents($dir);
         $file = str_replace('use Inertia\Middleware;', 'use Inertia\Middleware;
-        use Pp\Creator\Models\Menu;', $file);
+        use Pp\Creator\Models\Menu;
+        use Illuminate\Support\Str;
+        ', $file);
         $file = str_replace('return array_merge(parent::share($request), [', 'return array_merge(parent::share($request), [
     "main_menu" => Menu::tree(),
     "flash" => function () use ($request) {
@@ -82,8 +90,11 @@ class CreatorInit extends Command
             "success" => $request->session()->get("success"),
             "error" => $request->session()->get("error"),
         ];
-    },', $file);
+    },
+    "title" => Str::studly(str_replace(".", "_", $request->route()->getName()))
+    ', $file);
         file_put_contents($dir, $file);
+        $this->info($dir.' Publicado');
     }
 
     public function configAppJs()
@@ -99,5 +110,6 @@ class CreatorInit extends Command
         $file = str_replace(".use(plugin)", ".use(plugin)
         .use(global)", $file);
         file_put_contents($dir, $file);
+        $this->info($dir.' Publicado');
     }
 }
