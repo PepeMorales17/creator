@@ -13,17 +13,31 @@ class MenuController extends Controller
 {
     use CrudTrait;
 
-    protected $view = '/CrudMenu';
+    protected $view = 'Creator/CrudMenu';
     protected $redirect_route = 'menu.index';
-    protected $menu = 'menus.menu';
     protected $form;
 
-    public function __construct() {
-       $this->form = new CreateMenuForm();
+    public function menu()
+    {
+        return [
+            'crud' => [
+                'menu.index' => ['name' => 'Lista', 'route' => 'menu.index', 'title' => 'Listado de menus'],
+                'menu.create' => ['name' => 'Crear', 'route' => 'menu.create', 'title' => 'Crear menu'],
+            ]
+        ];
+    }
+
+    public function __construct()
+    {
+
+        $this->middleware('web');
+        $this->middleware('Laravel\Jetstream\Http\Middleware\ShareInertiaData');
+        $this->form = new CreateMenuForm();
     }
 
     public function index()
     {
+
         return $this->justRenderIndex(Menu::view()->get());
     }
 

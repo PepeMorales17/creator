@@ -20,7 +20,11 @@ abstract class Crud
 
     protected function attr($id, $type, $label = null, $props = [])
     {
-        $label = $label ?? Str::studly($id);
+        if ($id != 'id') {
+            $label = $label ?? Str::studly($id);
+        } else {
+            $label = 'id';
+        }
         $p = array_merge(
             [
                 'optional' => $this->optional,
@@ -36,13 +40,14 @@ abstract class Crud
         return compact('id', 'label', 'type', 'props');
     }
 
-    protected function externalRelations() {
+    protected function externalRelations()
+    {
         return [];
     }
 
     public function getRelations()
     {
-        return Arr::where(array_merge($this->externalRelations(),$this->attrs()), fn ($i) => Arr::get($i, 'props.relation_type'));
+        return Arr::where(array_merge($this->externalRelations(), $this->attrs()), fn ($i) => Arr::get($i, 'props.relation_type'));
     }
 
     public function getRelationName($id)
@@ -50,7 +55,8 @@ abstract class Crud
         return Str::plural(str_replace('_id', '', $id));
     }
 
-    protected function externalRelation($id, $type) {
+    protected function externalRelation($id, $type)
+    {
         return $this->attr($id, null, null, ['relation_type' => $type]);
     }
 

@@ -4,6 +4,7 @@ namespace Pp\Creator;
 
 
 use Illuminate\Support\ServiceProvider;
+use Pp\Creator\Generates\Commands\CreatorInit;
 use Pp\Creator\Generates\Commands\Crud\CreateAll;
 use Pp\Creator\Generates\Commands\Crud\CreateController;
 use Pp\Creator\Generates\Commands\Crud\CreateCreator;
@@ -36,11 +37,13 @@ class CreatorServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__.'/database/migrations');
 
         $this->publishes([
-            __DIR__.'/resources/js' => base_path('resources/js')
+            __DIR__.'/resources/js' => base_path('resources/js'),
+            __DIR__.'/resources/Pages' => base_path('resources/js/Pages')
         ], 'pp-creator-js');
 
         if ($this->app->runningInConsole()) {
             $this->commands([
+                CreatorInit::class,
                 CreateAll::class,
                 CreateController::class,
                 CreateCreator::class,

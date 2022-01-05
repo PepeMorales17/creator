@@ -76,7 +76,7 @@ class CreateModel extends GeneratorCommand
     public function setSelects()
     {
         return collect($this->getCrudClass()->attrs())->map(function($item) {
-            return $this->getTable().'.'.$item['id']." as '".$item['label']."'";
+            return $this->getTable().'.'.$item['id']." as ".$item['label'];
         });
     }
 

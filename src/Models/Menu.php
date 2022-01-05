@@ -26,13 +26,13 @@ class Menu extends Model
     ];
 
     const SELECTS = [
-        "menus.id as 'Id'",
-        "menus.name as 'Nombre'",
-        "menus.icon as 'Icono'",
-        "menus.description as 'Descripcion'",
-        "menus.route as 'Ruta'",
-        "menus.namespace as 'Nombre ruta'",
-        "menus.parent_id as 'Relacion'"
+        "menus.id as Id",
+        "menus.name as Nombre",
+        "menus.icon as Icono",
+        "menus.description as Descripcion",
+        "menus.route as Ruta",
+        "menus.namespace as Nombre ruta",
+        "menus.parent_id as Relacion"
     ];
 
     // Scopes
@@ -42,7 +42,25 @@ class Menu extends Model
         $query->select(...self::SELECTS);
     }
 
+    public static function tree() {
+
+        return static::with(implode('.', array_fill(0, 4, 'children')))->where('parent_id', '=', NULL)->get();
+
+    }
+
     // Relaciones
+
+    public function parent() {
+
+        return $this->hasOne(Menu::class, 'id', 'parent_id');
+
+    }
+
+    public function children() {
+
+        return $this->hasMany(Menu::class, 'parent_id', 'id');
+
+    }
 
 
 

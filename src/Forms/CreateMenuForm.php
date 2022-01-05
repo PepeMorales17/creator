@@ -19,7 +19,7 @@ class CreateMenuForm
             ["description", "Descripcion", "input", "text"],
             ["route", "Ruta", "input", "text:short"],
             ["namespace", "Nombre ruta", "input", "text:short"],
-            ["parent_id", "Relacion", "input", "number"]
+            $this->select('parent_id', 'Relacion', 'menus')
         ];
         $empty = array_fill_keys(collect($inputs)->pluck(0)->toArray(), null);
 

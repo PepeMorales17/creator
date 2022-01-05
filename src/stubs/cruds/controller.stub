@@ -15,7 +15,6 @@ class {{name}}Controller extends Controller
 
     protected $view = '{{folder}}/Crud{{name}}';
     protected $redirect_route = '{{name:camel}}.index';
-    protected $menu = 'menus.{{name:camel}}';
     protected $form;
 
     public function __construct() {

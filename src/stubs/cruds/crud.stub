@@ -16,7 +16,7 @@ class {{name:plural}}Crud extends Crud
     {
 
         return [
-            $this->attr('id', 'id', 'Id'),
+            $this->attr('id', 'id'),
         ];
     }
 

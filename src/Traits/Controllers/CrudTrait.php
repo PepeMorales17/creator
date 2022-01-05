@@ -7,15 +7,15 @@ use Inertia\Inertia;
 
 trait CrudTrait
 {
-
-    public function inputs()
+    private function menu()
     {
-        return $this->form->getFormWithEmptyValue();
+        return [];
     }
 
     public function justRenderIndex($dataTable, $props = [])
     {
         return Inertia::render($this->view, array_merge([
+            'menu' => $this->menu(),
             'dataTable' => $dataTable
         ], $props));
     }
@@ -23,6 +23,7 @@ trait CrudTrait
     public function justCreate($inputs, $props = [])
     {
         return Inertia::render($this->view, array_merge([
+            'menu' => $this->menu(),
             'inputs' => $inputs
         ], $props));
     }
@@ -30,6 +31,7 @@ trait CrudTrait
     public function justEdit($inputs, $item, $props = [])
     {
         return Inertia::render($this->view, array_merge([
+            'menu' => $this->menu(),
             'inputs' => $inputs,
             'item' => $item
         ], $props));
@@ -50,6 +52,7 @@ trait CrudTrait
     public function justShow($item, $props = [])
     {
         return Inertia::render($this->view, array_merge([
+            'menu' => $this->menu(),
             'item' => $item
         ], $props));
     }
@@ -76,6 +79,7 @@ trait CrudTrait
      */
     public function create()
     {
-        return $this->justCreate($this->inputs());
+        return $this->justCreate($this->form->getFormWithEmptyValue());
+
     }
 }
