@@ -9,7 +9,8 @@ trait CrudTrait
 {
     private function menu()
     {
-        return [];
+        $class = 'App\Creator\Cruds\\'.$this->type.'Crud';
+        return $class::MENUS;
     }
 
     public function justRenderIndex($dataTable, $props = [])
