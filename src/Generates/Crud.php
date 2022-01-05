@@ -29,7 +29,7 @@ abstract class Crud
                 'relation_type' => 'belongsTo'
             ] : []
         );
-        $props = array_merge($props, $p);
+        $props = array_merge($p, $props);
         // if() {
         //     dd($props);
         // }

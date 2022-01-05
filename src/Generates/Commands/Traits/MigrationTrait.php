@@ -60,7 +60,7 @@ trait MigrationTrait
             default => $this->basicCol($input)
         };
         //if (!!$col) return $col;
-
+        $col = $this->makeNull($col, $input);
         $col = $this->endLine($col);
         return $col;
     }
@@ -70,12 +70,13 @@ trait MigrationTrait
         $col = Arr::get($input, 'props.col');
         if (!!$col) return $col;
         $col =  $this->baseCol($input);
-        $col = $this->makeNull($col, $input);
+        //$col = $this->makeNull($col, $input);
         return $col;
     }
 
     private function makeNull($col, $input)
     {
+        if ($input['type'] === 'id') return $col;
         if (Arr::get($input, 'props.optional')) {
             $col .= '->nullable()';
         }
@@ -90,7 +91,7 @@ trait MigrationTrait
     private function foreignId($input)
     {
         $col = $this->baseCol($input);
-        $col = $this->makeNull($col, $input);
+        //$col = $this->makeNull($col, $input);
         return $col . '->constrained()';
     }
 

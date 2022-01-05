@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Pp\Creator\Traits\Controllers\CrudTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 {{useModel}};
 {{useForm}};
 
@@ -17,22 +16,10 @@ class {{name}}Controller extends Controller
     protected $view = '{{folder}}/Crud{{name}}';
     protected $redirect_route = '{{name:camel}}.index';
     protected $menu = 'menus.{{name:camel}}';
+    protected $form;
 
-
-    public function inputs()
-    {
-        return (new Create{{name}}Form())->getFormWithEmptyValue();
-    }
-
-    public function validateRequest(array $data)
-    {
-        $id = $data['id'] ?? null;
-        return Validator::make(
-            $data,
-            [
-               {{validations}}
-            ],
-        )->validated();
+    public function __construct() {
+       $this->form = new Create{{name}}Form();
     }
 
     public function index()
@@ -42,7 +29,7 @@ class {{name}}Controller extends Controller
 
     public function store(Request $request)
     {
-        $data = $this->validateRequest($request->all());
+        $data = $this->form->validate($request->all());
 
         DB::transaction(function () use ($data) {
             {{name}}::create($data);
@@ -59,12 +46,12 @@ class {{name}}Controller extends Controller
 
     public function edit({{name}} ${{name:camel}})
     {
-        return $this->justEdit((new Create{{name}}Form())->getFormToEditWithEmptyValue(), ${{name:camel}});
+        return $this->justEdit($this->form->getFormToEditWithEmptyValue(), ${{name:camel}});
     }
 
     public function update(Request $request, {{name}} ${{name:camel}})
     {
-        $data = $this->validateRequest($request->all());
+        $data = $this->form->validate($request->all());
         DB::transaction(function () use ($data, ${{name:camel}}) {
             ${{name:camel}}->update($data);
         });

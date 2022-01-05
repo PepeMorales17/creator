@@ -5,6 +5,7 @@ namespace Pp\Creator\Generates\Commands\Crud;
 use Pp\Creator\Generates\Commands\Traits\BaseTrait;
 use Illuminate\Console\GeneratorCommand;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class CreateController extends GeneratorCommand
@@ -56,29 +57,21 @@ class CreateController extends GeneratorCommand
         $class = str_replace('{{namespace}}', $this->rootNamespace(), $class);
         $class = str_replace('{{name}}', Str::studly($this->argument('name')), $class);
         $class = str_replace('{{name:camel}}', Str::camel($this->argument('name')), $class);
-        $class = str_replace('{{useModel}}', 'use '.str_replace('Http\Controllers', 'Models', $this->rootNamespace()).'\\'.$this->studly(), $class);
-        $class = str_replace('{{useForm}}', 'use '.str_replace('Http\Controllers', 'Forms', $this->rootNamespace()).'\Create'.$this->studly().'Form', $class);
+        $class = str_replace('{{useModel}}', 'use ' . str_replace('Http\Controllers', 'Models', $this->rootNamespace()) . '\\' . $this->studly(), $class);
+        $class = str_replace('{{useForm}}', 'use ' . str_replace('Http\Controllers', 'Forms', $this->rootNamespace()) . '\Create' . $this->studly() . 'Form', $class);
         $class = str_replace('{{folder}}', $this->folder(), $class);
-        $class = str_replace('{{validations}}', $this->resolveArray($this->validations()), $class);
         return $class;
     }
 
-    private function validations()
+    protected function createMenu()
     {
-        $rules = [];
-        collect($this->getCrudClass()->attrs())->map(function($item) use(&$rules) {
-            $rules[] = "'".$item['id']."' => '".(!!Arr::get($item,'props.optional') ? 'nullable' : 'required')."'";
-        });
-
-        //dd($rules);
-        return $rules;
+        DB::table('menus')->create([
+            $this->getCrudClass()->menu()
+        ]);
     }
 
     public function fileName()
     {
-        return $this->studly().'Controller.php';
-        //return date('Y_m_d_His') . '_create_' . $this->argument('name') . '_table.php';
-
-
+        return $this->studly() . 'Controller.php';
     }
 }

@@ -30,6 +30,7 @@ trait InputTrait
         "date" => ["type" => "date", 'format' => 'date'],
         "datetime" => ["type" => "datetime-local", 'format' => 'datetime', 'step' => "1"],
         "text" => ["type" => "text", 'format' => 'text'],
+        "text:short" => ["type" => "text", 'format' => 'text', 'maxlength' => 20],
         "hidden" => ["type" => "hidden"],
         "file" => ["type" => "file", 'format' => 'file'],
         "bool" => ["data" => [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Si']], "display" => "name"],
@@ -46,12 +47,12 @@ trait InputTrait
         //"state" => ["data" => State::select("id", "name")->all(), "display" => "name"]
     ];
 
-    public function user($id = 'user_id')
+    protected function user($id = 'user_id')
     {
         return [$id, "Usuario", "select", ["data" => User::select("id", "name")->get()->keyBy("id"), "display" => "name"]];
     }
 
-    public function select($id, $label, $table = null, $keyBy = "id", $display = "name")
+    protected function select($id, $label, $table = null, $keyBy = "id", $display = "name")
     {
         return [$id, $label, "select", [
             "data" =>
@@ -74,7 +75,7 @@ trait InputTrait
     }
 
 
-    public function editableTable($cols)
+    protected function editableTable($cols)
     {
         $completed_cols = [];
         foreach ($cols as $col) {
@@ -93,7 +94,7 @@ trait InputTrait
         return $completed_cols;
     }
 
-    public function array_inputs($inputs)
+    protected function array_inputs($inputs)
     {
         $completed_inputs = [];
         // id, label, tipo, props, else
@@ -109,7 +110,7 @@ trait InputTrait
         return $completed_inputs;
     }
 
-    public function createInput($input)
+    protected function createInput($input)
     {
         $data = [
             "id" => str_replace(".", "_", $input[0]),
@@ -133,12 +134,12 @@ trait InputTrait
         return $form;
     }
 
-    public function addresses()
+    protected function addresses()
     {
         return ["addresses" => $this->editableTable($this->address())];
     }
 
-    public function morphMap()
+    protected function morphMap()
     {
         return collect(Relation::morphMap())->map(function ($item, $key) {
             return [
@@ -148,7 +149,7 @@ trait InputTrait
         })->toArray();
     }
 
-    public function address($withRefs = false)
+    protected function address($withRefs = false)
     {
         $addr = [
             ["address_type_id", "Tipo", "select", ["data" => DB::table('address_types')->select("id", "name")->get()->keyBy("id"), "display" => "name"]],
@@ -172,7 +173,7 @@ trait InputTrait
         return $addr;
     }
 
-    public function bankAccount()
+    protected function bankAccount()
     {
         return  [
             ["owner", "Titular", "input", "text"],
@@ -183,12 +184,12 @@ trait InputTrait
         ];
     }
 
-    public function phones()
+    protected function phones()
     {
         return ["phones" => $this->editableTable($this->phone())];
     }
 
-    public function phone()
+    protected function phone()
     {
         return [
             ["phone", "Telefono", "input", "text"],
@@ -197,11 +198,11 @@ trait InputTrait
         ];
     }
 
-    public function emails()
+    protected function emails()
     {
         return ["emails" => $this->editableTable($this->email())];
     }
-    public function email()
+    protected function email()
     {
         return [
             ["email", "Correo Electronico", "input", "text"],
@@ -209,17 +210,17 @@ trait InputTrait
         ];
     }
 
-    public function date($id = "date", $label = "Fecha")
+    protected function date($id = "date", $label = "Fecha")
     {
         return [$id, $label, "input", "date"];
     }
 
-    public function note($rows = 1, $label = "Notas")
+    protected function note($rows = 1, $label = "Notas")
     {
         return ["note", $label, "text", "text", ["rows" => $rows]];
     }
 
-    public function taxInfo()
+    protected function taxInfo()
     {
         return [
             ['tax_name', 'Razon Social', 'input', 'text'],
@@ -228,7 +229,7 @@ trait InputTrait
         ];
     }
 
-    public function quantity($label = "Cantidad")
+    protected function quantity($label = "Cantidad")
     {
         return ["quantity", $label, "input", "double"];
     }

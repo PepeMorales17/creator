@@ -58,6 +58,8 @@ class CreateForm extends GeneratorCommand
         $class = str_replace('{{namespace}}', $this->rootNamespace(), $class);
         $class = str_replace('{{name}}', Str::studly($this->argument('name')), $class);
         $class = str_replace('{{inputs}}', $this->resolveArray($this->setInputs(), false, null), $class);
+        $class = str_replace('{{validations}}', $this->resolveArray($this->validations()), $class);
+
 
         return $class;
     }
@@ -95,10 +97,22 @@ class CreateForm extends GeneratorCommand
         return match($input['type']) {
             'foreignId' => '*$this->select'."('".$input['id']."', '".$input['label']."')*",
             'string' => [$input['id'], $input['label'], 'input', 'text'],
+            'string:short' => [$input['id'], $input['label'], 'input', 'text:short'],
             'double' => [$input['id'], $input['label'], 'input', 'double'],
+            'integer' => [$input['id'], $input['label'], 'input', 'number'],
             'timestamp' => [$input['id'], $input['label'], 'input', 'datetime'],
             'date' => [$input['id'], $input['label'], 'input', 'date'],
             default => null,
         };
+    }
+
+    private function validations()
+    {
+        $rules = [];
+        collect($this->getCrudClass()->attrs())->map(function($item) use(&$rules) {
+            $rules[] = "'".$item['id']."' => '".(!!Arr::get($item,'props.optional') ? 'nullable' : 'required')."'";
+        });
+
+        return $rules;
     }
 }

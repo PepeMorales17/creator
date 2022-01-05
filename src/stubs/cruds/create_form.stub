@@ -3,6 +3,8 @@
 namespace {{namespace}};
 
 use Pp\Creator\Traits\Inputs\InputTrait;
+use Illuminate\Support\Facades\Validator;
+
 
 class Create{{name}}Form
 {
@@ -25,5 +27,21 @@ class Create{{name}}Form
         $inputs = $this->getFormWithEmptyValue();
 
         return $inputs;
+    }
+
+    public function validate(array $data)
+    {
+        return Validator::make(
+            $data,
+            [
+               self::rules()
+            ],
+        )->validated();
+    }
+
+    public static function rules() {
+        return [
+            {{validations}}
+        ];
     }
 }
