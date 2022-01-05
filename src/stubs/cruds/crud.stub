@@ -3,6 +3,8 @@
 namespace {{namespace}};
 
 use Pp\Creator\Generates\Crud;
+use Pp\Creator\Models\Menu;
+use Illuminate\Support\Facades\DB;
 
 class {{name:plural}}Crud extends Crud
 {
@@ -10,13 +12,23 @@ class {{name:plural}}Crud extends Crud
 
     public static function menu()
     {
-        return [
-            "name" => "{{name:studly}}",
-            "icon" => "",
-            "description" => "Todos los {{name:plural}}",
-            "namespace" => "{{name}}",
-            "parent_id" => null,
-        ];
+        DB::transaction(function (){
+            $index = Menu::create([
+                "name" => "{{name:studly}}",
+                "icon" => "",
+                "description" => "Todos los {{name:plural}}",
+                "namespace" => "{{name}}.index",
+                "parent_id" => null,
+            ]);
+            $form = Menu::create([
+                "name" => "{{name:studly}} crear",
+                "icon" => "",
+                "description" => "Crear {{name}}",
+                "namespace" => "{{name}}.create",
+                "parent_id" => $index->id,
+            ]);
+        });
+
     }
 
     const MENUS = [
