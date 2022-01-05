@@ -62,6 +62,7 @@ class CreateController extends GeneratorCommand
         $class = str_replace('{{useForm}}', 'use ' . str_replace('Http\Controllers', 'Forms', $this->rootNamespace()) . '\Create' . $this->studly() . 'Form', $class);
         $class = str_replace('{{folder}}', $this->folder(), $class);
         $this->createMenu();
+        $this->updateRoute();
         return $class;
     }
 
@@ -73,5 +74,18 @@ class CreateController extends GeneratorCommand
     public function fileName()
     {
         return $this->studly() . 'Controller.php';
+    }
+
+    protected function updateRoute()
+    {
+        $dir = base_path('routes\web.php');
+        if (!file_exists($dir)) {
+            $this->error('El arhivo routes\web.php no existe.');
+            return;
+        }
+        $file = file_get_contents($dir);
+
+        $file .= "\r\n Route::resource('".$this->argument('name')."', '".$this->rootNamespace()."\\". Str::studly($this->argument('name'))."Controller"."');";
+        file_put_contents($dir, $file);
     }
 }
