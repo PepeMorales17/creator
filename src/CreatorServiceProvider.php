@@ -37,7 +37,7 @@ class CreatorServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__.'/resources/js' => base_path('resources/js')
-        ], 'pp-js');
+        ], 'pp-creator-js');
 
         if ($this->app->runningInConsole()) {
             $this->commands([
