@@ -74,7 +74,7 @@ class CreateMigration  extends GeneratorCommand
         $class = parent::buildClass($name);
 
         $class = str_replace('{{attrs}}', $this->resolveArray($this->attrs()), $class);
-        $class = str_replace('{{name}}', Str::plural($this->argument('name')), $class);
+        $class = str_replace('{{name}}', $this->getTable(), $class);
         $class = str_replace('{{tablesBeforeMigrate:up}}', $this->resolveArray($this->tablesBeforeMigrate()), $class);
         $class = str_replace('{{tables:down}}', $this->resolveArray($this->tablesDown($this->argument('name'))), $class);
 
@@ -83,7 +83,7 @@ class CreateMigration  extends GeneratorCommand
 
     public function baseName()
     {
-        return '_create_' . $this->argument('name') . '_table.php';
+        return '_create_' . $this->getTable() . '_table.php';
     }
 
     public function fileName()

@@ -11,6 +11,8 @@ class {{name}} extends Model
 {
     use HasFactory;
 
+    protected $table = '{{table}}';
+
     protected $fillable = {{fillable}};
 
     protected $hidden = {{hidden}};

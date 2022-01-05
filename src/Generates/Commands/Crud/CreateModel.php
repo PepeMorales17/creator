@@ -64,6 +64,7 @@ class CreateModel extends GeneratorCommand
         $class = str_replace('{{hidden}}', $this->resolveArray($this->getCrudClass()->hidden(), false), $class);
         $class = str_replace('{{selects}}', $this->resolveArray($this->setSelects(), false), $class);
         $class = str_replace('{{relations}}', $this->resolveArray($rel[0]), $class);
+        $class = str_replace('{{table}}', $this->getTable(), $class);
 
         return $class;
     }
