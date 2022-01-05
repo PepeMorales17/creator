@@ -26,7 +26,7 @@ class Menu extends Model
     ];
 
     const SELECTS = [
-        "menus.id as Id",
+        "menus.id as id",
         "menus.name as Nombre",
         "menus.icon as Icono",
         "menus.description as Descripcion",
