@@ -55,6 +55,7 @@ class CreateController extends GeneratorCommand
     {
         $class = parent::buildClass($name);
         $class = str_replace('{{namespace}}', $this->rootNamespace(), $class);
+        $class = str_replace('{{name:normal}}', $this->argument('name'), $class);
         $class = str_replace('{{name}}', Str::studly($this->argument('name')), $class);
         $class = str_replace('{{name:plural}}', Str::plural(Str::studly($this->argument('name'))), $class);
         $class = str_replace('{{name:camel}}', Str::camel($this->argument('name')), $class);

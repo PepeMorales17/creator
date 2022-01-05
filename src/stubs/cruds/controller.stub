@@ -14,7 +14,7 @@ class {{name}}Controller extends Controller
     use CrudTrait;
 
     protected $view = '{{folder}}/Crud{{name}}';
-    protected $redirect_route = '{{name:camel}}.index';
+    protected $redirect_route = '{{name:normal}}.index';
     protected $form;
     protected $type = '{{name:plural}}';
     protected $folder = '{{folder}}';
