@@ -105,8 +105,8 @@ class CreatorInit extends Command
             return;
         }
         $file = file_get_contents($dir);
-        $file = str_replace('import { InertiaProgress } from "@inertiajs/progress";', 'import { InertiaProgress } from "@inertiajs/progress";
-        import global from "./Plugins/global";', $file);
+        $file = str_replace("import { InertiaProgress } from '@inertiajs/progress';", "import { InertiaProgress } from '@inertiajs/progress';
+        import global from './Plugins/global';", $file);
         $file = str_replace(".use(plugin)", ".use(plugin)
         .use(global)", $file);
         file_put_contents($dir, $file);
