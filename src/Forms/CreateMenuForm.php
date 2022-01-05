@@ -38,12 +38,7 @@ class CreateMenuForm
 
     public function validate(array $data)
     {
-        return Validator::make(
-            $data,
-            [
-                self::rules()
-            ],
-        )->validated();
+        return Validator::make($data,self::rules())->validated();
     }
 
     public static function rules()
