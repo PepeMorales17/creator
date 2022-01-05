@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('icon')->nullable();
             $table->string('description')->nullable();
-            $table->string('route')->nullable();
+            //$table->string('route')->nullable();
             $table->string('namespace');
             $table->integer('parent_id')->nullable();
             $table->timestamps();

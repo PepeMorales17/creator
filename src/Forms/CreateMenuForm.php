@@ -17,7 +17,7 @@ class CreateMenuForm
             ["name", "Nombre", "input", "text"],
             ["icon", "Icono", "input", "text:short"],
             ["description", "Descripcion", "input", "text"],
-            ["route", "Ruta", "input", "text:short"],
+            //["route", "Ruta", "input", "text:short"],
             ["namespace", "Nombre ruta", "input", "text:short"],
             $this->select('parent_id', 'Relacion', 'menus')
         ];

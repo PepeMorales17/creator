@@ -10,6 +10,13 @@ class {{name:plural}}Crud extends Crud
 
     public static function menu()
     {
+        return [
+            "name" => "{{name:studly}}",
+            "icon" => "",
+            "description" => "Todos los {{name:plural}}",
+            "namespace" => "{{name}}",
+            "parent_id" => "",
+        ];
     }
 
     public function attrs()

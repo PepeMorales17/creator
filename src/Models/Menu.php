@@ -15,7 +15,7 @@ class Menu extends Model
         "name",
         "icon",
         "description",
-        "route",
+        //"route",
         "namespace",
         "parent_id"
     ];
