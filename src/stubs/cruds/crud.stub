@@ -25,7 +25,7 @@ class {{name:plural}}Crud extends Crud
             $index = Menu::create([
                 "name" => "{{name:studly}}",
                 "icon" => "",
-                "description" => "Todos los {{name:studly}}",
+                "description" => "Todos los {{name:studly}}s",
                 "namespace" => "{{name}}.index",
                 "parent_id" => null,
             ]);
