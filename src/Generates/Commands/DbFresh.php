@@ -29,12 +29,6 @@ class DbFresh extends Command
      */
     public function __construct()
     {
-        $menus = Menu::all();
-        $this->call('migrate:fresh', [
-            '--seed' => $this->option('seed')
-        ]);
-        Menu::insert($menus->toArray());
-        $this->info('El menu fue reestablecido');
         parent::__construct();
     }
 
@@ -45,6 +39,12 @@ class DbFresh extends Command
      */
     public function handle()
     {
+        $menus = Menu::all();
+        $this->call('migrate:fresh', [
+            '--seed' => $this->option('seed')
+        ]);
+        Menu::insert($menus->toArray());
+        $this->info('El menu fue reestablecido');
         return 0;
     }
 }
