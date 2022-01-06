@@ -36,7 +36,7 @@ const Drop = defineComponent({
             <template v-for="(item, index) in menu.children" :key="index">
                 <li
                     target-menu="menu"
-                    class=" cursor-pointer block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition"
+                    class=" relative cursor-pointer block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition"
                     v-if="!!item.children && !!item.children.length"
                 >
                     <Drop :menu="item"
