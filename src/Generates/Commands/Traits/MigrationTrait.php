@@ -40,26 +40,32 @@ trait MigrationTrait
 
     private function createCol($input)
     {
-        $col = match ($input['type'] ?? null) {
-            'id' => '$table->id()',
-            'foreignId' => $this->foreignId($input),
-            'string:short' => '$table->string(' . "'" . $input["id"] . "'" . ', 20)',
-            'enum' => '$table->enum(' . "'" . $input["id"] . "'" . ', ' . str_replace(
-                '"',
-                "'",
-                str_replace(
-                    '[',
-                    'arropen',
+        $col = null;
+        $hasCol = Arr::get($input, 'props.col');
+        if (!!$hasCol) {
+            $col = $hasCol;
+        } else {
+            $col = match ($input['type'] ?? null) {
+                'id' => '$table->id()',
+                'foreignId' => $this->foreignId($input),
+                'string:short' => '$table->string(' . "'" . $input["id"] . "'" . ', 20)',
+                'enum' => '$table->enum(' . "'" . $input["id"] . "'" . ', ' . str_replace(
+                    '"',
+                    "'",
                     str_replace(
-                        ']',
-                        'arrclose',
-                        json_encode(Arr::get($input, 'props.enum'))
+                        '[',
+                        'arropen',
+                        str_replace(
+                            ']',
+                            'arrclose',
+                            json_encode(Arr::get($input, 'props.enum'))
+                        )
                     )
-                )
-            ) . ')',
-            default => $this->basicCol($input)
-        };
-        //if (!!$col) return $col;
+                ) . ')',
+                default => $this->basicCol($input)
+            };
+        }
+
         $col = $this->makeNull($col, $input);
         $col = $this->endLine($col);
         return $col;

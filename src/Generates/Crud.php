@@ -34,9 +34,7 @@ abstract class Crud
             ] : []
         );
         $props = array_merge($p, $props);
-        // if() {
-        //     dd($props);
-        // }
+
         return compact('id', 'label', 'type', 'props');
     }
 
@@ -71,5 +69,19 @@ abstract class Crud
             'created_at',
             'updated_at',
         ]);
+    }
+
+    // Comunes
+
+    public function string($id, $label = null, $optional = null)
+    {
+        return $this->attr($id, 'string', $label, [
+            'optional' => $optional === null ? $this->optional : $optional
+        ]);
+    }
+
+    public function inputName()
+    {
+        return $this->attr('name', 'string', 'Nombre');
     }
 }
