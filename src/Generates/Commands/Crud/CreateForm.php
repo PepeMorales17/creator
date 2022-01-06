@@ -104,6 +104,7 @@ class CreateForm extends GeneratorCommand
             'double' => [$input['id'], $input['label'], 'input', 'double'],
             'file' => [$input['id'], $input['label'], 'input', 'file'],
             'text' => [$input['id'], $input['label'], 'text', 'text'],
+            'boolean' => [$input['id'], $input['label'], 'select', 'bool'],
             'integer' => [$input['id'], $input['label'], 'input', 'number'],
             'timestamp' => [$input['id'], $input['label'], 'input', 'datetime'],
             'date' => [$input['id'], $input['label'], 'input', 'date'],
