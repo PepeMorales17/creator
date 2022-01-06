@@ -30,7 +30,7 @@ class {{name:plural}}Crud extends Crud
                 "parent_id" => null,
             ]);
             $form = Menu::create([
-                "name" => "{{name:studly}} crear",
+                "name" => "Crear {{name:studly}}",
                 "icon" => "",
                 "description" => "Crear {{name}}",
                 "namespace" => "{{name}}.create",
@@ -42,8 +42,8 @@ class {{name:plural}}Crud extends Crud
 
     const MENUS = [
             'crud' => [
-                '{{name}}.index' => ['name' => 'Lista', 'route' => '{{name}}.index', 'title' => 'Listado de {{name}}s'],
-                '{{name}}.create' => ['name' => 'Crear', 'route' => '{{name}}.create', 'title' => 'Crear {{name}}'],
+                '{{name}}.index' => ['name' => 'Lista', 'route' => '{{name}}.index', 'title' => 'Listado de {{name:studly}}s'],
+                '{{name}}.create' => ['name' => 'Crear', 'route' => '{{name}}.create', 'title' => 'Crear {{name:studly}}'],
             ]
     ];
 
