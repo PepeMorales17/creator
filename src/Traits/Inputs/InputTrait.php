@@ -23,6 +23,7 @@ trait InputTrait
         "imodal" => "MyInputModal",
         "tmodal" => "TableModal",
         "text" => "MyTextarea",
+        "table" => "InputTable",
         "fetch" => "InputFetch",
     ];
 
@@ -35,6 +36,7 @@ trait InputTrait
         "file" => ["type" => "file", 'format' => 'file'],
         "bool" => ["data" => [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Si']], "display" => "name"],
         "select" => [],
+        "table" => [],
         "double" => ["type" => "number", "step" => "any", 'format' => 'number'],
         "currency" => ["type" => "number", "step" => "any", 'format' => 'currency'],
         "percentage" => ["type" => "number", "step" => "any", 'format' => 'percentage'],

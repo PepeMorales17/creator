@@ -22,6 +22,7 @@ export default defineComponent({
         const inputsNames = {
             MyInput: "input",
             input: "input",
+            InputTable: resolveComponent("input-table"),
             MySelect: resolveComponent("my-select"),
             InputData: resolveComponent("input-data"),
             //MySelectFrom: resolveComponent("my-select-from"),
@@ -36,6 +37,7 @@ export default defineComponent({
     components: {
         MySelect: defineAsyncComponent(() => import("./Select.vue")),
         InputData: defineAsyncComponent(() => import("./InputData.vue")),
+        InputTable: defineAsyncComponent(() => import("./InputTable.vue")),
         // MySelectFrom: defineAsyncComponent(() => import("./SelectFrom.vue")),
         // InputFetch: defineAsyncComponent(() => import("./InputFetch.vue")),
     },

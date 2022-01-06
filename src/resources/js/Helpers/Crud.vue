@@ -21,7 +21,9 @@
                 <template v-else-if="route().current() === initUrl + '.create'">
                     <h1 class="text-lg font-bold p-5">{{ titles.create ?? "" }}</h1>
                     <slot name="create" :form="form">
-                        <input-group :input="input" :as="input.is" v-for="(input, index) in inputs.inputs" :key="index" v-model="form[input.key]" :errors="form.errors" />
+                        <!-- <input-group :input="input" :as="input.is" v-for="(input, index) in inputs.inputs" :key="index" v-model="form[input.key]" :form="form" :errors="form.errors" /> -->
+                            <input-choose :input="input" :form="form" v-for="(input, index) in inputs.inputs" :key="index" />
+
                     </slot>
                     <div class="flex justify-end p-4">
                         <button class="btn-pri" :disabled="form.processig" @click="store">Guardar</button>
@@ -31,7 +33,8 @@
                     <h1 class="text-lg font-bold p-5">{{ !!titles.edit ? titles.edit + "(ID " + item.id + ")" : "Editar id " + item.id }}</h1>
                     <slot name="edit" :form="form">
                         <slot name="create" :form="form">
-                            <input-group :input="input" :as="input.is" v-for="(input, index) in inputs.inputs" :key="index" v-model="form[input.key]" :errors="form.errors" />
+                            <!-- <input-group :input="input" :as="input.is" v-for="(input, index) in inputs.inputs" :key="index" v-model="form[input.key]" :form="form" :errors="form.errors" /> -->
+                            <input-choose :input="input" :form="form" v-for="(input, index) in inputs.inputs" :key="index" />
                         </slot>
                     </slot>
                     <div class="flex justify-end p-4">
@@ -76,7 +79,7 @@ export default defineComponent({
         var form = null;
         if (!!props.inputs) {
             form = useForm(!!props.value ? props.value : props.inputs.emptyValue);
-            console.log(props.inputs, form, props.inputs.emptyValue, props.value);
+            console.log(props.inputs, 'que', form, 'que', props.inputs.emptyValue, props.value);
         }
         return { form };
     },
@@ -84,7 +87,7 @@ export default defineComponent({
     components: {
         Link,
         STable: defineAsyncComponent(() => import("./Partials/Tables/STable.vue")),
-        InputGroup: defineAsyncComponent(() => import("./Partials/Inputs/InputGroup.vue")),
+        InputChoose: defineAsyncComponent(() => import("./Partials/Inputs/InputChoose.vue")),
         NavLinks,
     },
     props: {
