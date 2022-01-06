@@ -37,7 +37,10 @@ class CreateCreator extends GeneratorCommand
      */
     public function handle()
     {
-        $this->getCrudClass();
+        // if (!$this->getCrudClass()->run()['controller']) {
+        //     $this->info('No se creara el controlador');
+        //     return;
+        // }
 
         if (parent::handle() === false && !$this->option('force')) {
             return;

@@ -8,7 +8,16 @@ use Illuminate\Support\Facades\DB;
 
 class {{name:plural}}Crud extends Crud
 {
-
+    public function run()
+    {
+        return [
+            'migration' => true,
+            'model' => true,
+            'form' => true,
+            'controller' => true,
+            'crud_vue' => true,
+        ];
+    }
 
     public static function menu()
     {

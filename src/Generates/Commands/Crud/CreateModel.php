@@ -39,7 +39,10 @@ class CreateModel extends GeneratorCommand
      */
     public function handle()
     {
-        $this->getCrudClass();
+        if (!$this->getCrudClass()->run()['model']) {
+            $this->info('No se creara el modelo');
+            return;
+        }
 
         if (parent::handle() === false && !$this->option('force')) {
             return;

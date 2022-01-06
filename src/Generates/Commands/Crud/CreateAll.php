@@ -44,10 +44,10 @@ class CreateAll extends Command
             '--force' => $this->option('force'),
             '--module' => $this->option('module'),
         ];
-        $this->call('create:controller', $arg);
-        $this->call('create:model', $arg);
         $this->call('create:migration', $arg);
+        $this->call('create:model', $arg);
         $this->call('create:form', $arg);
+        $this->call('create:controller', $arg);
         $this->call('create:crud_vue', $arg);
         //$this->info('Dumping autoloads...');
         //$this->composer->dumpAutoloads();

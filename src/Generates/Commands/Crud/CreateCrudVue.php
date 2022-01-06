@@ -37,7 +37,10 @@ class CreateCrudVue extends GeneratorCommand
      */
     public function handle()
     {
-        $this->getCrudClass();
+        if (!$this->getCrudClass()->run()['crud_vue']) {
+            $this->info('No se creara el crud de vue');
+            return;
+        }
 
         if (parent::handle() === false && !$this->option('force')) {
             return;

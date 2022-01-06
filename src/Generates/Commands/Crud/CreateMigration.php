@@ -40,7 +40,10 @@ class CreateMigration  extends GeneratorCommand
      */
     public function handle()
     {
-        $this->getCrudClass();
+        if (!$this->getCrudClass()->run()['migration']) {
+            $this->info('No se creara la tabla');
+            return;
+        }
 
         $dir = base_path($this->resolvePath()) . '\\' . $this->folder();
         if (is_dir($dir)) {

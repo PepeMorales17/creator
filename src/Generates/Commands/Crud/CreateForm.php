@@ -38,7 +38,10 @@ class CreateForm extends GeneratorCommand
      */
     public function handle()
     {
-        $this->getCrudClass();
+        if (!$this->getCrudClass()->run()['form']) {
+            $this->info('No se creara el form');
+            return;
+        }
 
         if (parent::handle() === false && !$this->option('force')) {
             return;
