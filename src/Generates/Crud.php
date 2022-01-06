@@ -1,146 +1,94 @@
 <?php
 
-namespace Pp\Creator\Generates\Commands\Traits;;
+namespace Pp\Creator\Generates;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
-trait MigrationTrait
+abstract class Crud
 {
 
-    /**
-     * Build the class with the given name.
-     *
-     * @param  string  $name
-     * @return string
-     */
-    protected function buildClass($name)
+
+    protected $makeHide = [];
+
+    abstract function attrs();
+
+    abstract static function menu();
+
+    protected $optional = true;
+
+
+    protected function attr($id, $type, $label = null, $props = [])
     {
-        $class = parent::buildClass($name);
-
-        $class = str_replace('{{attrs}}', str_replace(
-            ['"', '[', ']', ','],
-            '',
-            json_encode($this->attrs(), JSON_PRETTY_PRINT)
-        ), $class);
-        $class = str_replace('{{name}}', Str::plural($this->argument('name')), $class);
-
-        return $class;
-    }
-
-    private function cols()
-    {
-        $class = $this->getCrudClass();
-        $attr = collect($class->attrs())->map(function ($input) {
-            return $this->createCol($input);
-        });
-
-        return $attr;
-    }
-
-    private function createCol($input)
-    {
-        $col = null;
-        $hasCol = Arr::get($input, 'props.col');
-        if (!!$hasCol) {
-            $col = $hasCol;
+        if ($id != 'id') {
+            $label = $label ?? Str::studly($id);
         } else {
-            $col = match ($input['type'] ?? null) {
-                'id' => '$table->id()',
-                'foreignId' => $this->foreignId($input),
-                'string:short' => '$table->string(' . "'" . $input["id"] . "'" . ', 20)',
-                'enum' => '$table->enum(' . "'" . $input["id"] . "'" . ', ' . str_replace(
-                    '"',
-                    "'",
-                    str_replace(
-                        '[',
-                        'arropen',
-                        str_replace(
-                            ']',
-                            'arrclose',
-                            json_encode(Arr::get($input, 'props.enum'))
-                        )
-                    )
-                ) . ')',
-                default => $this->basicCol($input)
-            };
+            $label = 'id';
         }
+        $p = array_merge(
+            [
+                'optional' => $this->optional,
+            ],
+            $type === 'foreignId' ? [
+                'relation_type' => 'belongsTo'
+            ] : []
+        );
+        $props = array_merge($p, $props);
 
-        if ($input['type'] != 'foreignId') {
-            $col = $this->makeNull($col, $input);
-        }
-        $col = $this->endLine($col);
-        return $col;
+        return compact('id', 'label', 'type', 'props');
     }
 
-    private function basicCol($input)
+    protected function externalRelations()
     {
-        $col = Arr::get($input, 'props.col');
-        if (!!$col) return $col;
-        $col =  $this->baseCol($input);
-        //$col = $this->makeNull($col, $input);
-        return $col;
+        return [];
     }
 
-    private function makeNull($col, $input)
+    public function getRelations()
     {
-        if ($input['type'] === 'id') return $col;
-        if (Arr::get($input, 'props.optional')) {
-            $col .= '->nullable()';
-        }
-        return $col;
+        return Arr::where(array_merge($this->externalRelations(), $this->attrs()), fn ($i) => Arr::get($i, 'props.relation_type'));
     }
 
-    private function baseCol($input)
+    public function getRelationName($id)
     {
-        return '$table->' . $input['type'] . "('" . $input['id'] . "')";
+        return Str::plural(str_replace('_id', '', $id));
     }
 
-    private function foreignId($input)
+    protected function externalRelation($id, $type)
     {
-        $col = $this->baseCol($input);
-        $col = $this->makeNull($col, $input);
-        return $col . '->constrained()';
+        return $this->attr($id, null, null, ['relation_type' => $type]);
     }
 
-    private function attrs()
+    public function addTablesBeforeMigrate()
     {
-        $class = $this->getCrudClass();
-        $attr = collect($class->attrs())->map(function ($input) {
-            return $this->createCol($input);
-        });
-
-        return $attr;
+        return [];
     }
 
-    private function tablesBeforeMigrate()
+    public function hidden()
     {
-        $tables = collect($this->getCrudClass()->addTablesBeforeMigrate())->map(function ($item, $key) {
-            $t = "Schema::create('{{name}}', function (Blueprint " . '$table' . ") {
-                {{cols}}
-            });";
-            $t = str_replace('{{name}}', $key, $t);
-            $cols = collect($item)->map(function ($input) {
-                return $this->createCol($input);
-            });
-            $t = str_replace('{{cols}}', $this->resolveArray($cols->toArray()), $t);
-            return $t;
-        });
-
-        return $tables->values()->toArray();
+        return array_merge($this->makeHide, [
+            'created_at',
+            'updated_at',
+        ]);
     }
 
-    private function tablesDown()
-    {
-        $tables = collect(array_merge(
-            [$this->getTable()],
-            collect($this->getCrudClass()->addTablesBeforeMigrate())->keys()->toArray()
-        ))->map(function ($item) {
-            $t = "Schema::dropIfExists('{{name}}');";
-            $t = str_replace('{{name}}', $item, $t);
-            return $t;
-        });
+    // Comunes
 
-        return $tables->values()->toArray();
+    public function string($id, $label = null, $optional = null)
+    {
+        return $this->attr($id, 'string', $label, [
+            'optional' => $this->isOptional($optional)
+        ]);
+    }
+
+    public function inputName($optional = null)
+    {
+        return $this->attr('name', 'string', 'Nombre', [
+            'optional' => $this->isOptional($optional)
+        ]);
+    }
+
+    private function isOptional($optional)
+    {
+        return $optional === null ? $this->optional : $optional;
     }
 }
