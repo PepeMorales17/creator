@@ -13,6 +13,9 @@ class {{name}}Controller extends Controller
 {
     use CrudTrait;
 
+    // protected $optional = true;
+
+
     protected $view = '{{folder}}/Crud{{name}}';
     protected $redirect_route = '{{name:normal}}.index';
     protected $form;
