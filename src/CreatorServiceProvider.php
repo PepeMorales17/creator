@@ -13,6 +13,7 @@ use Pp\Creator\Generates\Commands\Crud\CreateCrudVue;
 use Pp\Creator\Generates\Commands\Crud\CreateForm;
 use Pp\Creator\Generates\Commands\Crud\CreateMigration;
 use Pp\Creator\Generates\Commands\Crud\CreateModel;
+use Pp\Creator\Generates\Commands\DbFresh;
 
 class CreatorServiceProvider extends ServiceProvider
 {
@@ -54,6 +55,7 @@ class CreatorServiceProvider extends ServiceProvider
                 CreateForm::class,
                 CreateMigration::class,
                 CreateModel::class,
+                DbFresh::class,
             ]);
         }
     }
