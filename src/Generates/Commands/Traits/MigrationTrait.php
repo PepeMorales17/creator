@@ -66,7 +66,9 @@ trait MigrationTrait
             };
         }
 
-        $col = $this->makeNull($col, $input);
+        if ($input['type'] != 'foreignId') {
+            $col = $this->makeNull($col, $input);
+        }
         $col = $this->endLine($col);
         return $col;
     }
@@ -97,7 +99,7 @@ trait MigrationTrait
     private function foreignId($input)
     {
         $col = $this->baseCol($input);
-        //$col = $this->makeNull($col, $input);
+        $col = $this->makeNull($col, $input);
         return $col . '->constrained()';
     }
 

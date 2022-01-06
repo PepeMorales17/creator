@@ -1,87 +1,146 @@
 <?php
 
-namespace Pp\Creator\Generates;
+namespace Pp\Creator\Generates\Commands\Traits;;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
-abstract class Crud
+trait MigrationTrait
 {
 
-
-    protected $makeHide = [];
-
-    abstract function attrs();
-
-    abstract static function menu();
-
-    protected $optional = true;
-
-
-    protected function attr($id, $type, $label = null, $props = [])
+    /**
+     * Build the class with the given name.
+     *
+     * @param  string  $name
+     * @return string
+     */
+    protected function buildClass($name)
     {
-        if ($id != 'id') {
-            $label = $label ?? Str::studly($id);
+        $class = parent::buildClass($name);
+
+        $class = str_replace('{{attrs}}', str_replace(
+            ['"', '[', ']', ','],
+            '',
+            json_encode($this->attrs(), JSON_PRETTY_PRINT)
+        ), $class);
+        $class = str_replace('{{name}}', Str::plural($this->argument('name')), $class);
+
+        return $class;
+    }
+
+    private function cols()
+    {
+        $class = $this->getCrudClass();
+        $attr = collect($class->attrs())->map(function ($input) {
+            return $this->createCol($input);
+        });
+
+        return $attr;
+    }
+
+    private function createCol($input)
+    {
+        $col = null;
+        $hasCol = Arr::get($input, 'props.col');
+        if (!!$hasCol) {
+            $col = $hasCol;
         } else {
-            $label = 'id';
+            $col = match ($input['type'] ?? null) {
+                'id' => '$table->id()',
+                'foreignId' => $this->foreignId($input),
+                'string:short' => '$table->string(' . "'" . $input["id"] . "'" . ', 20)',
+                'enum' => '$table->enum(' . "'" . $input["id"] . "'" . ', ' . str_replace(
+                    '"',
+                    "'",
+                    str_replace(
+                        '[',
+                        'arropen',
+                        str_replace(
+                            ']',
+                            'arrclose',
+                            json_encode(Arr::get($input, 'props.enum'))
+                        )
+                    )
+                ) . ')',
+                default => $this->basicCol($input)
+            };
         }
-        $p = array_merge(
-            [
-                'optional' => $this->optional,
-            ],
-            $type === 'foreignId' ? [
-                'relation_type' => 'belongsTo'
-            ] : []
-        );
-        $props = array_merge($p, $props);
 
-        return compact('id', 'label', 'type', 'props');
+        if ($input['type'] != 'foreignId') {
+            $col = $this->makeNull($col, $input);
+        }
+        $col = $this->endLine($col);
+        return $col;
     }
 
-    protected function externalRelations()
+    private function basicCol($input)
     {
-        return [];
+        $col = Arr::get($input, 'props.col');
+        if (!!$col) return $col;
+        $col =  $this->baseCol($input);
+        //$col = $this->makeNull($col, $input);
+        return $col;
     }
 
-    public function getRelations()
+    private function makeNull($col, $input)
     {
-        return Arr::where(array_merge($this->externalRelations(), $this->attrs()), fn ($i) => Arr::get($i, 'props.relation_type'));
+        if ($input['type'] === 'id') return $col;
+        if (Arr::get($input, 'props.optional')) {
+            $col .= '->nullable()';
+        }
+        return $col;
     }
 
-    public function getRelationName($id)
+    private function baseCol($input)
     {
-        return Str::plural(str_replace('_id', '', $id));
+        return '$table->' . $input['type'] . "('" . $input['id'] . "')";
     }
 
-    protected function externalRelation($id, $type)
+    private function foreignId($input)
     {
-        return $this->attr($id, null, null, ['relation_type' => $type]);
+        $col = $this->baseCol($input);
+        $col = $this->makeNull($col, $input);
+        return $col . '->constrained()';
     }
 
-    public function addTablesBeforeMigrate()
+    private function attrs()
     {
-        return [];
+        $class = $this->getCrudClass();
+        $attr = collect($class->attrs())->map(function ($input) {
+            return $this->createCol($input);
+        });
+
+        return $attr;
     }
 
-    public function hidden()
+    private function tablesBeforeMigrate()
     {
-        return array_merge($this->makeHide, [
-            'created_at',
-            'updated_at',
-        ]);
+        $tables = collect($this->getCrudClass()->addTablesBeforeMigrate())->map(function ($item, $key) {
+            $t = "Schema::create('{{name}}', function (Blueprint " . '$table' . ") {
+                {{cols}}
+            });";
+            $t = str_replace('{{name}}', $key, $t);
+            $cols = collect($item)->map(function ($input) {
+                return $this->createCol($input);
+            });
+            $t = str_replace('{{cols}}', $this->resolveArray($cols->toArray()), $t);
+            return $t;
+        });
+
+        return $tables->values()->toArray();
     }
 
-    // Comunes
-
-    public function string($id, $label = null, $optional = null)
+    private function tablesDown()
     {
-        return $this->attr($id, 'string', $label, [
-            'optional' => $optional === null ? $this->optional : $optional
-        ]);
-    }
+        $tables = collect(array_merge(
+            [$this->getTable()],
+            collect($this->getCrudClass()->addTablesBeforeMigrate())->keys()->toArray()
+        ))->map(function ($item) {
+            $t = "Schema::dropIfExists('{{name}}');";
+            $t = str_replace('{{name}}', $item, $t);
+            return $t;
+        });
 
-    public function inputName()
-    {
-        return $this->attr('name', 'string', 'Nombre');
+        return $tables->values()->toArray();
     }
 }

@@ -4,6 +4,7 @@ namespace Pp\Creator\Generates\Commands;
 
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Cache;
 use Pp\Creator\Models\Menu;
 
 class DbFresh extends Command
@@ -39,11 +40,14 @@ class DbFresh extends Command
      */
     public function handle()
     {
-        $menus = Menu::all();
+        Cache::forget('menus_recover');
+        Cache::rememberForever('menus_recover', function () {
+            return Menu::all()->toArray();
+        });
         $this->call('migrate:fresh', [
             '--seed' => $this->option('seed')
         ]);
-        Menu::insert($menus->toArray());
+        Menu::insert(Cache::get('menus_recover'));
         $this->info('El menu fue reestablecido');
         return 0;
     }
