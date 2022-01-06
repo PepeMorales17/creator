@@ -13,7 +13,7 @@ class DbFresh extends Command
      *
      * @var string
      */
-    protected $signature = 'db:fresh -{-seed?}';
+    protected $signature = 'db:fresh {--seed}';
 
     /**
      * The console command description.
