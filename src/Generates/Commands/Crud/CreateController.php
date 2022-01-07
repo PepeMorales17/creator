@@ -73,7 +73,7 @@ class CreateController extends GeneratorCommand
 
     protected function createMenu()
     {
-        if (!Menu::where('namespace',$this->argument('name').'.index')->exists()) {
+        if (!Menu::where('namespace', $this->argument('name') . '.index')->exists()) {
             $this->getCrudClass()->menu();
         }
     }
@@ -91,8 +91,13 @@ class CreateController extends GeneratorCommand
             return;
         }
         $file = file_get_contents($dir);
-
-        $file .= "\r\n Route::resource('".$this->argument('name')."', '".$this->rootNamespace()."\\". Str::studly($this->argument('name'))."Controller"."');";
-        file_put_contents($dir, $file);
+        $route = "Route::resource('" . $this->argument('name') . "', '" . $this->rootNamespace() . "\\" . Str::studly($this->argument('name')) . "Controller" . "')";
+        if (strpos($file, $route) !== false) {
+            $file .= "\r\n " . $route;
+            file_put_contents($dir, $file);
+            $this->info("Se agrego la ruta en web.php");
+            return;
+        }
+        $this->info("Ya existe la ruta en web.php");
     }
 }
