@@ -19,15 +19,15 @@ class {{name:plural}}Crud extends Crud
         ];
     }
 
-    public static function menu()
+    public static function menu($parent = null)
     {
-        DB::transaction(function (){
+        return DB::transaction(function () use($parent){
             $index = Menu::create([
                 "name" => "{{name:studly}}",
                 "icon" => "",
                 "description" => "Todos los {{name:studly}}s",
                 "namespace" => "{{name}}.index",
-                "parent_id" => null,
+                "parent_id" => $parent,
             ]);
             $form = Menu::create([
                 "name" => "Crear {{name:studly}}",
@@ -36,6 +36,7 @@ class {{name:plural}}Crud extends Crud
                 "namespace" => "{{name}}.create",
                 "parent_id" => $index->id,
             ]);
+            return [$index, $form];
         });
 
     }
