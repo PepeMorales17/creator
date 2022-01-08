@@ -96,8 +96,8 @@ class CreateController extends GeneratorCommand
 
         if (strpos($file, ']);/** Final de los controladores */') !== false) {
             $route = "$name => $class,";
-            if (strpos($file, $route) !== false) {
-                $file = str_replace(']);/** Final de los controladores */', "\r\n".$route."\r\n ]);/** Final de los controladores */", $file);
+            if (strpos($file, $route) === false) {
+                $file = str_replace(']);/** Final de los controladores */', "\t".$route."\r\n]);/** Final de los controladores */", $file);
                 file_put_contents($dir, $file);
                 $this->info("Se agrego la ruta en web.php");
                 return;
@@ -106,8 +106,8 @@ class CreateController extends GeneratorCommand
             return;
         }
 
-        $route = "Route::resource($name , $class);";
-        if (strpos($file, $route) !== false) {
+        $route = "Route::resource($name, $class);";
+        if (strpos($file, $route) === false) {
             $file .= "\r\n " . $route;
             file_put_contents($dir, $file);
             $this->info("Se agrego la ruta en web.php");
