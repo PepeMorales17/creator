@@ -10,7 +10,16 @@
                 <template v-if="route().current() === initUrl + '.index'">
                     <h1 class="text-lg font-bold p-5">{{ titles.index ?? "" }}</h1>
                     <slot name="index">
+                        <filter-pag v-model="data_" url="ticket_model.print" :urlData="{ ticketModel: ticketModel.id }" v-if="!!data_.data">
                         <s-table
+                            :data="data_.data"
+                            @view="$inertia.visit(route(initUrl + '.show', uris.show ? uris.show($event.id) : $event.id), { preserveState: false })"
+                            @edit="$inertia.visit(route(initUrl + '.edit', uris.edit ? uris.edit($event.id) : $event.id), { preserveState: false })"
+                            @trash="trash($event.id)"
+                        />
+                        </filter-pag>
+                        <s-table
+                            v-else
                             :data="dataTable"
                             @view="$inertia.visit(route(initUrl + '.show', uris.show ? uris.show($event.id) : $event.id), { preserveState: false })"
                             @edit="$inertia.visit(route(initUrl + '.edit', uris.edit ? uris.edit($event.id) : $event.id), { preserveState: false })"
@@ -22,8 +31,7 @@
                     <h1 class="text-lg font-bold p-5">{{ titles.create ?? "" }}</h1>
                     <slot name="create" :form="form">
                         <!-- <input-group :input="input" :as="input.is" v-for="(input, index) in inputs.inputs" :key="index" v-model="form[input.key]" :form="form" :errors="form.errors" /> -->
-                            <input-choose :input="input" :form="form" v-for="(input, index) in inputs.inputs" :key="index" />
-
+                        <input-choose :input="input" :form="form" v-for="(input, index) in inputs.inputs" :key="index" />
                     </slot>
                     <div class="flex justify-end p-4">
                         <button class="btn-pri" :disabled="form.processig" @click="store">Guardar</button>
@@ -57,9 +65,10 @@
                         </ul>
 
                         <div class="flex justify-end p-4">
-                            <Link class="btn-pri" as="button" :href="route(initUrl + '.edit', uris.edit ? uris.edit(item.id) : item.id)">Editar</Link>
-                            <a :href="route('pdf', { model: initUrl, id: item.id })" class="btn-pri" v-if="canPrint">Imprimir</a>
-                            <Link class="btn-pri" as="button" :href="route(initUrl + '.create', uris.edit ? uris.edit(item.id) : { id: item.id })" v-if="canCopy">Copiar</Link>
+                            <Link class="btn-sec m-2" as="button" :href="route(initUrl + '.edit', uris.edit ? uris.edit(item.id) : item.id)">Editar</Link>
+                            <a :href="route('pdf', { model: initUrl, id: item.id })" class="btn-org" v-if="canPrint && !customPrint">Imprimir</a>
+                            <Link class="btn-org m-2" as="button" :href="route(initUrl + '.print', item.id)" v-if="canPrint && customPrint">Imprimir</Link>
+                            <Link class="btn-pri m-2" as="button" :href="route(initUrl + '.create', uris.edit ? uris.edit(item.id) : { id: item.id })" v-if="canCopy">Copiar</Link>
                         </div>
                     </slot>
                 </template>
@@ -79,15 +88,18 @@ export default defineComponent({
         var form = null;
         if (!!props.inputs) {
             form = useForm(!!props.value ? props.value : props.inputs.emptyValue);
-            console.log(props.inputs, 'que', form, 'que', props.inputs.emptyValue, props.value);
+            console.log(props.inputs, "que", form, "que", props.inputs.emptyValue, props.value);
         }
-        return { form };
+        var data_ = props.dataTable;
+        //console.log(props, data_)
+        return { form, data_ };
     },
 
     components: {
         Link,
         STable: defineAsyncComponent(() => import("./Partials/Tables/STable.vue")),
         InputChoose: defineAsyncComponent(() => import("./Partials/Inputs/InputChoose.vue")),
+        FilterPag: defineAsyncComponent(() => import("@/Helpers/Partials/Filters/FilterWithInfinityScroll.vue")),
         NavLinks,
     },
     props: {
@@ -121,6 +133,8 @@ export default defineComponent({
                 return f;
             },
         },
+
+        customPrint: Boolean,
     },
 
     computed: {

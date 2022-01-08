@@ -52,9 +52,9 @@ export default {
                 this.success = this.$page.props.flash.success;
                 this.errors = this.$page.props.flash.errors ?? {};
                 this.error = this.$page.props.flash.error;
-                // if (this.error) {
-                //     alert(this.error);
-                // }
+                if (this.error) {
+                    alert(this.error);
+                }
                 //this.$forceUpdate();
                 setTimeout(() => {
                     this.show = false;
