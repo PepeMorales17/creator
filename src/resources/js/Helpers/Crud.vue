@@ -10,14 +10,16 @@
                 <template v-if="route().current() === initUrl + '.index'">
                     <h1 class="text-lg font-bold p-5">{{ titles.index ?? "" }}</h1>
                     <slot name="index">
-                        <filter-pag v-model="data_" url="ticket_model.print" :urlData="{ ticketModel: ticketModel.id }" v-if="!!data_.data">
-                        <s-table
-                            :data="data_.data"
-                            @view="$inertia.visit(route(initUrl + '.show', uris.show ? uris.show($event.id) : $event.id), { preserveState: false })"
-                            @edit="$inertia.visit(route(initUrl + '.edit', uris.edit ? uris.edit($event.id) : $event.id), { preserveState: false })"
-                            @trash="trash($event.id)"
-                        />
-                        </filter-pag>
+                        <template v-if="!!data_.data">
+                            <filter-pag v-model="data_" :url="initUrl + '.index'">
+                                <s-table
+                                    :data="data_.data"
+                                    @view="$inertia.visit(route(initUrl + '.show', uris.show ? uris.show($event.id) : $event.id), { preserveState: false })"
+                                    @edit="$inertia.visit(route(initUrl + '.edit', uris.edit ? uris.edit($event.id) : $event.id), { preserveState: false })"
+                                    @trash="trash($event.id)"
+                                />
+                            </filter-pag>
+                        </template>
                         <s-table
                             v-else
                             :data="dataTable"
@@ -88,7 +90,7 @@ export default defineComponent({
         var form = null;
         if (!!props.inputs) {
             form = useForm(!!props.value ? props.value : props.inputs.emptyValue);
-            console.log(props.inputs, "que", form, "que", props.inputs.emptyValue, props.value);
+            //console.log(props.inputs, "que", form, "que", props.inputs.emptyValue, props.value);
         }
         var data_ = props.dataTable;
         //console.log(props, data_)
