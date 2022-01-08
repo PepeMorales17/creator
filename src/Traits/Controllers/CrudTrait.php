@@ -80,7 +80,7 @@ trait CrudTrait
      */
     public function create()
     {
-        return $this->justCreate($this->form->getFormWithEmptyValue());
+        return $this->justCreate($this->form()->getFormWithEmptyValue());
 
     }
 }
