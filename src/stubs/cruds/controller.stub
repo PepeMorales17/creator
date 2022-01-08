@@ -18,12 +18,11 @@ class {{name}}Controller extends Controller
 
     protected $view = '{{folder}}/Crud{{name}}';
     protected $redirect_route = '{{name:normal}}.index';
-    protected $form;
     protected $type = '{{name:plural}}';
     protected $folder = '{{folder}}';
 
-    public function __construct() {
-       $this->form = new Create{{name}}Form();
+    public function form() {
+       return new Create{{name}}Form();
     }
 
     public function index()
@@ -33,7 +32,7 @@ class {{name}}Controller extends Controller
 
     public function store(Request $request)
     {
-        $data = $this->form->validate($request->all());
+        $data = $this->form()->validate($request->all());
 
         DB::transaction(function () use ($data) {
             {{name}}::create($data);
@@ -50,12 +49,12 @@ class {{name}}Controller extends Controller
 
     public function edit({{name}} ${{name:camel}})
     {
-        return $this->justEdit($this->form->getFormToEditWithEmptyValue(), ${{name:camel}});
+        return $this->justEdit($this->form()->getFormToEditWithEmptyValue(), ${{name:camel}});
     }
 
     public function update(Request $request, {{name}} ${{name:camel}})
     {
-        $data = $this->form->validate($request->all());
+        $data = $this->form()->validate($request->all());
         DB::transaction(function () use ($data, ${{name:camel}}) {
             ${{name:camel}}->update($data);
         });
