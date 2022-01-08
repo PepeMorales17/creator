@@ -10,8 +10,8 @@
                 <template v-if="route().current() === initUrl + '.index'">
                     <h1 class="text-lg font-bold p-5">{{ titles.index ?? "" }}</h1>
                     <slot name="index">
-                        <template v-if="!!data_.data">
-                            <filter-pag v-model="data_" :url="initUrl + '.index'">
+                        <template v-if="!!data_ && !!data_.data">
+                            <filter-pag v-model="data_" :url="initUrl + '.index'" v-if="!!data_.data">
                                 <s-table
                                     :data="data_.data"
                                     @view="$inertia.visit(route(initUrl + '.show', uris.show ? uris.show($event.id) : $event.id), { preserveState: false })"
@@ -93,7 +93,7 @@ export default defineComponent({
             //console.log(props.inputs, "que", form, "que", props.inputs.emptyValue, props.value);
         }
         var data_ = props.dataTable;
-        //console.log(props, data_)
+        console.log(props, data_)
         return { form, data_ };
     },
 
