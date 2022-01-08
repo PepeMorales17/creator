@@ -3,6 +3,7 @@
         <div class="w-full lg:m-auto lg:w-10/12">
             <nav-links :menu="menu" />
             <h1 class="text-lg font-bold p-5" v-if="!!title">{{ title }}</h1>
+            <jet-validation-errors class="mb-4" />
 
             <slot name="header"></slot>
 
@@ -84,6 +85,7 @@ import { defineAsyncComponent, defineComponent } from "vue";
 import { Link } from "@inertiajs/inertia-vue3";
 import { useForm } from "@inertiajs/inertia-vue3";
 import NavLinks from "./Partials/Navs/NavLinks.vue";
+import JetValidationErrors from "@/Jetstream/ValidationErrors.vue";
 
 export default defineComponent({
     setup(props) {
@@ -93,7 +95,7 @@ export default defineComponent({
             //console.log(props.inputs, "que", form, "que", props.inputs.emptyValue, props.value);
         }
         var data_ = props.dataTable;
-        console.log(props, data_)
+        console.log(props, data_);
         return { form, data_ };
     },
 
@@ -103,6 +105,7 @@ export default defineComponent({
         InputChoose: defineAsyncComponent(() => import("./Partials/Inputs/InputChoose.vue")),
         FilterPag: defineAsyncComponent(() => import("@/Helpers/Partials/Filters/FilterWithInfinityScroll.vue")),
         NavLinks,
+        JetValidationErrors,
     },
     props: {
         dataTable: Object,
