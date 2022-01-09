@@ -130,11 +130,32 @@ trait MigrationTrait
         return $tables->values()->toArray();
     }
 
+    private function tablesAfterMigrate()
+    {
+        $crud = $this->getCrudClass();
+        if (!method_exists($crud, 'addTablesAfterMigrate')) return [];
+        $tables = collect($this->getCrudClass()->addTablesAfterMigrate())->map(function ($item, $key) {
+            $t = "Schema::create('{{name}}', function (Blueprint " . '$table' . ") {
+                {{cols}}
+            });";
+            $t = str_replace('{{name}}', $key, $t);
+            $cols = collect($item)->map(function ($input) {
+                return $this->createCol($input);
+            });
+            $t = str_replace('{{cols}}', $this->resolveArray($cols->toArray()), $t);
+            return $t;
+        });
+
+        return $tables->values()->toArray();
+    }
+
     private function tablesDown()
     {
+        $crud = $this->getCrudClass();
         $tables = collect(array_merge(
             [$this->getTable()],
-            collect($this->getCrudClass()->addTablesBeforeMigrate())->keys()->toArray()
+            collect($crud->addTablesBeforeMigrate())->keys()->toArray(),
+            (method_exists($crud, 'addTablesAfterMigrate') ? collect($crud->addTablesAfterMigrate())->keys()->toArray() : [])
         ))->map(function ($item) {
             $t = "Schema::dropIfExists('{{name}}');";
             $t = str_replace('{{name}}', $item, $t);

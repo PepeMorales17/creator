@@ -79,6 +79,7 @@ class CreateMigration  extends GeneratorCommand
         $class = str_replace('{{attrs}}', $this->resolveArray($this->attrs()), $class);
         $class = str_replace('{{name}}', $this->getTable(), $class);
         $class = str_replace('{{tablesBeforeMigrate:up}}', $this->resolveArray($this->tablesBeforeMigrate()), $class);
+        $class = str_replace('{{tablesAfterMigrate:up}}', $this->resolveArray($this->tablesAfterMigrate()), $class);
         $class = str_replace('{{tables:down}}', $this->resolveArray($this->tablesDown($this->argument('name'))), $class);
 
         return $class;
