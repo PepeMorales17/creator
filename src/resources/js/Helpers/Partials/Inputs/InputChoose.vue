@@ -3,9 +3,12 @@
         <div class="p-4 shadow-lg">
             <h1 class="font-bold text-xxl">{{ input.label }}</h1>
             <input-table
-                :form="form[input.key]"
                 :cols="input.cols"
                 :emptyValue="input.emptyValue"
+                :canDelete="input.canDelete"
+                :canAdd="input.canAdd"
+                :aggregations="!!input.aggregations ? input.aggregations : {sum: null, paste: false}"
+                :form="form[input.key]"
             />
         </div>
     </div>
@@ -25,6 +28,8 @@ import { defineComponent, defineAsyncComponent } from "vue";
 
 export default defineComponent({
     props: ["form", "input"],
+    inheritAttrs: false,
+
     components: {
         InputGroup: defineAsyncComponent(() => import("./InputGroup.vue")),
         InputTable: defineAsyncComponent(() => import("./InputTable.vue")),

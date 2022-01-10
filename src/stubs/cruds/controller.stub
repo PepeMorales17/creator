@@ -64,9 +64,12 @@ class {{name}}Controller extends Controller
 
     public function destroy({{name}} ${{name:camel}})
     {
-        DB::transaction(function () use (${{name:camel}}) {
-            ${{name:camel}}->delete();
+        $deletion = DB::transaction(function () use (${{name:camel}}) {
+            return  ${{name:camel}}->delete();
         });
+        if (!$deletion) {
+            return $this->mainRedirect({{name}}::STOP_DELETE_MSG, false);
+        }
         return $this->mainRedirect('{{name}} borrado');
     }
 }

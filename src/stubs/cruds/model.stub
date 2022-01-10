@@ -19,6 +19,17 @@ class {{name}} extends Model
 
     const SELECTS = {{selects}};
 
+    // // boot
+
+    // protected static function booted()
+    // {
+    //     static::deleting(function (${{name}}) {
+    //          return true;
+    //     });
+    // }
+
+    const STOP_DELETE_MSG = 'No puedes borrar ';
+
     // Scopes
 
     public function scopeView($query) {

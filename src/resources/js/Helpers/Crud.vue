@@ -21,6 +21,15 @@
                                 />
                             </filter-pag>
                         </template>
+                        <template v-else>
+
+                        <s-table
+                            v-if="!!dataTable.data"
+                            :data="dataTable.data"
+                            @view="$inertia.visit(route(initUrl + '.show', uris.show ? uris.show($event.id) : $event.id), { preserveState: false })"
+                            @edit="$inertia.visit(route(initUrl + '.edit', uris.edit ? uris.edit($event.id) : $event.id), { preserveState: false })"
+                            @trash="trash($event.id)"
+                        />
                         <s-table
                             v-else
                             :data="dataTable"
@@ -28,6 +37,7 @@
                             @edit="$inertia.visit(route(initUrl + '.edit', uris.edit ? uris.edit($event.id) : $event.id), { preserveState: false })"
                             @trash="trash($event.id)"
                         />
+                        </template>
                     </slot>
                 </template>
                 <template v-else-if="route().current() === initUrl + '.create'">
