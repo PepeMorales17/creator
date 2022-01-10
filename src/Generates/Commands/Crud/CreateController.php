@@ -94,7 +94,7 @@ class CreateController extends GeneratorCommand
         $name = "'" . $this->argument('name') . "'";
         $class = "'" . $this->rootNamespace() . "\\" . Str::studly($this->argument('name')) . "Controller'";
 
-        if (strpos($file, $this->routeResources()) === false) {
+        if (strpos($file, 'Route::resources([') === false) {
             $file .= "\r\n " . $this->routeResources();
         }
 
