@@ -14,7 +14,6 @@ export default defineComponent({
     emits: ["update:modelValue", "selected"],
     inheritAttrs: false,
     mounted() {
-        //console.log(this.form, 'la form');
         this.setData(this.modelValue);
     },
     data() {
