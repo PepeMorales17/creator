@@ -1,9 +1,5 @@
 <template>
-    <input :value="modelValue" v-bind="$attrs" @input="$emit('update:modelValue', $event.target.value)" class="capitalize"
-    :id="id"
-    :list="id + '-datalist'"
-    @change="setData($event.target.value)"
-    :class="{'bg-red-400': !inList}" />
+    <input :value="modelValue" v-bind="$attrs" @input="$emit('update:modelValue', $event.target.value)" class="capitalize" :id="id" :list="id + '-datalist'" @change="setData($event.target.value)" :class="{ 'bg-red-400': !inList }" />
     <datalist :id="id + '-datalist'">
         <option :value="d[primaryKey]" v-for="(d, ind) in data" :key="ind" class="capitalize">
             {{ d[display] }}
@@ -17,29 +13,31 @@ export default defineComponent({
     props: ["modelValue", "data", "display", "form", "id", "primaryKey", "set"],
     emits: ["update:modelValue", "selected"],
     inheritAttrs: false,
-    mounted () {
+    mounted() {
         //console.log(this.form, 'la form');
         this.setData(this.modelValue);
     },
     data() {
         return {
-            select: null
-        }
+            select: null,
+        };
     },
     computed: {
         inList() {
-            return !!this.select
-        }
+            return !!this.select;
+        },
     },
     methods: {
         setData(val) {
             this.select = this.data[val];
-            if (this.select) {
-                if (!!!this.form[this.set.on]) {
-                    this.form[this.set.on] = this.select[this.set.key];
+            if (this.form) {
+                if (this.select) {
+                    if (!!!this.form[this.set.on]) {
+                        this.form[this.set.on] = this.select[this.set.key];
+                    }
                 }
             }
-        }
+        },
     },
 });
 </script>
