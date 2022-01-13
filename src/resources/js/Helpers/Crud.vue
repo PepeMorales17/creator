@@ -47,7 +47,7 @@
                         <input-choose :input="input" :form="form" v-for="(input, index) in inputs.inputs" :key="index" />
                     </slot>
                     <div class="flex justify-end p-4">
-                        <button class="btn-pri" :disabled="form.processig" @click="store">Guardar</button>
+                        <button class="btn-pri" :disabled="form.processing" @click="store">Guardar</button>
                     </div>
                 </template>
                 <template v-else-if="route().current() === initUrl + '.edit'">
@@ -59,7 +59,7 @@
                         </slot>
                     </slot>
                     <div class="flex justify-end p-4">
-                        <button class="btn-pri" :disabled="form.processig" @click="edit">Editar</button>
+                        <button class="btn-pri" :disabled="form.processing" @click="edit">Editar</button>
                     </div>
                 </template>
                 <template v-else-if="route().current() === initUrl + '.show' && !!item">

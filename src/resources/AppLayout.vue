@@ -1,15 +1,10 @@
 <template>
     <div>
-
-
         <!-- <Dropdown /> -->
-
-
 
         <Head :title="$page.props.title" />
 
         <jet-banner />
-
 
         <div class="min-h-screen bg-gray-100">
             <nav class="bg-white border-b border-gray-100">
@@ -26,7 +21,7 @@
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex items-center">
                                 <template v-for="(item, index) in $page.props.main_menu" :key="index">
-                                    <Dropdown :menu="item" v-if="!!item.children"/>
+                                    <Dropdown :menu="item" v-if="!!item.children" />
                                     <jet-nav-link :href="route(item.namespace)" :active="route().current(item.namespace)" v-else> {{ item.name }} </jet-nav-link>
                                 </template>
                             </div>
@@ -40,23 +35,7 @@
                                         <span class="inline-flex rounded-md">
                                             <button
                                                 type="button"
-                                                class="
-                                                    inline-flex
-                                                    items-center
-                                                    px-3
-                                                    py-2
-                                                    border border-transparent
-                                                    text-sm
-                                                    leading-4
-                                                    font-medium
-                                                    rounded-md
-                                                    text-gray-500
-                                                    bg-white
-                                                    hover:bg-gray-50 hover:text-gray-700
-                                                    focus:outline-none focus:bg-gray-50
-                                                    active:bg-gray-50
-                                                    transition
-                                                "
+                                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:bg-gray-50 hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition"
                                             >
                                                 {{ $page.props.user.current_team.name }}
 
@@ -160,10 +139,9 @@
 
                 <!-- Responsive Navigation Menu -->
                 <div :class="{ block: showingNavigationDropdown, hidden: !showingNavigationDropdown }" class="sm:hidden">
-                    <div class="pt-2 pb-3 space-y-1">
+                    <!-- <div class="pt-2 pb-3 space-y-1">
                         <jet-nav-link :href="route(item.namespace)" :active="route().current(item.namespace)" v-for="(item, index) in $page.props.main_menu" :key="index"> {{ item.name }} </jet-nav-link>
-
-                    </div>
+                    </div> -->
 
                     <!-- Responsive Settings Options -->
                     <div class="pt-4 pb-1 border-t border-gray-200">
@@ -219,6 +197,15 @@
                             </template>
                         </div>
                     </div>
+                    <div class="pt-2 pb-3 space-y-1">
+                        <!-- <jet-nav-link :href="route(item.namespace)" :active="route().current(item.namespace)" v-for="(item, index) in $page.props.main_menu" :key="index"> {{ item.name }} </jet-nav-link> -->
+                        <!-- <template v-for="(item, index) in $page.props.main_menu" :key="index"> -->
+                            <repeat :showing="showing" :item="item" v-for="(item, index) in $page.props.main_menu" :key="index"></repeat>
+                            <!-- <jet-responsive-nav-link :active="route().current(item.namespace)">
+                                {{ item.name }}
+                            </jet-responsive-nav-link> -->
+                        <!-- </template> -->
+                    </div>
                 </div>
             </nav>
 
@@ -249,8 +236,48 @@ import JetNavLink from "@/Jetstream/NavLink.vue";
 import JetResponsiveNavLink from "@/Jetstream/ResponsiveNavLink.vue";
 import { Head, Link } from "@inertiajs/inertia-vue3";
 import Flash from "@/Helpers/Flash.vue";
-import Dropdown from '@/Helpers/Partials/Navs/Dropdown.vue'
+import Dropdown from "@/Helpers/Partials/Navs/Dropdown.vue";
+import { ExternalLinkIcon } from "@heroicons/vue/outline";
 
+const Repeat = defineComponent({
+    name: "Repeat",
+    template: `
+        <div @click="toggle(item.namespace)" class=" flex w-full pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition">
+            <span class=" self-start">{{ item.name }}</span>
+        <ExternalLinkIcon @click.stop="go(item)" class="w-5 ml-10 self-end" />
+        </div>
+        <template v-if="inShowing(item.namespace) && hasItems">
+            <repeat :showing="showing" :item="child" v-for="(child, sindex) in item.children" :key="sindex"></repeat>
+        </template>
+  `,
+    components: {
+        Link,
+        ExternalLinkIcon
+    },
+    props: ["item","showing"],
+    computed: {
+        hasItems() {
+            return !!this.item.children.length;
+        },
+    },
+    methods: {
+        go(item) {
+            this.$inertia.visit(route(item.namespace));
+        },
+        toggle(id) {
+            if (!this.hasItems) return;
+            const index = this.showing.findIndex((x) => x === id);
+            if (index > -1) {
+                this.showing.splice(index, 1);
+            } else {
+                this.showing.push(id);
+            }
+        },
+        inShowing(id) {
+            return this.showing.indexOf(id) > -1;
+        },
+    },
+});
 export default defineComponent({
     props: {
         title: String,
@@ -266,7 +293,8 @@ export default defineComponent({
         JetResponsiveNavLink,
         Link,
         Flash,
-        Dropdown
+        Dropdown,
+        Repeat
     },
 
     data() {
@@ -274,11 +302,9 @@ export default defineComponent({
             showingNavigationDropdown: false,
             menu: {
                 name: "HOla menu",
-                children: [
-                    { name: "casa" },
-                    { name: "pepe", children: [{ name: "que pedo" }] },
-                ],
+                children: [{ name: "casa" }, { name: "pepe", children: [{ name: "que pedo" }] }],
             },
+            showing: [],
         };
     },
 
@@ -305,16 +331,16 @@ export default defineComponent({
 /* since nested groupes are not supported we have to use
      regular css for the nested dropdowns
   */
-[target-menu=menu] li > ul {
+[target-menu="menu"] li > ul {
     transform: translatex(100%) scale(0);
 }
-[target-menu=menu] li:hover > ul {
+[target-menu="menu"] li:hover > ul {
     transform: translatex(101%) scale(1);
 }
-[target-menu=menu] li > button svg {
+[target-menu="menu"] li > button svg {
     transform: rotate(-90deg);
 }
-[target-menu=menu] li:hover > button svg {
+[target-menu="menu"] li:hover > button svg {
     transform: rotate(-270deg);
 }
 
@@ -324,16 +350,16 @@ export default defineComponent({
   	 See https://codesandbox.io/s/tailwindcss-multilevel-dropdown-y91j7?file=/index.html
   	 for implementation with config file
   */
-[target-menu=menu] .group:hover .group-hover\:scale-100 {
+[target-menu="menu"] .group:hover .group-hover\:scale-100 {
     transform: scale(1);
 }
-[target-menu=menu] .group:hover .group-hover\:-rotate-180 {
+[target-menu="menu"] .group:hover .group-hover\:-rotate-180 {
     transform: rotate(180deg);
 }
-[target-menu=menu] .scale-0 {
+[target-menu="menu"] .scale-0 {
     transform: scale(0);
 }
-[target-menu=menu] .min-w-32 {
+[target-menu="menu"] .min-w-32 {
     min-width: 8rem;
 }
 </style>
