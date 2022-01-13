@@ -53,6 +53,9 @@ export default {
                     abono: (val) => this.format(val, "currency"),
                     saldo: (val) => this.format(val, "currency"),
                     invoice_amount: (val) => this.format(val.amount, "currency"),
+                    total_amount: (val) => this.format(val.amount, "currency"),
+                    still: (val) => this.format(val.amount, "currency"),
+                    still_to_invoce: (val) => this.format(val.amount, "currency"),
                     //date: (val) => Date.parse(val).toLocaleString()//this.format(val, 'currency'),
                 };
                 return formats[key] ? formats[key](value) : value;
@@ -62,6 +65,11 @@ export default {
                     pv[cv] = fill;
                     return pv;
                 }, {});
+            },
+        };
+        app.config.globalProperties.$s = {
+            f(v) {
+                return isNaN(v) ? 0 : v === "" ? 0 : parseFloat(v ?? 0);
             },
         };
     },
