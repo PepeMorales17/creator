@@ -1,7 +1,7 @@
 export function setupMenu(theMenu, routes, key = 'sec') {
 
     const menu = JSON.parse(JSON.stringify(theMenu));
-    console.log(routes, menu, theMenu);
+    //console.log(routes, menu, theMenu);
     routes.map(x => {
         menu[key][x.name].routeWith = route(menu[key][x.name].route, x.data);
     })
@@ -45,4 +45,32 @@ export function insertParam(key, value) {
 
     // reload page with new params
     document.location.search = params;
+}
+
+export const SetUrlParams = {
+    data() {
+        return {
+            myInterceptor: null,
+        };
+    },
+    mounted() {
+        this.myInterceptor = axios.interceptors.request.use(
+            function (config) {
+                // Do something before request is sentasd
+                if (config.url.search(route().current().split('.')[0]) > -1) {
+                    config.params = Object.fromEntries(new URLSearchParams(window.location.search).entries());
+                }
+
+                return config;
+            },
+            function (error) {
+                // Do something with request error
+                return Promise.reject(error);
+            }
+        );
+    },
+
+    unmounted() {
+        axios.interceptors.request.eject(this.myInterceptor);
+    },
 }

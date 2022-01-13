@@ -115,7 +115,7 @@ export default defineComponent({
     },
     computed: {
         aggregationSum() {
-            return this.form.reduce((pv, cv) => pv + (!!cv.total ? parseFloat(cv[this.aggregations.sum.col]) : 0), 0);
+            return this.form.reduce((pv, cv) => pv + (!!cv[this.aggregations.sum.col] ? parseFloat(cv[this.aggregations.sum.col]) : 0), 0);
         },
     },
     methods: {
@@ -192,7 +192,7 @@ export default defineComponent({
         sumw(values, row, key) {
             var signs = values.splice(-1)[0];
             const v = values.reduce((pv, cv, ind) => {
-                console.log(pv, cv, row[cv]);
+                //console.log(pv, cv, row[cv]);
                 return (/^\d+$/.test(cv) ? cv : parseFloat(signs[ind] + row[cv] || 0)) + pv;
             }, 0);
             row[key] = isNaN(v) ? 0 : v.toFixed(2);

@@ -93,7 +93,9 @@ export default defineComponent({
         layouts() {
             const { input, id } = this.getInput();
             return {
-                lsi: h("div", {}, [
+                lsi: h("div", {
+                    ['data-input-form-group']: this.input.id + '-lsi'
+                }, [
                     h(
                         "label",
                         {

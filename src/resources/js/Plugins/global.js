@@ -35,6 +35,7 @@ export default {
             formatByKey(key, value) {
                 const formats = {
                     total: (val) => this.format(val, "currency"),
+                    Total: (val) => this.format(val, "currency"),
                     unit_price: (val) => this.format(val, "currency"),
                     suma: (val) => this.format(val, "currency"),
                     amount: (val) => this.format(val, "currency"),
@@ -49,6 +50,7 @@ export default {
                     estimated: (val) => this.format(val, "number"),
                     to_estimate: (val) => this.format(val, "number"),
                     importe: (val) => this.format(val, "currency"),
+                    Importe: (val) => this.format(val, "currency"),
                     cargo: (val) => this.format(val, "currency"),
                     abono: (val) => this.format(val, "currency"),
                     saldo: (val) => this.format(val, "currency"),
