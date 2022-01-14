@@ -46,6 +46,7 @@
                         <!-- <input-group :input="input" :as="input.is" v-for="(input, index) in inputs.inputs" :key="index" v-model="form[input.key]" :form="form" :errors="form.errors" /> -->
                         <input-choose :input="input" :form="form" v-for="(input, index) in inputs.inputs" :key="index" />
                     </slot>
+                    <slot name="afterForm" :form="form"></slot>
                     <div class="flex justify-end p-4">
                         <button class="btn-pri" :disabled="form.processing" @click="store">Guardar</button>
                     </div>
@@ -58,6 +59,7 @@
                             <input-choose :input="input" :form="form" v-for="(input, index) in inputs.inputs" :key="index" />
                         </slot>
                     </slot>
+                    <slot name="afterForm" :form="form"></slot>
                     <div class="flex justify-end p-4">
                         <button class="btn-pri" :disabled="form.processing" @click="edit">Editar</button>
                     </div>
@@ -79,8 +81,8 @@
 
                         <div class="flex justify-end p-4">
                             <Link class="btn-sec m-2" as="button" :href="route(initUrl + '.edit', uris.edit ? uris.edit(item.id) : item.id)">Editar</Link>
-                            <a :href="route('pdf', { model: initUrl, id: item.id })" class="btn-org" v-if="canPrint && !customPrint">Imprimir</a>
-                            <Link class="btn-org m-2" as="button" :href="route(initUrl + '.print', item.id)" v-if="canPrint && customPrint">Imprimir</Link>
+                            <!-- <a :href="route('pdf', { model: initUrl, id: item.id })" class="btn-org" v-if="canPrint && !customPrint">Imprimir</a> -->
+                            <Link class="btn-org m-2" as="button" :href="route('print.' + initUrl, item.id)" v-if="canPrint">Imprimir</Link>
                             <Link class="btn-pri m-2" as="button" :href="route(initUrl + '.create', uris.edit ? uris.edit(item.id) : { id: item.id })" v-if="canCopy">Copiar</Link>
                         </div>
                     </slot>
@@ -105,7 +107,7 @@ export default defineComponent({
             //console.log(props.inputs, "que", form, "que", props.inputs.emptyValue, props.value);
         }
         var data_ = props.dataTable;
-        console.log(props, data_);
+        //console.log(props, data_);
         return { form, data_ };
     },
 
