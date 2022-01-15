@@ -1,15 +1,15 @@
 <template>
-    <div class="overflow-auto max-w-screen-2xl lg:h-max h-auto">
+    <div class="overflow-auto max-w-screen-2xl h-auto" :class="{'lg:h-screen':form.length > 10}">
         <template v-if="!!aggregations.paste">
             <div v-if="form.length == 0">
                 <textarea placeholder="Copia aqui ...." class="w-full" rows="1" @paste="paste"></textarea>
             </div>
         </template>
 
-        <table class="w-max table-fixed">
+        <table class="w-max">
             <thead class="sticky top-0 z-10">
-                <tr class="text-md font-semibold tracking-wide text-left text-white bg-gray-900 uppercase h-6">
-                    <th class="border-l-2 border-white sticky left-0 bg-gray-900">
+                <tr class="text-md font-semibold tracking-wide text-left text-white bg-orange-900 uppercase h-6">
+                    <th class="border-l-2 border-white sticky left-0 bg-orange-900">
                         <div class="flex items-center mx-2.5">
                             <div>Item</div>
                             <div v-if="!!canAdd">
@@ -23,12 +23,12 @@
                 </tr>
             </thead>
             <tbody class="bg-gray-100">
-                <tr v-for="(row, indexRow) in form" :key="indexRow">
+                <tr v-for="(row, indexRow) in form" :key="indexRow" :class="{'border-8': indexRow === isEditing[0]}">
                     <td
                         class="text-md text-white font-semibold w-0 p-3 text-center uppercase sticky left-0"
                         :class="{
                             'bg-gray-700': indexRow === isEditing[0],
-                            'bg-gray-900': indexRow != isEditing[0],
+                            'bg-orange-900': indexRow != isEditing[0],
                         }"
                     >
                         <div class="flex justify-evenly">
@@ -234,5 +234,9 @@ input[type="number"] {
 
 [data-col="description"] {
     width: 500px !important;
+}
+
+textarea {
+    width: 100%;
 }
 </style>
