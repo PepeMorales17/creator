@@ -15,7 +15,7 @@ class CreateCrud extends GeneratorCommand
      *
      * @var string
      */
-    protected $signature = 'create:crud {name} {folder=null} {--module=}';
+    protected $signature = 'create:crud {name} {folder=null} {--module=} {--force}';
 
     /**
      * The console command description.
