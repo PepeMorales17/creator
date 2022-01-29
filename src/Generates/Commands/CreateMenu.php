@@ -44,11 +44,11 @@ class CreateMenu extends Command
         $this->info('Se eliminara la informacion de la tabla de menus');
         $this->menus = collect([]);
 
+        DB::table('menus')->truncate();
         DB::transaction(function () {
-
-            DB::table('menus')->truncate();
-            collect(config('menus')->map(function ($route, $class) {
-                if (!is_string($route)) {
+            //dd(config('menus'));
+            collect(config('menus'))->map(function ($route, $class) {
+                if (is_string($route) || $route === null) {
                     $menu = !!$route ? $this->find($route) : null;
                     $this->menus->push(...$class::menu($menu ? $menu->id : null));
                 }
@@ -57,7 +57,7 @@ class CreateMenu extends Command
                     $this->menus->push(Menu::create($route));
                 }
 
-            }));
+            });
         });
         $this->info('Se crearon los menus');
         $this->call('cache:clear');
