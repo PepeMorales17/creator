@@ -4,6 +4,7 @@ namespace Pp\Creator;
 
 
 use Illuminate\Support\ServiceProvider;
+use Pp\Creator\Generates\Commands\CreateMenu;
 use Pp\Creator\Generates\Commands\CreatorInit;
 use Pp\Creator\Generates\Commands\Crud\CreateAll;
 use Pp\Creator\Generates\Commands\Crud\CreateController;
@@ -49,6 +50,7 @@ class CreatorServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 CreatorInit::class,
+                CreateMenu::class,
                 CreateAll::class,
                 CreateController::class,
                 CreateCreator::class,
