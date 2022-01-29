@@ -69,4 +69,5 @@ class CreatorServiceProvider extends ServiceProvider
     //         "Pp\\Trades\\": "Modules\\TradesModule\\src"
     //     }
     // },
+    // git add src/; git commit -m "second commit";git push -u origin main
 }

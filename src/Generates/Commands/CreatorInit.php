@@ -42,7 +42,7 @@ class CreatorInit extends Command
         $this->allowMigrationSubFolders();
         $this->info('Publicando...');
         $this->call('vendor:publish', [
-            '--tag' => 'pp-creator-js',
+            '--tag' => 'pp-creator',
             '--force' => true
         ]);
         $this->info('Run npm install @heroicons/vue');
