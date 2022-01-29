@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\DB;
 
 class {{name:plural}}Crud extends Crud
 {
+
+    // protected $optional = true;
+
     public function run()
     {
         return [
