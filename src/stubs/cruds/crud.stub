@@ -26,16 +26,16 @@ class {{name:plural}}Crud extends Crud
     {
         return DB::transaction(function () use($parent){
             $index = Menu::create([
-                "name" => "{{singular}}",
+                "name" => "{{1}}",
                 "icon" => "",
-                "description" => "Todos los {{plural}}",
+                "description" => "Todos los {{2}}",
                 "namespace" => "{{name}}.index",
                 "parent_id" => $parent,
             ]);
             $form = Menu::create([
-                "name" => "Crear {{singular}}",
+                "name" => "Crear {{1}}",
                 "icon" => "",
-                "description" => "Crear {{singular}}",
+                "description" => "Crear {{1}}",
                 "namespace" => "{{name}}.create",
                 "parent_id" => $index->id,
             ]);
@@ -46,8 +46,8 @@ class {{name:plural}}Crud extends Crud
 
     const MENUS = [
             'crud' => [
-                '{{name}}.index' => ['name' => 'Lista', 'route' => '{{name}}.index', 'title' => 'Listado de {{plural}}'],
-                '{{name}}.create' => ['name' => 'Crear', 'route' => '{{name}}.create', 'title' => 'Crear {{singular}}'],
+                '{{name}}.index' => ['name' => 'Lista', 'route' => '{{name}}.index', 'title' => 'Listado de {{2}}'],
+                '{{name}}.create' => ['name' => 'Crear', 'route' => '{{name}}.create', 'title' => 'Crear {{1}}'],
             ]
     ];
 
