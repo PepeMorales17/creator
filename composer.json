@@ -4,7 +4,7 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "spatie/laravel-medialibrary": "9.9.1"
+        "spatie/laravel-medialibrary": "9.0.0"
 
     },
     "autoload": {
