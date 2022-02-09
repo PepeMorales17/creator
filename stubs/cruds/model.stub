@@ -1,0 +1,43 @@
+<?php
+
+namespace {{namespace}};
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+{{namespaces}}
+
+class {{name}} extends Model
+{
+    use HasFactory;
+
+    protected $table = '{{table}}';
+
+    protected $fillable = {{fillable}};
+
+    protected $hidden = {{hidden}};
+
+    const SELECTS = {{selects}};
+
+    // // boot
+
+    // protected static function booted()
+    // {
+    //     static::deleting(function (${{name}}) {
+    //          return true;
+    //     });
+    // }
+
+    const STOP_DELETE_MSG = 'No puedes borrar ';
+
+    // Scopes
+
+    public function scopeView($query) {
+        $query->select(...self::SELECTS);
+    }
+
+    // Relaciones
+
+    {{relations}}
+
+}

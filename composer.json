@@ -3,6 +3,10 @@
     "description": "Crea archivos y es la base de los modulos",
     "type": "library",
     "license": "MIT",
+    "require": {
+        "spatie/laravel-medialibrary": "9.9.1"
+
+    },
     "autoload": {
         "psr-4": {
             "Pp\\Creator\\": "src/"
@@ -15,7 +19,6 @@
         }
     ],
     "minimum-stability": "dev",
-    "require": {},
     "extra": {
         "laravel": {
             "providers": [

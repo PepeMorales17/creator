@@ -1,0 +1,66 @@
+<?php
+
+namespace Pp\CreatorCommands\Crud;
+
+use Pp\Creator\Commands\Traits\BaseTrait;
+use Illuminate\Console\GeneratorCommand;
+use Illuminate\Support\Str;
+
+class Create{{namea}} extends GeneratorCommand
+{
+    use BaseTrait;
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'create:{{command}} {name} {folder}';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Crea un archivo {{namea}}';
+
+    protected $type = '{{namea}}';
+
+    private $myPath = "";
+    private $stubDir = 'Modules\stubs\cruds\{{stub}}.stub';
+    private $extension = 'php';
+
+
+    /**
+     * Execute the console command.
+     *
+     * @return int
+     */
+    public function handle()
+    {
+        if (parent::handle() === false && !$this->option('force')) {
+            return;
+        }
+        return 0;
+    }
+
+    /**
+     * Build the class with the given name.
+     *
+     * @param  string  $name
+     * @return string
+     */
+    protected function buildClass($name)
+    {
+        $class = parent::buildClass($name);
+        $class = str_replace('{{namespace}}', $this->rootNamespace(), $class);
+        $class = str_replace('{{name}}', Str::studly($this->argument('name')), $class);
+
+        return $class;
+    }
+
+    public function fileName()
+    {
+        // return date('Y_m_d_His') . '_create_' . $this->argument('name') . '_table.php';
+
+    }
+}

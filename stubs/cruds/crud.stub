@@ -1,0 +1,75 @@
+<?php
+
+namespace {{namespace}};
+
+use Pp\Creator\Crud;
+use Pp\Creator\Models\Menu;
+use Illuminate\Support\Facades\DB;
+
+class {{name:plural}}Crud extends Crud
+{
+
+    // protected $optional = true;
+    protected $hasFiles = false;
+
+    public function run()
+    {
+        return [
+            'migration' => true,
+            'model' => true,
+            'form' => true,
+            'controller' => true,
+            'crud_vue' => true,
+        ];
+    }
+
+    public static function menu($parent = null)
+    {
+        return DB::transaction(function () use($parent){
+            $index = Menu::create([
+                "name" => "{{1}}",
+                "icon" => "",
+                "description" => "Todos los {{2}}",
+                "namespace" => "{{name}}.index",
+                "parent_id" => $parent,
+            ]);
+            $form = Menu::create([
+                "name" => "Crear {{1}}",
+                "icon" => "",
+                "description" => "Crear {{1}}",
+                "namespace" => "{{name}}.create",
+                "parent_id" => $index->id,
+            ]);
+            return [$index, $form];
+        });
+
+    }
+
+    const MENUS = [
+            'crud' => [
+                '{{name}}.index' => ['name' => 'Lista', 'route' => '{{name}}.index', 'title' => 'Listado de {{2}}'],
+                '{{name}}.create' => ['name' => 'Crear', 'route' => '{{name}}.create', 'title' => 'Crear {{1}}'],
+            ]
+    ];
+
+    public function attrs()
+    {
+
+        return [
+            $this->attr('id', 'id'),
+        ];
+    }
+
+    protected function externalRelations()
+    {
+        return [
+
+        ];
+    }
+
+    public function addTablesBeforeMigrate()
+    {
+        return [
+        ];
+    }
+}

@@ -1,0 +1,42 @@
+<?php
+
+namespace {{namespace}};
+
+use Pp\Creator\Traits\Inputs\InputTrait;
+use Illuminate\Support\Facades\Validator;
+
+
+class Create{{name}}Form
+{
+    use InputTrait;
+
+
+    public function getFormWithEmptyValue()
+    {
+        $inputs = {{inputs}};
+        $empty = array_fill_keys(collect($inputs)->pluck(0)->toArray(), null);
+
+        return [
+            'inputs' => $this->array_inputs($inputs),
+            'emptyValue' => $empty
+        ];
+    }
+
+    public function getFormToEditWithEmptyValue()
+    {
+        $inputs = $this->getFormWithEmptyValue();
+
+        return $inputs;
+    }
+
+    public function validate(array $data)
+    {
+         return Validator::make($data,self::rules())->validated();
+    }
+
+    public static function rules() {
+        return [
+            {{validations}}
+        ];
+    }
+}
