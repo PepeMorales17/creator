@@ -1,0 +1,26 @@
+{
+    "name": "ppjmorales/creator2",
+    "description": "Crea archivos y es la base de los modulos",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Pp\\Creator\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Pp Morales",
+            "email": "ppjmorales@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Pp\\Creator\\CreatorServiceProvider"
+            ]
+        }
+    }
+}
