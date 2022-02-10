@@ -1,6 +1,6 @@
 <?php
 
-namespace Pp\Creator\Helpers\Crud;
+namespace Pp\Creator\Helpers;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
