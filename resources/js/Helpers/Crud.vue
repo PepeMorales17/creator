@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-white rounded-lg relative">
+    <div class=" rounded-lg relative">
         <div class="w-full lg:m-auto lg:w-10/12">
             <nav-links :menu="menu" />
             <h1 class="text-lg font-bold p-5" v-if="!!title">{{ title }}</h1>
@@ -97,7 +97,7 @@ import { defineAsyncComponent, defineComponent } from "vue";
 import { Link } from "@inertiajs/inertia-vue3";
 import { useForm } from "@inertiajs/inertia-vue3";
 import NavLinks from "./Partials/Navs/NavLinks.vue";
-import JetValidationErrors from "@/Jetstream/ValidationErrors.vue";
+import JetValidationErrors from "@/Components/ValidationErrors.vue";
 
 export default defineComponent({
     setup(props) {

@@ -11,7 +11,7 @@ defineProps({
         <img
             alt="GrupoTermo"
             class="w-6"
-            src="storage/images/logo.svg"
+            :src="'/storage/images/logo.svg'"
         />
         <span class="text-white text-lg ml-3" v-if="withText"> GrupoTermo </span>
     </Link>

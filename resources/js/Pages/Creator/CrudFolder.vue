@@ -1,0 +1,24 @@
+<template>
+    <app-layout>
+        <crud
+            :menu="menu.crud"
+            :dataTable="dataTable"
+            :inputs="inputs"
+            :item="item"
+            :value="item"
+        >
+        </crud>
+    </app-layout>
+</template>
+
+<script setup>
+import Crud from "@/Helpers/Crud.vue";
+import AppLayout from "@/Layouts/Authenticated.vue";
+
+defineProps({
+    menu: Object,
+    dataTable: Object,
+    inputs: Object,
+    item: Object,
+});
+</script>

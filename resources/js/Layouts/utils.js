@@ -2,32 +2,32 @@ import dom from "@left4code/tw-starter/dist/js/dom";
 import { ref } from "vue";
 
 // Setup side menu
-const findActiveMenu = (subMenu, route) => {
+const findActiveMenu = (subMenu) => {
   let match = false;
   subMenu.forEach((item) => {
-    if (item.pageName === route.name && !item.ignore) {
+    if (item.namespace.split('.')[0] === route().current().split('.')[0] && !item.ignore) {
       match = true;
     } else if (!match && item.subMenu) {
-      match = findActiveMenu(item.subMenu, route);
+      match = findActiveMenu(item.subMenu);
     }
   });
   return match;
 };
 
-const nestedMenu = (menu, route) => {
+const nestedMenu = (menu) => {
   menu.forEach((item, key) => {
     if (typeof item !== "string") {
       let menuItem = menu[key];
       menuItem.active =
-        (item.pageName === route.name ||
-          (item.subMenu && findActiveMenu(item.subMenu, route))) &&
+        (item.namespace.split('.')[0] === route().current().split('.')[0] ||
+          (item.subMenu && findActiveMenu(item.subMenu))) &&
         !item.ignore;
 
       if (item.subMenu) {
-        menuItem.activeDropdown = findActiveMenu(item.subMenu, route);
+        menuItem.activeDropdown = findActiveMenu(item.subMenu);
         menuItem = {
           ...item,
-          ...nestedMenu(item.subMenu, route),
+          ...nestedMenu(item.subMenu),
         };
       }
     }

@@ -42,7 +42,9 @@
 
 <script>
 import { defineComponent } from "vue";
-import { EyeIcon, PencilIcon, TrashIcon } from "@heroicons/vue/solid";
+import EyeIcon from "@zhuowenli/vue-feather-icons/icons//EyeIcon";
+import PencilIcon from "@zhuowenli/vue-feather-icons/icons//PenToolIcon";
+import TrashIcon from "@zhuowenli/vue-feather-icons/icons//TrashIcon";
 
 export const BaseTd = defineComponent({
     template:  `

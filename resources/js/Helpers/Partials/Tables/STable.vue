@@ -14,7 +14,7 @@
                 >
                     <BaseTd id="action-td" v-if="!!$attrs.onEdit || !!$attrs.onDelete || !!$attrs.onView || !!$slots.edit" class="px-6 py-4 text-right text-sm font-medium flex">
                         <slot name="edit" :item="d">
-                            <PencilIcon @click.stop="$emit('edit', d)" v-if="!!$attrs.onEdit" class="cursor-pointer w-5 h-5 m-auto" />
+                            <EditIcon @click.stop="$emit('edit', d)" v-if="!!$attrs.onEdit" class="cursor-pointer w-5 h-5 m-auto" />
                         </slot>
                         <EyeIcon @click.stop="$emit('view', d)" v-if="!!$attrs.onView" class="cursor-pointer w-5 h-5 m-auto" />
                         <TrashIcon @click.stop="$emit('trash', d)" v-if="!!$attrs.onTrash" class="cursor-pointer w-5 h-5 m-auto" />
@@ -46,13 +46,15 @@ export const TableHelper = {
 };
 import { defineComponent, reactive } from "vue";
 
-import { EyeIcon, PencilIcon, TrashIcon } from "@heroicons/vue/solid";
+import EyeIcon from "@zhuowenli/vue-feather-icons/icons//EyeIcon";
+import {EditIcon} from "@zhuowenli/vue-feather-icons/dist/vue-feather-icons.cjs";
+import TrashIcon from "@zhuowenli/vue-feather-icons/icons//TrashIcon";
 import BaseTable, { BaseTd } from "@/Helpers/Partials/Tables/BaseTable.vue";
 
 export default defineComponent({
     name: "Stable",
     components: {
-        PencilIcon,
+        EditIcon,
         EyeIcon,
         TrashIcon,
         BaseTable,

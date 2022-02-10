@@ -76,7 +76,8 @@
 
 <script>
 import { defineComponent } from "vue";
-import { TrashIcon, PlusCircleIcon } from "@heroicons/vue/solid";
+import TrashIcon from "@zhuowenli/vue-feather-icons/icons//TrashIcon";
+import PlusCircleIcon from "@zhuowenli/vue-feather-icons/icons//PlusCircleIcon";
 import InputGroup from "./InputGroup.vue";
 
 export default defineComponent({

@@ -1,37 +1,23 @@
+
+
 <script setup>
 import { computed, onMounted, ref, watch } from "vue";
 import { helper as $h } from "@/utils/helper";
-import { Link } from '@inertiajs/inertia-vue3';
+import { Link } from "@inertiajs/inertia-vue3";
+import TheMenu  from "@/Helpers/Menu.vue";
 
 import ToggleRightIcon from "@zhuowenli/vue-feather-icons/icons/ToggleRightIcon";
-import MobileMenu from "@/components/template/mobile-menu/Main";
+import ChevronDownIcon from "@zhuowenli/vue-feather-icons/icons/ChevronDownIcon";
+import MobileMenu from "@/Helpers/MobilMenu.vue";
 import Logo from "@/Helpers/Logo";
 // import DarkModeSwitcher from "@/components/dark-mode-switcher/Main.vue";
 // import MainColorSwitcher from "@/components/main-color-switcher/Main.vue";
 
-import {
-    nestedMenu,
-    linkTo,
-    searchDropdown,
-    showSearchDropdown,
-    hideSearchDropdown,
-} from "./utils";
 import dom from "@left4code/tw-starter/dist/js/dom";
-
-const formattedMenu = ref([]);
-//const topMenuStore = useTopMenuStore();
-//const topMenu = computed(() => nestedMenu(topMenuStore.menu, route));
-
-// watch(
-//     computed(() => route.path),
-//     () => {
-//         formattedMenu.value = $h.toRaw(topMenu.value);
-//     }
-// );
 
 onMounted(() => {
     dom("body").removeClass("error-page").removeClass("login").addClass("main");
-    //formattedMenu.value = $h.toRaw(topMenu.value);
+
 });
 </script>
 
@@ -39,7 +25,7 @@ onMounted(() => {
     <div class="py-2">
         <!-- <DarkModeSwitcher />
     <MainColorSwitcher /> -->
-        <MobileMenu />
+        <MobileMenu :menus="$page.props.main_menu" />
         <!-- BEGIN: Top Bar -->
         <div
             class="border-b border-white/[0.08] -mt-10 md:-mt-5 -mx-3 sm:-mx-8 px-3 sm:px-8 pt-3 md:pt-0 mb-10"
@@ -238,10 +224,7 @@ onMounted(() => {
                         aria-expanded="false"
                         data-tw-toggle="dropdown"
                     >
-                        <img
-                            alt="avatar"
-                            src="storage/images/avatar.svg"
-                        />
+                        <img alt="avatar" src="/storage/images/avatar.svg" />
                     </div>
                     <div class="dropdown-menu w-56">
                         <ul
@@ -305,7 +288,7 @@ onMounted(() => {
                                 <Link
                                     :href="route('logout')"
                                     as="button"
-                                     method="post"
+                                    method="post"
                                     class="dropdown-item hover:bg-white/5"
                                 >
                                     <ToggleRightIcon class="w-4 h-4 mr-2" />
@@ -321,12 +304,38 @@ onMounted(() => {
         <!-- END: Top Bar -->
         <!-- BEGIN: Top Menu -->
         <nav class="top-nav">
+            <TheMenu :menus="$page.props.main_menu"></TheMenu>
+            <!-- <ul>
+                <li
+                    v-for="(menu, menuKey) in formattedMenu"
+                    :key="menuKey"
+                >
+                    <Link
+                        :href="route(menu.namespace)"
+                        class="top-menu"
+                        :class="{
+                            'top-menu--active': menu.active,
+                        }"
+                    >
+                        <div class="top-menu__icon">
+                            <component :is="menu.icon" v-if="!!menu.icon" />
+                        </div>
+                        <div class="top-menu__title">
+                            {{ menu.name }}
+                            <ChevronDownIcon
+                                v-if="menu.children.length"
+                                class="top-menu__sub-icon"
+                            />
+                        </div>
+                    </Link>
 
+                </li>
+            </ul> -->
         </nav>
         <!-- END: Top Menu -->
         <!-- BEGIN: Content -->
         <div class="content">
-             <slot />
+            <slot />
         </div>
         <!-- END: Content -->
     </div>
