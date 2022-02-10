@@ -16,5 +16,5 @@ Route::controller(FolderController::class)->prefix('folder')->name('folder.')->g
 
 Route::resources([
     'menu' => MenuController::class,
-    //'folder'  => FolderController::class,
+    'folder'  => FolderController::class,
 ]);
