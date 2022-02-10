@@ -5,7 +5,7 @@ use Pp\Creator\Http\Controllers\FolderController;
 use Pp\Creator\Http\Controllers\MenuController;
 
 
-Route::controller('Pp\Creator\Http\Controllers\FolderController')->prefix('folder')->name('folder.')->group(function () {
+Route::controller(FolderController::class)->prefix('folder')->name('folder.')->group(function () {
     Route::get('main', 'tree')->name('main');
     Route::get('download/{id}', 'download')->name('download');
     Route::get('model/{table}/{id}', 'modelFiles')->name('model');
