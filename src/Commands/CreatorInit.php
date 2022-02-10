@@ -46,6 +46,7 @@ class CreatorInit extends Command
             '--force' => true
         ]);
         $this->warn('Para que la template funcione: npm i @ppjmorales/creator_template');
+        $this->warn('Tambien agrega a Packege.json: "postcss-advanced-variables": "^3.0.1"');
         $this->warn('file manager:
         composer require "spatie/laravel-medialibrary:^9.9.1"; php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="migrations";
         php artisan migrate; php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="config";');
@@ -110,7 +111,7 @@ class CreatorInit extends Command
             return;
         }
         $file = file_get_contents($dir);
-        $file .= '\r\n import "./libs";';
+        $file .= 'import "./libs";';
         file_put_contents($dir, $file);
         $this->info($dir.' Publicado');
     }
