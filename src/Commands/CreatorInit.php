@@ -39,6 +39,7 @@ class CreatorInit extends Command
     {
         $this->configInertiaProps();
         $this->configBootstrapJs();
+        $this->configAppJs();
         $this->allowMigrationSubFolders();
         $this->info('Publicando...');
         $this->call('vendor:publish', [
@@ -115,6 +116,22 @@ class CreatorInit extends Command
         }
         $file = file_get_contents($dir);
         $file .= 'import "./libs";';
+        file_put_contents($dir, $file);
+        $this->info($dir.' Publicado');
+    }
+
+    public function configAppJs()
+    {
+        $dir = base_path('resources\js\app.js');
+        if (!file_exists($dir)) {
+            $this->error('El arhivo resources\js\app.js no existe checa si lo tienes instalado.');
+            return;
+        }
+        $file = file_get_contents($dir);
+        $file = str_replace("import { InertiaProgress } from '@inertiajs/progress';", "import { InertiaProgress } from '@inertiajs/progress';
+        import global from './Plugins/global';", $file);
+        $file = str_replace(".use(plugin)", ".use(plugin)
+        .use(global)", $file);
         file_put_contents($dir, $file);
         $this->info($dir.' Publicado');
     }
