@@ -38,7 +38,7 @@ class CreatorInit extends Command
     public function handle()
     {
         $this->configInertiaProps();
-        $this->configAppJs();
+        $this->configBootstrapJs();
         $this->allowMigrationSubFolders();
         $this->info('Publicando...');
         $this->call('vendor:publish', [
@@ -96,24 +96,21 @@ class CreatorInit extends Command
             "error" => $request->session()->get("error"),
         ];
     },
-    "title" => Str::studly(str_replace(".", "_", $request->route()->getName()))
+    "title" => Str::studly(str_replace(".", "_", $request->route()->getName())),
     ', $file);
         file_put_contents($dir, $file);
         $this->info($dir.' Publicado');
     }
 
-    public function configAppJs()
+    public function configBootstrapJs()
     {
-        $dir = base_path('resources\js\app.js');
+        $dir = base_path('resources\js\bootstrap.js');
         if (!file_exists($dir)) {
-            $this->error('El arhivo resources\js\app.js no existe checa si lo tienes instalado.');
+            $this->error('El arhivo resources\js\bootstrap.js no existe checa si lo tienes instalado.');
             return;
         }
         $file = file_get_contents($dir);
-        $file = str_replace("import { InertiaProgress } from '@inertiajs/progress';", "import { InertiaProgress } from '@inertiajs/progress';
-        import global from './Plugins/global';", $file);
-        $file = str_replace(".use(plugin)", ".use(plugin)
-        .use(global)", $file);
+        $file .= '\r\n import "./libs";';
         file_put_contents($dir, $file);
         $this->info($dir.' Publicado');
     }
