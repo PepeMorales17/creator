@@ -11,7 +11,7 @@ Route::controller(FolderController::class)->prefix('folder')->name('folder.')->g
     Route::get('model/{table}/{id}', 'modelFiles')->name('model');
     Route::get('files/{id}','folderFiles')->name('files');
     Route::post('upload','upload')->name('upload');
-    Route::post('deleteFile/{id}','deleteFile')->name('delete_file')->query;
+    Route::post('deleteFile/{id}','deleteFile')->name('delete_file');
 });
 
 Route::resources([
