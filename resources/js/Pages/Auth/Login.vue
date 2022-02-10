@@ -23,6 +23,8 @@ const form = useForm({
 const submit = () => {
     form.post(route("login"), {
         onFinish: () => form.reset("password"),
+        preserveState: true,
+        preserveScroll: true,
     });
 };
 </script>
@@ -66,15 +68,6 @@ const submit = () => {
                 </div>
                 <!-- END: Login Info -->
 
-                <BreezeValidationErrors class="mb-4" />
-
-                <div
-                    v-if="status"
-                    class="mb-4 font-medium text-sm text-green-600"
-                >
-                    {{ status }}
-                </div>
-
                 <!-- BEGIN: Login Form -->
                 <div class="h-screen xl:h-auto flex py-5 xl:py-0 my-10 xl:my-0">
                     <div
@@ -85,6 +78,14 @@ const submit = () => {
                         >
                             Iniciar sesion
                         </h2>
+                        <BreezeValidationErrors class="mb-4" />
+
+                        <div
+                            v-if="status"
+                            class="mb-4 font-medium text-sm text-green-600"
+                        >
+                            {{ status }}
+                        </div>
                         <div
                             class="intro-x mt-2 text-slate-400 xl:hidden text-center"
                         >
@@ -133,7 +134,6 @@ const submit = () => {
                             >
                                 Forgot your password?
                             </Link>
-
                         </div>
                         <div
                             class="intro-x mt-5 xl:mt-8 text-center xl:text-left"

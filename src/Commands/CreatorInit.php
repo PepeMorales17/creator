@@ -54,6 +54,7 @@ class CreatorInit extends Command
         //Si agrego para que use archivos tengo que hacer el comando para que copie la configuracion que voy a usar ademas tengo que agregar un tabla de folders
         // agregar las rutas
         $this->call('storage:link');
+        $this->info('No olvides cambiar la ulr de ENV para que funcione el storage');
         return 0;
     }
 
