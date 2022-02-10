@@ -16,5 +16,5 @@ Route::controller('Pp\Creator\Http\Controllers\FolderController')->prefix('folde
 
 Route::resources([
     'menu' => MenuController::class,
-    'folder'  => FolderController::class,
+    //'folder'  => FolderController::class,
 ]);
