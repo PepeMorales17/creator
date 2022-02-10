@@ -46,6 +46,7 @@ class CreatorServiceProvider extends ServiceProvider
             //__DIR__.'/resources/js/Layouts/Authenticated.vue' => base_path('/../resources\js\Layouts\AppLayout.vue'),
             //__DIR__.'/resources/css' => base_path('resources\css'),
             __DIR__.'/../resources/main' => base_path(''),
+            __DIR__.'/../storage' => base_path('storage'),
             __DIR__.'/../config/menus.php' => config_path('menus.php'),
             __DIR__.'/../config/creator.php' => config_path('creator.php'),
         ], 'pp-creator');
