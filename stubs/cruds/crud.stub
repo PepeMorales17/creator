@@ -10,7 +10,7 @@ class {{name:plural}}Crud extends Crud
 {
 
     // protected $optional = true;
-    protected $hasFiles = false;
+    public $hasFiles = false;
 
     public function run()
     {

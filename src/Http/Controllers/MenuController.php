@@ -15,7 +15,13 @@ class MenuController extends Controller
 
     protected $view = 'Creator/CrudMenu';
     protected $redirect_route = 'menu.index';
-    protected $form;
+    protected $type = 'Creator';
+    protected $folder = 'Creator';
+
+    public function form()
+    {
+        return new CreateMenuForm();
+    }
 
     public function menu()
     {
@@ -27,12 +33,11 @@ class MenuController extends Controller
         ];
     }
 
+
     public function __construct()
     {
 
         $this->middleware('web');
-        $this->middleware('Laravel\Jetstream\Http\Middleware\ShareInertiaData');
-        $this->form = new CreateMenuForm();
     }
 
     public function index()
@@ -43,7 +48,7 @@ class MenuController extends Controller
 
     public function store(Request $request)
     {
-        $data = $this->form->validate($request->all());
+        $data = $this->form()->validate($request->all());
 
         DB::transaction(function () use ($data) {
             Menu::create($data);
@@ -60,12 +65,12 @@ class MenuController extends Controller
 
     public function edit(Menu $menu)
     {
-        return $this->justEdit($this->form->getFormToEditWithEmptyValue(), $menu);
+        return $this->justEdit($this->form()->getFormToEditWithEmptyValue(), $menu);
     }
 
     public function update(Request $request, Menu $menu)
     {
-        $data = $this->form->validate($request->all());
+        $data = $this->form()->validate($request->all());
         DB::transaction(function () use ($data, $menu) {
             $menu->update($data);
         });

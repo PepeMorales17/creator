@@ -16,14 +16,31 @@ class FolderController extends Controller
 {
     use CrudTrait;
 
-    protected $view = 'File/CrudFolder';
+    protected $view = 'Creator/CrudMenu';
     protected $redirect_route = 'folder.index';
-    protected $type = 'Folders';
-    protected $folder = 'File';
+    protected $type = 'Creator';
+    protected $folder = 'Creator';
+
+    public function __construct()
+    {
+
+        $this->middleware('web');
+    }
+
 
     public function form()
     {
         return new CreateFolderForm();
+    }
+
+    public function menu()
+    {
+        return [
+            'crud' => [
+                'folder.index' => ['name' => 'Lista', 'route' => 'folder.index', 'title' => 'Listado de carpertas'],
+                'folder.create' => ['name' => 'Crear', 'route' => 'folder.create', 'title' => 'Crear carperta'],
+            ]
+        ];
     }
 
     public function index()

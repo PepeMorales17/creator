@@ -2,7 +2,7 @@
 
 namespace Pp\Creator\Models;
 
-use App\Models\MediaModel;
+use Pp\Creator\Models\MediaModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Folder extends MediaModel
