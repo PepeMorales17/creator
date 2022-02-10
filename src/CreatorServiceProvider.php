@@ -6,15 +6,16 @@ namespace Pp\Creator;
 use Illuminate\Support\ServiceProvider;
 use Pp\Creator\Commands\CreateMenu;
 use Pp\Creator\Commands\CreatorInit;
-use Pp\Creator\Commands\Crud\CreateAll;
-use Pp\Creator\Commands\Crud\CreateController;
-use Pp\Creator\Commands\Crud\CreateCreator;
-use Pp\Creator\Commands\Crud\CreateCrud;
-use Pp\Creator\Commands\Crud\CreateCrudVue;
-use Pp\Creator\Commands\Crud\CreateForm;
-use Pp\Creator\Commands\Crud\CreateMigration;
-use Pp\Creator\Commands\Crud\CreateModel;
+
+use Pp\Creator\Commands\Generates\Crud\CreateController;
+use Pp\Creator\Commands\Generates\Crud\CreateCreator;
+use Pp\Creator\Commands\Generates\Crud\CreateCrud;
+use Pp\Creator\Commands\Generates\Crud\CreateCrudVue;
+use Pp\Creator\Commands\Generates\Crud\CreateForm;
+use Pp\Creator\Commands\Generates\Crud\CreateMigration;
+use Pp\Creator\Commands\Generates\Crud\CreateModel;
 use Pp\Creator\Commands\DbFresh;
+use Pp\Creator\Commands\Generates\Crud\CreateAll;
 
 class CreatorServiceProvider extends ServiceProvider
 {
