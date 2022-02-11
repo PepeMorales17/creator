@@ -2,7 +2,7 @@
 
 namespace {{namespace}};
 
-use Pp\Creator\Crud;
+use Pp\Creator\Helpers\Crud;
 use Pp\Creator\Models\Menu;
 use Illuminate\Support\Facades\DB;
 
