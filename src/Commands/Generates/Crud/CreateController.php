@@ -68,6 +68,7 @@ class CreateController extends GeneratorCommand
         $class = str_replace('{{folder}}', $this->folder(), $class);
         $this->createMenu();
         $this->updateRoute();
+        $this->updateMenu();
         return $class;
     }
 
