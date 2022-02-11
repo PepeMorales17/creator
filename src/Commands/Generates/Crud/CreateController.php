@@ -69,6 +69,8 @@ class CreateController extends GeneratorCommand
         $this->createMenu();
         $this->updateRoute();
         $this->updateMenu();
+
+        $this->call('create:menu');
         return $class;
     }
 
