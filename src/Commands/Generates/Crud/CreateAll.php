@@ -52,8 +52,7 @@ class CreateAll extends Command
         //$this->info('Dumping autoloads...');
         //$this->composer->dumpAutoloads();
         $this->info('Creados todos exitosamente'.($this->option('module') ? ' en modulo '.$this->option('module') : ''));
-        sleep(4);
-        $this->call('create:menu');
+        $this->warn('Run: php artisan create:menu');
 
         return 0;
     }
