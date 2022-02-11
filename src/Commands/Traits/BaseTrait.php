@@ -20,9 +20,9 @@ trait BaseTrait
 
     private function getCrudClass()
     {
-        $class = $this->getCrudNamespace();
+        $class = $this->getCrudNamespaceFromCreator();
         if (!class_exists($class)) {
-            $class = 'App\Creator\Cruds\\'.($this->folder() ? $this->folder()."\\" : null ) . Str::studly($this->getTable()) . 'Crud';
+            $class = $this->getCrudNamespaceFromApp();
         }
         if(!class_exists($class)){
             throw new \Exception('CrudClass not found');
@@ -30,9 +30,14 @@ trait BaseTrait
         return new $class();
     }
 
-    public function getCrudNamespace()
+    public function getCrudNamespaceFromCreator()
     {
         return 'Pp\Creator\Cruds\\'.($this->folder() ? $this->folder()."\\" : null ) . Str::studly($this->getTable()) . 'Crud';
+    }
+
+    public function getCrudNamespaceFromApp()
+    {
+        return 'App\Creator\Cruds\\'.($this->folder() ? $this->folder()."\\" : null ) . Str::studly($this->getTable()) . 'Crud';
     }
 
     public function getTable()
