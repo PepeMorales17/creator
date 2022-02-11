@@ -139,9 +139,12 @@ class CreateController extends GeneratorCommand
 
         $find = '];';
 
-        $file = str_replace($find, "'".$this->getCrudNamespaceFromApp()."' => '', \r\n $find", $file);
+        if (strpos($file, $this->getCrudNamespaceFromApp()) === false) {
+            $file = str_replace($find, "'".$this->getCrudNamespaceFromApp()."' => '', \r\n $find", $file);
+            file_put_contents($dir, $file);
+        }
 
-        file_put_contents($dir, $file);
+
         $this->info("Se agrego el menu");
     }
 }
