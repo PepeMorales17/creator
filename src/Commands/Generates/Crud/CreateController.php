@@ -70,7 +70,6 @@ class CreateController extends GeneratorCommand
         $this->updateRoute();
         $this->updateMenu();
 
-        $this->call('create:menu');
         return $class;
     }
 
