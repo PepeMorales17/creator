@@ -1,20 +1,24 @@
 <template>
     <app-layout>
-        <crud :menu="menu.crud" :dataTable="dataTable" :inputs="inputs" :item="item" :value="item">
+        <crud
+            :menu="menu.crud"
+            :dataTable="dataTable"
+            :inputs="inputs"
+            :item="item"
+            :value="item"
+        >
         </crud>
     </app-layout>
 </template>
 
-<script>
+<script setup>
 import Crud from "@/Helpers/Crud.vue";
-import AppLayout from "@/Layouts/AppLayout.vue";
-import { defineComponent } from "vue";
+import AppLayout from "@/Layouts/Authenticated.vue";
 
-export default defineComponent({
-
-    components: { Crud, AppLayout },
-
-    props: ["menu", "dataTable", "inputs", "item"],
-
+defineProps({
+    menu: Object,
+    dataTable: Object,
+    inputs: Object,
+    item: Object,
 });
 </script>
