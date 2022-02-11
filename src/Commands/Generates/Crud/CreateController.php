@@ -125,4 +125,21 @@ class CreateController extends GeneratorCommand
         return "Route::resources([
         ]);// Final de los controladores */";
     }
+
+    public function updateMenu()
+    {
+        $dir = config_path('menus.php');
+        if (!file_exists($dir)) {
+            $this->error("El arhivo $dir no existe.");
+            return;
+        }
+        $file = file_get_contents($dir);
+
+        $find = '];';
+
+        $file = str_replace($find, $this->getCrudNamespace()." => '', \r\n $find", $file);
+
+        file_put_contents($dir, $file);
+        $this->info("Se agrego el menu");
+    }
 }

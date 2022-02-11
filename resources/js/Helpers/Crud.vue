@@ -1,5 +1,5 @@
 <template>
-    <div class=" rounded-lg relative">
+    <div class="rounded-lg relative">
         <div class="w-full lg:m-auto lg:w-10/12">
             <nav-links :menu="menu" />
             <h1 class="text-lg font-bold p-5" v-if="!!title">{{ title }}</h1>
@@ -22,21 +22,20 @@
                             </filter-pag>
                         </template>
                         <template v-else>
-
-                        <s-table
-                            v-if="!!dataTable.data"
-                            :data="dataTable.data"
-                            @view="$inertia.visit(route(initUrl + '.show', uris.show ? uris.show($event.id) : $event.id), { preserveState: false })"
-                            @edit="$inertia.visit(route(initUrl + '.edit', uris.edit ? uris.edit($event.id) : $event.id), { preserveState: false })"
-                            @trash="trash($event.id)"
-                        />
-                        <s-table
-                            v-else
-                            :data="dataTable"
-                            @view="$inertia.visit(route(initUrl + '.show', uris.show ? uris.show($event.id) : $event.id), { preserveState: false })"
-                            @edit="$inertia.visit(route(initUrl + '.edit', uris.edit ? uris.edit($event.id) : $event.id), { preserveState: false })"
-                            @trash="trash($event.id)"
-                        />
+                            <s-table
+                                v-if="!!dataTable.data"
+                                :data="dataTable.data"
+                                @view="$inertia.visit(route(initUrl + '.show', uris.show ? uris.show($event.id) : $event.id), { preserveState: false })"
+                                @edit="$inertia.visit(route(initUrl + '.edit', uris.edit ? uris.edit($event.id) : $event.id), { preserveState: false })"
+                                @trash="trash($event.id)"
+                            />
+                            <s-table
+                                v-else
+                                :data="dataTable"
+                                @view="$inertia.visit(route(initUrl + '.show', uris.show ? uris.show($event.id) : $event.id), { preserveState: false })"
+                                @edit="$inertia.visit(route(initUrl + '.edit', uris.edit ? uris.edit($event.id) : $event.id), { preserveState: false })"
+                                @trash="trash($event.id)"
+                            />
                         </template>
                     </slot>
                 </template>
@@ -111,6 +110,16 @@ export default defineComponent({
         return { form, data_ };
     },
 
+    mounted() {
+        document.addEventListener("keydown", this.goToNew);
+        document.addEventListener("keydown", this.save);
+    },
+
+    beforeDestroy() {
+        document.removeEventListener("keydown", this.goToNew);
+        document.removeEventListener("keydown", this.save);
+    },
+
     components: {
         Link,
         STable: defineAsyncComponent(() => import("./Partials/Tables/STable.vue")),
@@ -166,6 +175,20 @@ export default defineComponent({
     },
 
     methods: {
+        goToNew(e) {
+            if (!(e.keyCode === 65 && e.ctrlKey)) {
+                return;
+            }
+            e.preventDefault();
+            this.$inertia.visit(route(this.initUrl + ".create"));
+        },
+        save(e) {
+            if (!(e.keyCode === 83 && e.ctrlKey)) {
+                return;
+            }
+            e.preventDefault();
+            this.store();
+        },
         trash(id) {
             if (!confirm("¿Estas seguro que quieres borrar este elemento?")) return;
             this.$inertia.delete(route(this.initUrl + ".destroy", this.uris.destroy ? this.uris.destroy(id) : id));
