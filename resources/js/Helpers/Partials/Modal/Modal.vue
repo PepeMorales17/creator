@@ -1,6 +1,6 @@
 <template>
     <!-- BEGIN: Show Modal Toggle -->
-    <component :is="toggle.is" :id="'toggle' + id" :class="toggle.class" @click="modal().show()">
+    <component :is="toggle.is" :id="'toggle' + id" :class="toggle.class" @click="modal().show(); $emit('afterShow')">
         <slot name="toggle" />
     </component>
     <!-- END: Show Modal Toggle -->
@@ -20,6 +20,7 @@
 import { defineComponent, ref } from "vue";
 export default defineComponent({
     inheritAttrs: false,
+    emits:['afterShow'],
     props: {
         size: {
             default: "modal-md",
