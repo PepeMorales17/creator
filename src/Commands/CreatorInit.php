@@ -149,16 +149,15 @@ class CreatorInit extends Command
     {
         exec('composer require laravel/breeze --dev');
         exec('composer require laravel/fortify');
-        sleep(3);
+        exec('composer require spatie/laravel-medialibrary');
+
+        sleep(10);
         $this->call('breeze:install', [
             'stack' => 'vue'
         ]);
         $this->call('vendor:publish', [
             '--provider' => "Laravel\Fortify\FortifyServiceProvider",
         ]);
-        sleep(1);
-        exec('composer require spatie/laravel-medialibrary');
-        sleep(1);
         exec('npm i @ppjmorales/creator_template');
         sleep(1);
         $this->call('vendor:publish', [
