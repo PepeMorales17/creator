@@ -46,16 +46,17 @@ class CreatorInit extends Command
             '--tag' => 'pp-creator',
             '--force' => true
         ]);
-        $this->warn('Para que la template funcione: npm i @ppjmorales/creator_template');
-        $this->warn('Tambien agrega a Packege.json: "postcss-advanced-variables": "^3.0.1"');
-        $this->warn("Agrega: public_path('images') => storage_path('app/images'), en config\filesystems.php");
-        $this->warn('file manager:
-        composer require spatie/laravel-medialibrary; php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="migrations";
-        php artisan migrate; php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="config";');
-        //Si agrego para que use archivos tengo que hacer el comando para que copie la configuracion que voy a usar ademas tengo que agregar un tabla de folders
-        // agregar las rutas
-        $this->call('storage:link');
-        $this->info('No olvides cambiar la ulr de ENV para que funcione el storage');
+        $this->warn('En este archivo puedes encontrar la configuracion: '.config_path('creator.php'));
+        // $this->warn('Para que la template funcione: npm i @ppjmorales/creator_template');
+        // $this->warn('Tambien agrega a Packege.json: "postcss-advanced-variables": "^3.0.1"');
+        // $this->warn("Agrega: public_path('images') => storage_path('app/images'), en config\filesystems.php");
+        // $this->warn('file manager:
+        // composer require spatie/laravel-medialibrary; php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="migrations";
+        // php artisan migrate; php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="config";');
+        // //Si agrego para que use archivos tengo que hacer el comando para que copie la configuracion que voy a usar ademas tengo que agregar un tabla de folders
+        // // agregar las rutas
+        // $this->call('storage:link');
+        // $this->info('No olvides cambiar la ulr de ENV para que funcione el storage');
         return 0;
     }
 

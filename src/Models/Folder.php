@@ -4,6 +4,7 @@ namespace Pp\Creator\Models;
 
 use Pp\Creator\Models\MediaModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Folder extends MediaModel
 {
@@ -47,7 +48,14 @@ class Folder extends MediaModel
 
     public static function tree()
     {
-        return static::with(implode('.', array_fill(0, 4, 'children')))->where('parent_id', '=', NULL)->get();
+        $nested = static::with(implode('.', array_fill(0, 4, 'children')))->where('parent_id', '=', NULL)->get();
+        $setName = function ($folder, $index = null, $parent = null) use (&$setName) {
+            $folder->root = (!!$parent ? (!!$parent->root ? $parent->root : '') : '') . '/' . $folder->name;
+            $folder->root_index = (!!$parent ? (isset($parent->root_index) ? $parent->root_index. '.children.' : '') : '')  . $index;
+            $folder->children->map(fn ($fo, $index) => $setName($fo, $index, $folder));
+        };
+        $nested->map(fn ($fo, $index) => $setName($fo, $index));
+        return $nested;
     }
 
 
@@ -63,5 +71,10 @@ class Folder extends MediaModel
     {
 
         return $this->hasMany(Folder::class, 'parent_id', 'id');
+    }
+
+    public function files()
+    {
+        return $this->hasMany(Media::class, 'collection_name', 'id');
     }
 }

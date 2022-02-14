@@ -16,7 +16,7 @@ class FolderController extends Controller
 {
     use CrudTrait;
 
-    protected $view = 'Creator/CrudMenu';
+    protected $view = 'Creator/Finder';
     protected $redirect_route = 'folder.index';
     protected $type = 'Creator';
     protected $folder = 'Creator';
@@ -52,10 +52,11 @@ class FolderController extends Controller
     {
         $data = $this->form()->validate($request->all());
         //dd($data, $request->all());
-        DB::transaction(function () use ($data) {
-            Folder::create($data);
+        $folder =  DB::transaction(function () use ($data) {
+            return Folder::create($data);
         });
-        if ($request->wantsJson()) return Folder::tree();
+        $folder->children = [];
+        if ($request->wantsJson()) return !!$data['parent_id'] ? $folder->toArray() : Folder::tree();
         return $this->mainRedirect('Folder guardado');
     }
 
@@ -73,18 +74,20 @@ class FolderController extends Controller
     public function update(Request $request, Folder $folder)
     {
         $data = $this->form()->validate($request->all());
-        DB::transaction(function () use ($data, $folder) {
-            $folder->update($data);
+        $folder = DB::transaction(function () use ($data, $folder) {
+           $folder->update($data);
+           return $folder;
         });
-
+        if ($request->wantsJson()) return $folder->toArray();
         return $this->mainRedirect('Folder editado');
     }
 
-    public function destroy(Folder $folder)
+    public function destroy(Request $request, Folder $folder)
     {
         $deletion = DB::transaction(function () use ($folder) {
             return  $folder->delete();
         });
+        if ($request->wantsJson()) return 'ok';//$this->tree();
         if (!$deletion) {
             return $this->mainRedirect(Folder::STOP_DELETE_MSG, false);
         }
@@ -108,23 +111,36 @@ class FolderController extends Controller
     public function modelFiles($table, $id)
     {
         //dd(Media::where(['model_id' => $id, 'model_type' => $table,])->get()->map(fn($f) => $this->withUrl($f))->pick(self::PICK)->toArray());
-        return Media::where(['model_id' => $id, 'model_type' => Str::plural($table),])->get()->map(fn($f) => $this->withUrl($f))->pick(self::PICK)->toArray();
+        return Media::where(['model_id' => $id, 'model_type' => Str::plural($table),])->get()->map(fn ($f) => $this->withUrl($f))->pick(self::PICK)->toArray();
+    }
+
+    public function updateFileName(Request $request)
+    {
+        $data = $request->all();
+        $media = Media::findOrFail($data['id']);
+        $media->name = $data['name'];
+        $media->file_name = $data['name'] . "." . pathinfo($media->file_name, PATHINFO_EXTENSION);
+        $media->save();
+        $media = $this->withUrl($media);
+        return $media->file_name;
     }
 
     public function withUrl($file)
     {
         $file->url = $file->getUrl();
-        //dd($file->toArray());
         return $file;
     }
 
     public function folderFiles($id)
     {
-        return Media::where('collection_name', $id)->get()->map(fn($f) => $this->withUrl($f))->pick(self::PICK)->toArray();
+        return Media::where('collection_name', $id)->get()->map(fn ($f) => $this->withUrl($f))->pick(self::PICK)
+            ->push(...Folder::where('parent_id', $id)->withCount(['files', 'children'])->get())
+            ->toArray();
     }
 
     public function upload(Request $request)
     {
+        //dd($request->file('files'));
         $folder = $request->folder ? $request->folder : 1;
         $isModel = !!$request->id;
         $model = null;
@@ -136,11 +152,21 @@ class FolderController extends Controller
         }
         if (!!$model) collect($request->file('files'))->map(fn ($f) => $model->addMedia($f)->toMediaCollection($folder));
         //dd
+        return $this->defaultReturn($request);
+    }
+
+    private function defaultReturn($request)
+    {
+        $folder = $request->folder ? $request->folder : 1;
         return !$request->inFolder ? $this->modelFiles($request->model, $request->id) : $this->folderFiles($folder);
     }
 
     public function deleteFile(Request $request)
     {
-        Media::findOrFail($request->id);
+        $media = Media::findOrFail($request->id);
+        //dd($media);
+        $media->delete();
+
+        return response()->json(['result' => 'ok']);
     }
 }
