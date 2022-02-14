@@ -143,6 +143,7 @@ class CreatorInit extends Command
 
     public function finalCommands()
     {
+        exec('composer require laravel/breeze --dev');
         $this->call('breeze:install', [
             'stack' => 'vue'
         ]);
