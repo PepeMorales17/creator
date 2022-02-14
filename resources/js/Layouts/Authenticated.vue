@@ -1,12 +1,11 @@
-
-
 <script setup>
 import { computed, onMounted, ref, watch } from "vue";
 import { helper as $h } from "@/utils/helper";
 import { Link } from "@inertiajs/inertia-vue3";
-import TheMenu  from "@/Helpers/Menu.vue";
+import TheMenu from "@/Helpers/Menu.vue";
 
 import ToggleRightIcon from "@zhuowenli/vue-feather-icons/icons/ToggleRightIcon";
+import FolderIcon from "@zhuowenli/vue-feather-icons/icons/FolderIcon";
 import ChevronDownIcon from "@zhuowenli/vue-feather-icons/icons/ChevronDownIcon";
 import MobileMenu from "@/Helpers/MobilMenu.vue";
 import Logo from "@/Helpers/Logo";
@@ -17,7 +16,6 @@ import dom from "@left4code/tw-starter/dist/js/dom";
 
 onMounted(() => {
     dom("body").removeClass("error-page").removeClass("login").addClass("main");
-
 });
 </script>
 
@@ -27,9 +25,7 @@ onMounted(() => {
     <MainColorSwitcher /> -->
         <MobileMenu :menus="$page.props.main_menu" />
         <!-- BEGIN: Top Bar -->
-        <div
-            class="border-b border-white/[0.08] -mt-10 md:-mt-5 -mx-3 sm:-mx-8 px-3 sm:px-8 pt-3 md:pt-0 mb-10"
-        >
+        <div class="border-b border-white/[0.08] -mt-10 md:-mt-5 -mx-3 sm:-mx-8 px-3 sm:px-8 pt-3 md:pt-0 mb-10">
             <div class="top-bar-boxed flex items-center">
                 <!-- BEGIN: Logo -->
                 <Logo class="-intro-x hidden md:flex"></Logo>
@@ -40,9 +36,7 @@ onMounted(() => {
                         <li class="breadcrumb-item">
                             <a href="#">Application</a>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">
-                            Dashboard
-                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
                     </ol>
                 </nav>
                 <!-- END: Breadcrumb -->
@@ -218,18 +212,11 @@ onMounted(() => {
                 <!-- END: Notifications -->
                 <!-- BEGIN: Account Menu -->
                 <div class="intro-x dropdown w-8 h-8">
-                    <div
-                        class="dropdown-toggle w-8 h-8 rounded-full overflow-hidden shadow-lg image-fit zoom-in scale-110"
-                        role="button"
-                        aria-expanded="false"
-                        data-tw-toggle="dropdown"
-                    >
+                    <div class="dropdown-toggle w-8 h-8 rounded-full overflow-hidden shadow-lg image-fit zoom-in scale-110" role="button" aria-expanded="false" data-tw-toggle="dropdown">
                         <img alt="avatar" src="/storage/images/avatar.svg" />
                     </div>
                     <div class="dropdown-menu w-56">
-                        <ul
-                            class="dropdown-content bg-primary/80 before:block before:absolute before:bg-black before:inset-0 before:rounded-md before:z-[-1] text-white"
-                        >
+                        <ul class="dropdown-content bg-primary/80 before:block before:absolute before:bg-black before:inset-0 before:rounded-md before:z-[-1] text-white">
                             <li class="p-2">
                                 <div class="font-medium">
                                     {{ $page.props.auth.user.name }}
@@ -241,9 +228,7 @@ onMounted(() => {
                                 </div> -->
                             </li>
                             <li>
-                                <hr
-                                    class="dropdown-divider border-white/[0.08]"
-                                />
+                                <hr class="dropdown-divider border-white/[0.08]" />
                             </li>
                             <!-- <li>
                                 <a
@@ -285,12 +270,13 @@ onMounted(() => {
                                 />
                             </li> -->
                             <li>
-                                <Link
-                                    :href="route('logout')"
-                                    as="button"
-                                    method="post"
-                                    class="dropdown-item hover:bg-white/5"
-                                >
+                                <Link :href="route('folder.index')" as="button" class="dropdown-item hover:bg-white/5">
+                                    <FolderIcon class="w-4 h-4 mr-2" />
+                                    Finder
+                                </Link>
+                            </li>
+                            <li>
+                                <Link :href="route('logout')" as="button" method="post" class="dropdown-item hover:bg-white/5">
                                     <ToggleRightIcon class="w-4 h-4 mr-2" />
                                     Logout
                                 </Link>
