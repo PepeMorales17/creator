@@ -163,6 +163,8 @@ class CreatorInit extends Command
             '--provider' => "Spatie\MediaLibrary\MediaLibraryServiceProvider",
             '--tag' => "config",
         ]);
+        exec('npm install');
+        exec('npm run dev');
         $this->call('migrate');
     }
 
