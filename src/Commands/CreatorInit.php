@@ -148,13 +148,11 @@ class CreatorInit extends Command
     public function finalCommands()
     {
         exec('composer require laravel/breeze --dev');
-        sleep(1);
+        exec('composer require laravel/fortify');
+        sleep(3);
         $this->call('breeze:install', [
             'stack' => 'vue'
         ]);
-        sleep(1);
-        exec('composer require laravel/fortify');
-        sleep(1);
         $this->call('vendor:publish', [
             '--provider' => "Laravel\Fortify\FortifyServiceProvider",
         ]);
