@@ -150,6 +150,8 @@ class CreatorInit extends Command
         exec('composer require laravel/breeze --dev');
         exec('composer require laravel/fortify');
         exec('composer require spatie/laravel-medialibrary');
+        exec('composer install');
+        exec('composer dump-autoload');
 
         sleep(10);
         $this->call('breeze:install', [
