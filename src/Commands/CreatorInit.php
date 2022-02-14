@@ -46,7 +46,11 @@ class CreatorInit extends Command
             '--tag' => 'pp-creator',
             '--force' => true
         ]);
-        $this->warn('En este archivo puedes encontrar la configuracion: '.config_path('creator.php'));
+        $this->warn('En este archivo puedes encontrar la configuracion: ' . config_path('creator.php'));
+        $this->info('Ejecutando los procesos e instalando dependencias');
+        $this->finalCommands();
+        $this->addToFilesystems();
+        $this->modifyMedia();
         // $this->warn('Para que la template funcione: npm i @ppjmorales/creator_template');
         // $this->warn('Tambien agrega a Packege.json: "postcss-advanced-variables": "^3.0.1"');
         // $this->warn("Agrega: public_path('images') => storage_path('app/images'), en config\filesystems.php");
@@ -68,8 +72,8 @@ class CreatorInit extends Command
             return;
         }
         $file = file_get_contents($dir);
-    //     dd(strpos($file, 'public function boot()
-    // {'));
+        //     dd(strpos($file, 'public function boot()
+        // {'));
         $file = str_replace('public function boot()
     {', 'public function boot()
             {
@@ -79,7 +83,7 @@ class CreatorInit extends Command
 
         $this->loadMigrationsFrom($paths);', $file);
         file_put_contents($dir, $file);
-        $this->info($dir.' Publicado');
+        $this->info($dir . ' Publicado');
     }
 
     public function configInertiaProps()
@@ -105,7 +109,7 @@ class CreatorInit extends Command
     "title" => Str::studly(str_replace(".", "_", $request->route()->getName())),
     ', $file);
         file_put_contents($dir, $file);
-        $this->info($dir.' Publicado');
+        $this->info($dir . ' Publicado');
     }
 
     public function configBootstrapJs()
@@ -118,7 +122,7 @@ class CreatorInit extends Command
         $file = file_get_contents($dir);
         $file .= 'import "./libs";';
         file_put_contents($dir, $file);
-        $this->info($dir.' Publicado');
+        $this->info($dir . ' Publicado');
     }
 
     public function configAppJs()
@@ -134,6 +138,65 @@ class CreatorInit extends Command
         $file = str_replace(".use(plugin)", ".use(plugin)
         .use(global)", $file);
         file_put_contents($dir, $file);
-        $this->info($dir.' Publicado');
+        $this->info($dir . ' Publicado');
+    }
+
+    public function finalCommands()
+    {
+        exec('npm i @ppjmorales/creator_template');
+        exec('composer require spatie/laravel-medialibrary');
+        $this->call('vendor:publish', [
+            '--provider' => "Spatie\MediaLibrary\MediaLibraryServiceProvider",
+            '--tag' => "migrations",
+        ]);
+        $this->call('vendor:publish', [
+            '--provider' => "Spatie\MediaLibrary\MediaLibraryServiceProvider",
+            '--tag' => "config",
+        ]);
+        $this->call('migrate');
+    }
+
+    public function addToFilesystems()
+    {
+        $dir = config_path('filesystems.php');
+        if (!file_exists($dir)) {
+            $this->error('El arhivo ' . config_path('filesystems.php') . ' no existe checa si lo tienes instalado.');
+            return;
+        }
+        $file = file_get_contents($dir);
+
+        $file = str_replace("'disks' => [", "'disks' => [
+            'media' => [
+                'driver' => 'local',
+                'root'   => storage_path('app/media'),
+                'url'    => env('APP_URL').'/media',
+                'visibility' => 'public',
+            ],", $file);
+
+        $file = str_replace("'links' => [", "'links' => [
+            public_path('storage') => storage_path('app/public'),
+            public_path('images') => storage_path('app/images'),
+            public_path('media') => storage_path('app/media'),
+        ],", $file);
+
+        file_put_contents($dir, $file);
+        $this->info($dir . ' Modificado');
+    }
+
+    public function modifyMedia()
+    {
+        $dir = config_path('media-library.php');
+        if (!file_exists($dir)) {
+            $this->error('El arhivo ' . config_path('media-library.php') . ' no existe checa si lo tienes instalado.');
+            return;
+        }
+        $file = file_get_contents($dir);
+
+        $file = str_replace("'disk_name' => env('MEDIA_DISK', 'public'),", "'disk_name' => 'media',", $file);
+
+
+        file_put_contents($dir, $file);
+
+        $this->info($dir . ' Modificado');
     }
 }
