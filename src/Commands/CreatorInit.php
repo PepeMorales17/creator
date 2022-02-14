@@ -49,6 +49,10 @@ class CreatorInit extends Command
             '--tag' => 'pp-creator',
             '--force' => true
         ]);
+        exec('npm install');
+        exec('npm run dev');
+        $this->call('migrate');
+
         $this->warn('En este archivo puedes encontrar la configuracion: ' . config_path('creator.php'));
         $this->info('Ejecutando los procesos e instalando dependencias');
         // $this->warn('Para que la template funcione: npm i @ppjmorales/creator_template');
@@ -144,6 +148,7 @@ class CreatorInit extends Command
     public function finalCommands()
     {
         exec('composer require laravel/breeze --dev');
+        sleep(1);
         $this->call('breeze:install', [
             'stack' => 'vue'
         ]);
@@ -164,9 +169,6 @@ class CreatorInit extends Command
             '--provider' => "Spatie\MediaLibrary\MediaLibraryServiceProvider",
             '--tag' => "config",
         ]);
-        exec('npm install');
-        exec('npm run dev');
-        $this->call('migrate');
     }
 
     public function addToFilesystems()
