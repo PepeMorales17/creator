@@ -152,15 +152,17 @@ class CreatorInit extends Command
         $this->call('breeze:install', [
             'stack' => 'vue'
         ]);
+        sleep(1);
         exec('composer require laravel/fortify');
-
+        sleep(1);
         $this->call('vendor:publish', [
             '--provider' => "Laravel\Fortify\FortifyServiceProvider",
         ]);
-
-        exec('npm i @ppjmorales/creator_template');
-
+        sleep(1);
         exec('composer require spatie/laravel-medialibrary');
+        sleep(1);
+        exec('npm i @ppjmorales/creator_template');
+        sleep(1);
         $this->call('vendor:publish', [
             '--provider' => "Spatie\MediaLibrary\MediaLibraryServiceProvider",
             '--tag' => "migrations",
@@ -188,7 +190,7 @@ class CreatorInit extends Command
                 'visibility' => 'public',
             ],", $file);
 
-        $file = str_replace("'links' => [", "'links' => [
+        $file = str_replace("public_path('storage') => storage_path('app/public'),", "
             public_path('storage') => storage_path('app/public'),
             public_path('images') => storage_path('app/images'),
             public_path('media') => storage_path('app/media'),
