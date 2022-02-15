@@ -24,7 +24,7 @@ return new class extends Migration
 
                 $table->timestamps();
             });
-            DB::table('folders')->create([
+            DB::table('folders')->insert([
                 'name' => 'Documentos'
             ]);
         }
