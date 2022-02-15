@@ -147,9 +147,9 @@ class CreatorInit extends Command
 
     public function finalCommands()
     {
-        exec('composer require laravel/breeze --dev; php artisan breeze:install vue; composer require laravel/fortify;php artisan vendor:publish --provider="Laravel\Fortify\FortifyServiceProvider";');
+        exec('composer require laravel/breeze --dev && php artisan breeze:install vue && composer require laravel/fortify ');
         //exec('composer require laravel/fortify');
-        exec('composer require spatie/laravel-medialibrary; php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="migrations";php artisan migrate; php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="config";');
+        exec('composer require spatie/laravel-medialibrary && php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="migrations" && php artisan migrate&& php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="config"');
         // exec('composer install');
         // exec('composer dump-autoload');
 
