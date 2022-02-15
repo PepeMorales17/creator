@@ -38,8 +38,6 @@ class CreatorInit extends Command
     public function handle()
     {
         $this->finalCommands();
-        exec('npm install');
-        exec('npm run dev');
         $this->addToFilesystems();
         $this->modifyMedia();
         $this->configInertiaProps();
@@ -63,7 +61,10 @@ class CreatorInit extends Command
         // php artisan migrate; php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="config";');
         // //Si agrego para que use archivos tengo que hacer el comando para que copie la configuracion que voy a usar ademas tengo que agregar un tabla de folders
         // // agregar las rutas
-        // $this->call('storage:link');
+        $this->call('storage:link');
+        exec('npm install postcss-advanced-variables --save-dev');
+        exec('npm install');
+        exec('npm run dev');
         // $this->info('No olvides cambiar la ulr de ENV para que funcione el storage');
         return 0;
     }
