@@ -5,7 +5,7 @@
             <a v-else-if="type == 'folder'" href="javascript:;" @dblclick="folderSelected" class="text-yellow-900 w-3/5 file__icon file__icon--directory mx-auto"></a>
             <a v-else-if="type == 'image'" :href="url" target="_blank" class="w-3/5 file__icon file__icon--image mx-auto">
                 <div class="file__icon--image__preview image-fit">
-                    <img :alt="name" :src="url" />
+                    <img :alt="name()" :src="url" />
                 </div>
             </a>
             <a v-else :href="type === 'pdf' && actions ? url : 'javascript:;'" :target="type === 'pdf' && actions ? '_blank' : ''" class="w-3/5 file__icon file__icon--file mx-auto">
@@ -129,6 +129,7 @@ export default defineComponent({
         },
         url() {
             if (["image", "pdf"].indexOf(this.type) == -1) return;
+            console.log(this.file);
             return this.file.url ?? (this.file instanceof File ? URL.createObjectURL(this.file) : null);
         },
     },
