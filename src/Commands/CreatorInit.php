@@ -38,6 +38,8 @@ class CreatorInit extends Command
     public function handle()
     {
         $this->finalCommands();
+        exec('npm install');
+        exec('npm run dev');
         $this->addToFilesystems();
         $this->modifyMedia();
         $this->configInertiaProps();
@@ -49,8 +51,6 @@ class CreatorInit extends Command
             '--tag' => 'pp-creator',
             '--force' => true
         ]);
-        exec('npm install');
-        exec('npm run dev');
         $this->call('migrate');
 
         $this->warn('En este archivo puedes encontrar la configuracion: ' . config_path('creator.php'));
@@ -147,28 +147,28 @@ class CreatorInit extends Command
 
     public function finalCommands()
     {
-        exec('composer require laravel/breeze --dev;php artisan breeze:install vue;');
-        exec('composer require laravel/fortify');
-        exec('composer require spatie/laravel-medialibrary');
-        exec('composer install');
-        exec('composer dump-autoload');
+        exec('composer require laravel/breeze --dev; php artisan breeze:install vue; composer require laravel/fortify;php artisan vendor:publish --provider="Laravel\Fortify\FortifyServiceProvider";');
+        //exec('composer require laravel/fortify');
+        exec('composer require spatie/laravel-medialibrary; php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="migrations";php artisan migrate; php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="config";');
+        // exec('composer install');
+        // exec('composer dump-autoload');
 
 
         // $this->call('breeze:install', [
         //     'stack' => 'vue'
         // ]);
-        $this->call('vendor:publish', [
-            '--provider' => "Laravel\Fortify\FortifyServiceProvider",
-        ]);
+        // $this->call('vendor:publish', [
+        //     '--provider' => "Laravel\Fortify\FortifyServiceProvider",
+        // ]);
         exec('npm i @ppjmorales/creator_template');
-        $this->call('vendor:publish', [
-            '--provider' => "Spatie\MediaLibrary\MediaLibraryServiceProvider",
-            '--tag' => "migrations",
-        ]);
-        $this->call('vendor:publish', [
-            '--provider' => "Spatie\MediaLibrary\MediaLibraryServiceProvider",
-            '--tag' => "config",
-        ]);
+        // $this->call('vendor:publish', [
+        //     '--provider' => "Spatie\MediaLibrary\MediaLibraryServiceProvider",
+        //     '--tag' => "migrations",
+        // ]);
+        // $this->call('vendor:publish', [
+        //     '--provider' => "Spatie\MediaLibrary\MediaLibraryServiceProvider",
+        //     '--tag' => "config",
+        // ]);
 
         sleep(1);
 
