@@ -192,8 +192,7 @@ class CreatorInit extends Command
         $file = str_replace("public_path('storage') => storage_path('app/public'),", "
             public_path('storage') => storage_path('app/public'),
             public_path('images') => storage_path('app/images'),
-            public_path('media') => storage_path('app/media'),
-        ],", $file);
+            public_path('media') => storage_path('app/media'),", $file);
 
         file_put_contents($dir, $file);
         $this->info($dir . ' Modificado');
