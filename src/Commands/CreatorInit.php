@@ -161,7 +161,6 @@ class CreatorInit extends Command
             '--provider' => "Laravel\Fortify\FortifyServiceProvider",
         ]);
         exec('npm i @ppjmorales/creator_template');
-        sleep(1);
         $this->call('vendor:publish', [
             '--provider' => "Spatie\MediaLibrary\MediaLibraryServiceProvider",
             '--tag' => "migrations",
@@ -170,6 +169,9 @@ class CreatorInit extends Command
             '--provider' => "Spatie\MediaLibrary\MediaLibraryServiceProvider",
             '--tag' => "config",
         ]);
+
+        sleep(1);
+
     }
 
     public function addToFilesystems()
