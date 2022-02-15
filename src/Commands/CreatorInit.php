@@ -49,10 +49,6 @@ class CreatorInit extends Command
             '--tag' => 'pp-creator',
             '--force' => true
         ]);
-        $this->call('migrate');
-
-        $this->warn('En este archivo puedes encontrar la configuracion: ' . config_path('creator.php'));
-        $this->info('Ejecutando los procesos e instalando dependencias');
         // $this->warn('Para que la template funcione: npm i @ppjmorales/creator_template');
         // $this->warn('Tambien agrega a Packege.json: "postcss-advanced-variables": "^3.0.1"');
         // $this->warn("Agrega: public_path('images') => storage_path('app/images'), en config\filesystems.php");
@@ -65,6 +61,10 @@ class CreatorInit extends Command
         exec('npm install postcss-advanced-variables --save-dev');
         exec('npm install');
         exec('npm run dev');
+        $this->call('migrate');
+        $this->warn('En este archivo puedes encontrar la configuracion: ' . config_path('creator.php'));
+        $this->info('Ejecutando los procesos e instalando dependencias');
+
         // $this->info('No olvides cambiar la ulr de ENV para que funcione el storage');
         return 0;
     }
