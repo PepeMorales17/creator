@@ -57,6 +57,7 @@ class CreatorInit extends Command
         // php artisan migrate; php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="config";');
         // //Si agrego para que use archivos tengo que hacer el comando para que copie la configuracion que voy a usar ademas tengo que agregar un tabla de folders
         // // agregar las rutas
+        mkdir(storage_path('app/media'));
         $this->call('storage:link');
         exec('npm install postcss-advanced-variables --save-dev');
         exec('npm install');
