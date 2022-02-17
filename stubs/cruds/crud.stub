@@ -10,8 +10,8 @@ class {{name:plural}}Crud extends Crud
 {
 
     // protected $optional = true;
-    public $hasFiles = true;
-    public $ifExistMigrationChangeName = false;
+    public $hasFiles = false;
+    public $ifExistMigrationChangeName = true;
 
     private $requiredClasses  = [
         'Model' => [],
@@ -57,7 +57,7 @@ class {{name:plural}}Crud extends Crud
 
     const MENUS = [
             'crud' => [
-                '{{name}}.index' => ['name' => 'Lista', 'route' => '{{name}}.index', 'title' => 'Listado de "'.self::READ_PLURAL],
+                '{{name}}.index' => ['name' => 'Lista', 'route' => '{{name}}.index', 'title' => 'Listado de '.self::READ_PLURAL],
                 '{{name}}.create' => ['name' => 'Crear', 'route' => '{{name}}.create', 'title' => "Crear ".self::READ_SINGLE,],
             ]
     ];

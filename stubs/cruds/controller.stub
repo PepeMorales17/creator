@@ -25,7 +25,7 @@ class {{name:studly}}Controller extends Controller
 
     public function toPaginate()
     {
-        return [Casas::view()]; // si lo conviertes en array no usara paginate y sera un solo index ejem : [ view ]
+        return [{{name:studly}}::view()]; // si lo conviertes en array no usara paginate y sera un solo index ejem : [ view ]
     }
 
     public function store(Request $request)
