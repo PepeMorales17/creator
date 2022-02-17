@@ -35,6 +35,8 @@ trait FilterPaginateTrait {
 
     public function index()
     {
+        $toPaginate = $this->toPaginate();
+        if (is_array($toPaginate)) return $this->justRenderIndex($this->toPaginate()[0]->get());
         if (request()->wantsJson()) return $this->filteredModel($this->toPaginate())->simplePaginate(30);
         return $this->justRenderIndex($this->toPaginate()->simplePaginate(30));
     }

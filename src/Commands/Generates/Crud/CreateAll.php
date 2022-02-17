@@ -66,18 +66,24 @@ class CreateAll extends Command
         //     ]
         // ]);
         // config([
-            // "str($this->argument('name'))->pluralStudly() => [
-            //     'crud' => 'App\Creator\\' . $name,
-            //     'model' => 'App\Models\\' . $name,
-            //     'controller' => 'App\Http\Controllers\\' . $name,
-            //     'form' => 'App\Forms\\' . $name,
-            //     'vue' => str_replace('\\', '/', $name),
-            // ]"
+        // "str($this->argument('name'))->pluralStudly() => [
+        //     'crud' => 'App\Creator\\' . $name,
+        //     'model' => 'App\Models\\' . $name,
+        //     'controller' => 'App\Http\Controllers\\' . $name,
+        //     'form' => 'App\Forms\\' . $name,
+        //     'vue' => str_replace('\\', '/', $name),
+        // ]"
         // ]);
 
         //dd($config);
         $this->updateConfig();
-        exec('php artisan migrate && php artisan create:menu');
+        $migration = $this->findMigrationName();
+        //dd($migration);
+        if ($this->option('force')) {
+            $this->warn('exec... php artisan migrate:refresh --path=' . $migration . '  && php artisan create:menu');
+            exec('php artisan migrate:refresh --path=' . $migration);
+        }
+        $this->call('create:menu');
 
         return 0;
     }
@@ -96,15 +102,26 @@ class CreateAll extends Command
         $folder = !!$folder ? $folder . '\\' : null;
         $name = $folder . $name;
         if (strpos($file, "App\Creator\\$name") !== false) return;
-        $file = str_replace("/**CrudEnd */", "'".str($this->argument('name'))->pluralStudly()."' => [
+        $file = str_replace("/**CrudEnd */", "'" . str($this->argument('name'))->pluralStudly() . "' => [
             'crud' => 'App\Creator\\$name',
             'model' => 'App\Models\\$name',
             'controller' => 'App\Http\Controllers\\$name',
             'form' => 'App\Forms\\$name',
-            'vue' => '".str_replace('\\', '/', $name)."',
+            'vue' => '" . str_replace('\\', '/', $name) . "',
         ],
         /**CrudEnd */", $file);
         file_put_contents($dir, $file);
-        $this->info($dir . ' Publicado');
+        $this->info('Se agrego la clase al archivo config.creator');
+    }
+
+    public function findMigrationName()
+    {
+        $folder =  str($this->argument('folder'))->studly;
+        $dir = base_path('database/migrations/') . '\\' . $folder;
+        $folder = 'database/migrations/' . $folder;
+        if (is_dir($dir)) {
+            return $folder . '/' . collect(scandir($dir))->filter(fn ($i) => strpos($i, str($this->argument('name'))->pluralStudly()))->first();
+        }
+        return null;
     }
 }

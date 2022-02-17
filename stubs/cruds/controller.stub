@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use Pp\Creator\Traits\Controllers\CrudTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Pp\Creator\Traits\Controllers\FilterPaginateTrait;
 {{required}}
 
 class {{name:studly}}Controller extends Controller
 {
     use CrudTrait;
+    use FilterPaginateTrait;
 
     protected $view = '{{folder}}/Crud{{name:studly}}';
     protected $redirect_route = '{{name}}.index';
@@ -21,9 +23,9 @@ class {{name:studly}}Controller extends Controller
        return new Create{{name:studly}}Form();
     }
 
-    public function index()
+    public function toPaginate()
     {
-        return $this->justRenderIndex({{name:studly}}::view()->get());
+        return [Casas::view()]; // si lo conviertes en array no usara paginate y sera un solo index ejem : [ view ]
     }
 
     public function store(Request $request)

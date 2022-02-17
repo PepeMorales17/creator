@@ -145,7 +145,7 @@ class CreateModel extends GeneratorCommand
             $cast = Arr::get($item, 'props.cast');
             if (!$cast) continue;
             //$casts[Str::singular($class->getRelationName($item['id']))] = $cast;
-            $casts[] = "'".Str::singular($class->getRelationName($item['id']))."' => '$cast'";
+            $casts[] = "'".Str::singular($class->getRelationName($item['id']))."' => '$cast',";
         }
 
         return $casts;

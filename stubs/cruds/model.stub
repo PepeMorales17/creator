@@ -20,7 +20,7 @@ class {{name:studly}} extends Model
     protected $hidden = {{hidden}};
 
     protected $casts = [
-        {{casts}},
+        {{casts}}
         "created_at" => "datetime:Y-m-d\TH:i:s",
         "updated_at" => "datetime:Y-m-d\TH:i:s"
     ];
