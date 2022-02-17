@@ -15,7 +15,7 @@ return new class extends Migration
     {
         {{tablesBeforeMigrate:up}}
 
-        Schema::create('{{name}}', function (Blueprint $table) {
+        Schema::create('{{table}}', function (Blueprint $table) {
             {{attrs}}
             $table->timestamps();
 

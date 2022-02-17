@@ -6,6 +6,7 @@
             :inputs="inputs"
             :item="item"
             :value="item"
+            :hasFiles="{{files}}"
         >
         </crud>
     </app-layout>

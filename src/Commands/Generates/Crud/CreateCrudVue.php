@@ -56,19 +56,20 @@ class CreateCrudVue extends GeneratorCommand
      */
     protected function buildClass($name)
     {
-        $class = parent::buildClass($name);
+        $class = $this->replaceStr(parent::buildClass($name), [
+            ['{{files}}', $this->getCrudClass()->hasFiles ? 'true' : 'false'],
+        ]);
 
         return $class;
     }
 
     public function fileName()
     {
-        return 'Crud'.$this->studly().'.vue';
-        //return date('Y_m_d_His') . '_create_' . $this->argument('name') . '_table.vue';
-
+        return 'Crud' . $this->studly() . '.vue';
     }
 
-    private function module() {
-        return $this->option('module') ? "\Modules\\".Str::studly($this->option('module'))."Module\\" : '';
+    private function module()
+    {
+        return $this->option('module') ? "\Modules\\" . Str::studly($this->option('module')) . "Module\\" : '';
     }
 }

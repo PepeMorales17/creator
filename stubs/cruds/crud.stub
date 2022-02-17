@@ -11,6 +11,16 @@ class {{name:plural}}Crud extends Crud
 
     // protected $optional = true;
     public $hasFiles = false;
+    public $ifExistMigrationChangeName = true;
+
+    private $requiredClasses  = [
+        'Model' => [],
+        'Controller' => [],
+        'Form' => [],
+    ];
+
+    const READ_SINGLE = '';
+    const READ_PLURAL = '';
 
     public function run()
     {
@@ -27,16 +37,16 @@ class {{name:plural}}Crud extends Crud
     {
         return DB::transaction(function () use($parent){
             $index = Menu::create([
-                "name" => "{{1}}",
+                "name" => self::READ_SINGLE,
                 "icon" => "",
-                "description" => "Todos los {{2}}",
+                "description" => "Todos los ".self::READ_PLURAL,
                 "namespace" => "{{name}}.index",
                 "parent_id" => $parent,
             ]);
             $form = Menu::create([
-                "name" => "Crear {{1}}",
+                "name" => "Crear ".self::READ_SINGLE,
                 "icon" => "",
-                "description" => "Crear {{1}}",
+                "description" => "Crear ".self::READ_SINGLE,
                 "namespace" => "{{name}}.create",
                 "parent_id" => $index->id,
             ]);
@@ -47,8 +57,8 @@ class {{name:plural}}Crud extends Crud
 
     const MENUS = [
             'crud' => [
-                '{{name}}.index' => ['name' => 'Lista', 'route' => '{{name}}.index', 'title' => 'Listado de {{2}}'],
-                '{{name}}.create' => ['name' => 'Crear', 'route' => '{{name}}.create', 'title' => 'Crear {{1}}'],
+                '{{name}}.index' => ['name' => 'Lista', 'route' => '{{name}}.index', 'title' => 'Listado de "'.self::READ_PLURAL],
+                '{{name}}.create' => ['name' => 'Crear', 'route' => '{{name}}.create', 'title' => "Crear ".self::READ_SINGLE,],
             ]
     ];
 

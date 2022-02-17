@@ -1,5 +1,9 @@
 <?php
 
+use Pp\Creator\Forms\CreateFolderForm;
+use Pp\Creator\Http\Controllers\FolderController;
+use Pp\Creator\Models\Folder;
+
 return [
 
     /**
@@ -35,7 +39,11 @@ return [
      */
 
     /** QUIERES GUARDAR ARCHIVOS */
-    'app_use_media' => true
+    'app_use_media' => true,
+
+    'cruds' => [
+        /**CrudEnd */
+    ],
 
 
 ];

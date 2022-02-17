@@ -57,15 +57,20 @@ class CreateController extends GeneratorCommand
      */
     protected function buildClass($name)
     {
-        $class = parent::buildClass($name);
-        $class = str_replace('{{namespace}}', $this->rootNamespace(), $class);
-        $class = str_replace('{{name:normal}}', $this->argument('name'), $class);
-        $class = str_replace('{{name}}', Str::studly($this->argument('name')), $class);
-        $class = str_replace('{{name:plural}}', Str::plural(Str::studly($this->argument('name'))), $class);
-        $class = str_replace('{{name:camel}}', Str::camel($this->argument('name')), $class);
-        $class = str_replace('{{useModel}}', 'use ' . str_replace('Http\Controllers', 'Models', $this->rootNamespace()) . '\\' . $this->studly(), $class);
-        $class = str_replace('{{useForm}}', 'use ' . str_replace('Http\Controllers', 'Forms', $this->rootNamespace()) . '\Create' . $this->studly() . 'Form', $class);
-        $class = str_replace('{{folder}}', $this->folder(), $class);
+        $class = $this->replaceStr(parent::buildClass($name), [
+            $this->replaceNamespaceInClass(),
+            $this->replacePluralInClass(),
+            $this->replaceStudlyInClass(),
+            $this->replaceNameInClass(),
+            $this->replaceNameCamelInClass(),
+            $this->buildRequired([
+                $this->fullNamespaceForm(),
+                $this->fullNamespaceModel()
+            ]),
+            $this->replaceFolder(),
+        ]);
+
+
         $this->createMenu();
         $this->updateRoute();
         $this->updateMenu();
@@ -103,7 +108,7 @@ class CreateController extends GeneratorCommand
         if (strpos($file, ']);// Final de los controladores */') !== false) {
             $route = "$name => $class,";
             if (strpos($file, $route) === false) {
-                $file = str_replace(']);// Final de los controladores */', "\t".$route."\r\n]);// Final de los controladores */", $file);
+                $file = str_replace(']);// Final de los controladores */', "\t" . $route . "\r\n]);// Final de los controladores */", $file);
                 file_put_contents($dir, $file);
                 $this->info("Se agrego la ruta en web.php");
                 return;
@@ -140,7 +145,7 @@ class CreateController extends GeneratorCommand
         $find = '];';
 
         if (strpos($file, $this->getCrudNamespaceFromApp()) === false) {
-            $file = str_replace($find, "'".$this->getCrudNamespaceFromApp()."' => '', \r\n $find", $file);
+            $file = str_replace($find, "'" . $this->getCrudNamespaceFromApp() . "' => '', \r\n $find", $file);
             file_put_contents($dir, $file);
         }
 

@@ -52,13 +52,13 @@ class CreateCrud extends GeneratorCommand
      */
     protected function buildClass($name)
     {
-        $class = parent::buildClass($name);
-        $class = str_replace('{{namespace}}', $this->rootNamespace(), $class);
-        $class = str_replace('{{name:plural}}', Str::studly(Str::plural($this->argument('name'))), $class);
-        $class = str_replace('{{name:studly}}', Str::studly($this->argument('name')), $class);
-        $class = str_replace('{{name}}', $this->argument('name'), $class);
+        return $this->replaceStr(parent::buildClass($name), [
+            $this->replaceNamespaceInClass(),
+            $this->replacePluralInClass(),
+            $this->replaceStudlyInClass(),
+            $this->replaceNameInClass(),
+        ]);
 
-        return $class;
     }
 
     public function fileName()

@@ -5,11 +5,13 @@ namespace {{namespace}};
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-{{namespaces}}
+{{required}}
+{{traits:required}}
 
-class {{name}} extends Model
+class {{name:studly}} extends Model
 {
     use HasFactory;
+    {{traits}}
 
     protected $table = '{{table}}';
 
@@ -17,18 +19,25 @@ class {{name}} extends Model
 
     protected $hidden = {{hidden}};
 
+    protected $casts = [
+        {{casts}},
+        "created_at" => "datetime:Y-m-d\TH:i:s",
+        "updated_at" => "datetime:Y-m-d\TH:i:s"
+    ];
+
     const SELECTS = {{selects}};
+
 
     // // boot
 
     // protected static function booted()
     // {
-    //     static::deleting(function (${{name}}) {
+    //     static::deleting(function (${{name:studly}}) {
     //          return true;
     //     });
     // }
 
-    const STOP_DELETE_MSG = 'No puedes borrar ';
+    // const STOP_DELETE_MSG = 'No puedes borrar ';
 
     // Scopes
 

@@ -7,27 +7,6 @@ use Illuminate\Support\Str;
 
 trait MigrationTrait
 {
-
-    /**
-     * Build the class with the given name.
-     *
-     * @param  string  $name
-     * @return string
-     */
-    protected function buildClass($name)
-    {
-        $class = parent::buildClass($name);
-
-        $class = str_replace('{{attrs}}', str_replace(
-            ['"', '[', ']', ','],
-            '',
-            json_encode($this->attrs(), JSON_PRETTY_PRINT)
-        ), $class);
-        $class = str_replace('{{name}}', Str::plural($this->argument('name')), $class);
-
-        return $class;
-    }
-
     private function cols()
     {
         $class = $this->getCrudClass();

@@ -6,25 +6,24 @@ use App\Http\Controllers\Controller;
 use Pp\Creator\Traits\Controllers\CrudTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-{{useModel}};
-{{useForm}};
+{{required}}
 
-class {{name}}Controller extends Controller
+class {{name:studly}}Controller extends Controller
 {
     use CrudTrait;
 
-    protected $view = '{{folder}}/Crud{{name}}';
-    protected $redirect_route = '{{name:normal}}.index';
+    protected $view = '{{folder}}/Crud{{name:studly}}';
+    protected $redirect_route = '{{name}}.index';
     protected $type = '{{name:plural}}';
     protected $folder = '{{folder}}';
 
     public function form() {
-       return new Create{{name}}Form();
+       return new Create{{name:studly}}Form();
     }
 
     public function index()
     {
-        return $this->justRenderIndex({{name}}::view()->get());
+        return $this->justRenderIndex({{name:studly}}::view()->get());
     }
 
     public function store(Request $request)
@@ -32,41 +31,41 @@ class {{name}}Controller extends Controller
         $data = $this->form()->validate($request->all());
 
         DB::transaction(function () use ($data) {
-            {{name}}::create($data);
+            {{name:studly}}::create($data);
         });
 
-        return $this->mainRedirect('{{name}} guardado');
+        return $this->mainRedirect('{{name:studly}} guardado');
     }
 
     public function show($id)
     {
-        $model = {{name}}::view()->findOrFail($id);
+        $model = {{name:studly}}::view()->findOrFail($id);
         return $this->justShow($model);
     }
 
-    public function edit({{name}} ${{name:camel}})
+    public function edit({{name:studly}} ${{name:camel}})
     {
         return $this->justEdit($this->form()->getFormToEditWithEmptyValue(), ${{name:camel}});
     }
 
-    public function update(Request $request, {{name}} ${{name:camel}})
+    public function update(Request $request, {{name:studly}} ${{name:camel}})
     {
         $data = $this->form()->validate($request->all());
         DB::transaction(function () use ($data, ${{name:camel}}) {
             ${{name:camel}}->update($data);
         });
 
-        return $this->mainRedirect('{{name}} editado');
+        return $this->mainRedirect('{{name:studly}} editado');
     }
 
-    public function destroy({{name}} ${{name:camel}})
+    public function destroy({{name:studly}} ${{name:camel}})
     {
         $deletion = DB::transaction(function () use (${{name:camel}}) {
             return  ${{name:camel}}->delete();
         });
         if (!$deletion) {
-            return $this->mainRedirect({{name}}::STOP_DELETE_MSG, false);
+            return $this->mainRedirect({{name:studly}}::STOP_DELETE_MSG, false);
         }
-        return $this->mainRedirect('{{name}} borrado');
+        return $this->mainRedirect('{{name:studly}} borrado');
     }
 }

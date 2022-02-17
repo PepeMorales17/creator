@@ -19,6 +19,7 @@ use Pp\Creator\Commands\Generates\Crud\CreateAll;
 
 
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Arr;
 
 class CreatorServiceProvider extends ServiceProvider
@@ -73,6 +74,7 @@ class CreatorServiceProvider extends ServiceProvider
         }
 
         $this->pickCollect();
+        $this->morph();
     }
 
     public function pickCollect()
@@ -112,11 +114,8 @@ class CreatorServiceProvider extends ServiceProvider
         });
     }
 
-    // "autoload-dev": {
-    //     "psr-4": {
-    //         "Tests\\": "tests/",
-    //         "Pp\\Trades\\": "Modules\\TradesModule\\src"
-    //     }
-    // },
-    // git add src/; git commit -m "second commit";git push -u origin main
+    public function morph()
+    {
+        Relation::morphMap(collect(config('creator.cruds'))->map(fn($x) => $x['model'])->toArray(), true);
+    }
 }

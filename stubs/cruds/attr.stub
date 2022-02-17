@@ -1,0 +1,14 @@
+<?php
+
+namespace App\Creator\Cruds;
+use Illuminate\Support\Str;
+use Pp\Creator\Commands\Traits\AttrTrait;
+
+
+class Attr {
+
+    use AttrTrait;
+
+    // crea los attr de tu app
+
+}

@@ -57,11 +57,19 @@ class CreateForm extends GeneratorCommand
      */
     protected function buildClass($name)
     {
-        $class = parent::buildClass($name);
-        $class = str_replace('{{namespace}}', $this->rootNamespace(), $class);
-        $class = str_replace('{{name}}', Str::studly($this->argument('name')), $class);
-        $class = str_replace('{{inputs}}', $this->resolveArray($this->setInputs(), false, null), $class);
-        $class = str_replace('{{validations}}', $this->resolveArray($this->validations()), $class);
+        // $class = parent::buildClass($name);
+        // $class = str_replace('{{namespace}}', $this->rootNamespace(), $class);
+        // $class = str_replace('{{name}}', Str::studly($this->argument('name')), $class);
+        // $class = str_replace('{{inputs}}', $this->resolveArray($this->setInputs(), false, null), $class);
+        // $class = str_replace('{{validations}}', $this->resolveArray($this->validations()), $class);
+
+        $class = $this->replaceStr(parent::buildClass($name), [
+            $this->replaceNamespaceInClass(),
+            $this->replaceStudlyInClass(),
+            ['{{inputs}}', $this->resolveArray($this->setInputs(), false, null)],
+            ['{{validations}}', $this->resolveArray($this->validations())],
+            $this->buildRequired([])
+        ]);
 
 
         return $class;
@@ -78,7 +86,7 @@ class CreateForm extends GeneratorCommand
     {
         $class = $this->getCrudClass();
         $relations = collect($class->attrs())->reject(fn ($i) => $i['id'] === 'id')->map(function ($item) use ($class) {
-            $t = $this->setInputBy($item['id']);
+            $t = Arr::get($item, 'props.input');
             if (!!$t) return $t;
             $t = $this->setInputByType($item);
             return $t;
@@ -87,18 +95,18 @@ class CreateForm extends GeneratorCommand
         return $relations;
     }
 
-    private function setInputBy($id)
-    {
-        return match($id) {
-            'ticker' => '*$this->select'."('ticker', 'Ticker', 'tickers')*",
-            default => null
-        };
-    }
+    // private function setInputBy($id)
+    // {
+    //     return match ($id) {
+    //         'ticker' => '*$this->select' . "('ticker', 'Ticker', 'tickers')*",
+    //         default => null
+    //     };
+    // }
 
     private function setInputByType($input)
     {
-        return match($input['type']) {
-            'foreignId' => '*$this->select'."('".$input['id']."', '".$input['label']."')*",
+        return match ($input['type']) {
+            'foreignId' => '*$this->select' . "('" . $input['id'] . "', '" . $input['label'] . "')*",
             'string' => [$input['id'], $input['label'], 'input', 'text'],
             'string:short' => [$input['id'], $input['label'], 'input', 'text:short'],
             'double' => [$input['id'], $input['label'], 'input', 'double'],
@@ -115,8 +123,9 @@ class CreateForm extends GeneratorCommand
     private function validations()
     {
         $rules = [];
-        collect($this->getCrudClass()->attrs())->map(function($item) use(&$rules) {
-            $rules[] = "'".$item['id']."' => '".(!!Arr::get($item,'props.optional') ? 'nullable' : 'required')."'";
+        collect($this->getCrudClass()->attrs())->map(function ($item) use (&$rules) {
+            $t = Arr::get($item, 'props.rule');
+            $rules[] = "'" . $item['id'] . "' => ". "'" .(!!$t ? $t :  (!!Arr::get($item, 'props.optional') ? 'nullable' : 'required')). "'";
         });
 
         return $rules;

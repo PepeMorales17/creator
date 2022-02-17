@@ -32,6 +32,8 @@ class CreateMigration  extends GeneratorCommand
     private $myPath = 'database\migrations';
     private $stubDir = 'stubs\cruds\migrate.stub';
 
+    private $nameIfExist;
+
 
     /**
      * Execute the console command.
@@ -55,7 +57,10 @@ class CreateMigration  extends GeneratorCommand
                     $this->error('Migracion ya existe');
                     return;
                 } else {
-                    $files->map(fn ($i) => $this->files->delete($dir . '\\' . $i));
+                    $files->map(function ($i) use ($dir) {
+                        $this->nameIfExist = $i;
+                        $this->files->delete($dir . '\\' . $i);
+                    });
                 }
             }
         }
@@ -74,13 +79,13 @@ class CreateMigration  extends GeneratorCommand
      */
     protected function buildClass($name)
     {
-        $class = parent::buildClass($name);
-
-        $class = str_replace('{{attrs}}', $this->resolveArray($this->attrs()), $class);
-        $class = str_replace('{{name}}', $this->getTable(), $class);
-        $class = str_replace('{{tablesBeforeMigrate:up}}', $this->resolveArray($this->tablesBeforeMigrate()), $class);
-        $class = str_replace('{{tablesAfterMigrate:up}}', $this->resolveArray($this->tablesAfterMigrate()), $class);
-        $class = str_replace('{{tables:down}}', $this->resolveArray($this->tablesDown($this->argument('name'))), $class);
+        $class = $this->replaceStr(parent::buildClass($name), [
+            ['{{attrs}}', $this->resolveArray($this->attrs())],
+            ['{{tablesBeforeMigrate:up}}', $this->resolveArray($this->tablesBeforeMigrate())],
+            ['{{tablesAfterMigrate:up}}', $this->resolveArray($this->tablesAfterMigrate())],
+            ['{{tables:down}}', $this->resolveArray($this->tablesDown($this->argument('name')))],
+            $this->replaceTable(),
+        ]);
 
         return $class;
     }
@@ -92,6 +97,6 @@ class CreateMigration  extends GeneratorCommand
 
     public function fileName()
     {
-        return date('Y_m_d_His') . $this->baseName();
+        return (isset($this->getCrudClass()->ifExistMigrationChangeName) && !$this->getCrudClass()->ifExistMigrationChangeName) && (isset($this->nameIfExist) && !!$this->nameIfExist) ?  $this->nameIfExist :  date('Y_m_d_His') . $this->baseName();
     }
 }

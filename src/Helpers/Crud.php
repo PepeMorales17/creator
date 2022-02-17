@@ -9,7 +9,7 @@ abstract class Crud
 {
 
 
-    protected $makeHide = [];
+    //protected $makeHide = [];
 
     abstract function attrs();
 
@@ -65,7 +65,7 @@ abstract class Crud
 
     public function hidden()
     {
-        return array_merge($this->makeHide, [
+        return array_merge(collect($this->attrs())->reject(fn($i) => !Arr::get($i, 'props.modelHidden'))->pluck('id')->toArray(), [
             'created_at',
             'updated_at',
         ]);
@@ -90,5 +90,65 @@ abstract class Crud
     private function isOptional($optional)
     {
         return $optional === null ? $this->optional : $optional;
+    }
+
+    public function date($id = 'date', $label = 'Fecha', $optional = true)
+    {
+        return $this->attr($id, 'date', $label, [
+            'optional' => $optional,
+            'cast' => 'datetime:Y-m-d'
+        ]);
+    }
+
+    public function datetime($id, $label = 'Fecha y hora', $optional = true)
+    {
+        return $this->attr($id, 'timestamp', $label, [
+            'optional' => $optional,
+            'cast' => 'datetime:Y-m-d\TH:i:s'
+        ]);
+    }
+
+    public function approvedAt($optional = true, $id = 'approved_at', $label = 'Aprobado en')
+    {
+        return $this->attr($id, 'timestamp', $label, [
+            'optional' => $optional,
+            'cast' => 'datetime:Y-m-d\TH:i:s'
+        ]);
+    }
+
+    public function relation($id, $label, $optional = false, $col = null)
+    {
+        return $this->attr($id, 'foreignId', $label, [
+            'col' => $col,
+            'optional' => $optional
+        ]);
+    }
+
+    public function short($id, $label = null, $optional = true)
+    {
+        return $this->attr($id, 'string:short', $label, [
+            'optional' => $optional,
+        ]);
+    }
+
+    public function double($id, $label = null, $optional = true)
+    {
+        return $this->attr($id, 'double', $label, [
+            'optional' => $optional,
+        ]);
+    }
+
+    public function description($optional = true)
+    {
+        return $this->attr('description', 'text', 'Descripcion', [
+            'optional' => $optional,
+        ]);
+    }
+
+    public function note($optional = true)
+    {
+        return $this->attr('note', 'text', 'Nota', [
+            'optional' => $optional,
+        ]);
     }
 }

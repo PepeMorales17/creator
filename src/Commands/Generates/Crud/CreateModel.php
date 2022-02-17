@@ -58,16 +58,32 @@ class CreateModel extends GeneratorCommand
      */
     protected function buildClass($name)
     {
-        $class = parent::buildClass($name);
-        $rel =$this->setRelations();
-        $class = str_replace('{{namespace}}', $this->rootNamespace(), $class);
-        $class = str_replace('{{namespaces}}', $this->resolveArray($rel[1]), $class);
-        $class = str_replace('{{name}}', Str::studly($this->argument('name')), $class);
-        $class = str_replace('{{fillable}}', $this->resolveArray(collect($this->getCrudClass()->attrs())->pluck('id')->reject(fn($i) => $i === 'id')->values(), false), $class);
-        $class = str_replace('{{hidden}}', $this->resolveArray($this->getCrudClass()->hidden(), false), $class);
-        $class = str_replace('{{selects}}', $this->resolveArray($this->setSelects(), false), $class);
-        $class = str_replace('{{relations}}', $this->resolveArray($rel[0]), $class);
-        $class = str_replace('{{table}}', $this->getTable(), $class);
+        $curdClass = $this->getCrudClass();
+
+        $rel = $this->setRelations($curdClass);
+
+        $class = $this->replaceStr(parent::buildClass($name), [
+            $this->replaceNamespaceInClass(),
+            $this->replaceStudlyInClass(),
+            $this->replaceTable(),
+            ['{{fillable}}', $this->resolveArray(collect($this->getCrudClass()->attrs())->pluck('id')->reject(fn ($i) => $i === 'id')->values(), false)],
+            ['{{hidden}}', $this->resolveArray($this->getCrudClass()->hidden(), false)],
+            ['{{selects}}', $this->resolveArray($this->setSelects($curdClass), false)],
+            ['{{relations}}', $this->resolveArray($rel)],
+            ['{{casts}}', $this->resolveArray($this->setCast($curdClass), true)],
+            //$this->buildRequired([]),
+            ...$this->buildTraits()
+        ]);
+
+        // $class = parent::buildClass($name);
+        // $class = str_replace('{{namespace}}', $this->rootNamespace(), $class); ok
+        // $class = str_replace('{{namespaces}}', $this->resolveArray($rel[1]), $class);
+        // $class = str_replace('{{name}}', Str::studly($this->argument('name')), $class); ok
+        // ok $class = str_replace('{{fillable}}', $this->resolveArray(collect($this->getCrudClass()->attrs())->pluck('id')->reject(fn($i) => $i === 'id')->values(), false), $class);
+        // ok $class = str_replace('{{hidden}}', $this->resolveArray($this->getCrudClass()->hidden(), false), $class);
+        // ok $class = str_replace('{{selects}}', $this->resolveArray($this->setSelects(), false), $class);
+        // $class = str_replace('{{relations}}', $this->resolveArray($rel[0]), $class);
+        // ok $class = str_replace('{{table}}', $this->getTable(), $class);
 
         if ($this->getCrudClass()->hasFiles) {
             $class = str_replace('Illuminate\Database\Eloquent\Model', 'Pp\Creator\Models\MediaModel', $class);
@@ -81,47 +97,65 @@ class CreateModel extends GeneratorCommand
 
     public function fileName()
     {
-        return $this->studly().'.php';
+        return $this->studly() . '.php';
         //return date('Y_m_d_His') . '_create_' . $this->argument('name') . '_table.php';
     }
 
-    public function setSelects()
+    public function setSelects($class)
     {
-        return collect($this->getCrudClass()->attrs())->map(function($item) {
-            return $this->getTable().'.'.$item['id']." as ".$item['label'];
+        return collect($class->attrs())->map(function ($item) {
+            return $this->getTable() . '.' . $item['id'] . " as " . $item['label'];
         });
     }
 
-    public function setRelations()
+    public function setRelations($class)
     {
-        $class = $this->getCrudClass();
-        $namespaces = [];
-        $relations = collect($class->getRelations())->map(function ($item) use ($class, &$namespaces) {
-            $t = "public function {{name}}()
+        $relations = collect($class->getRelations());
+        return $relations->map(function ($item) use ($class) {
+            $trait = Arr::get($item, 'props.modelTrait');
+            if (!!$trait) {
+                $this->traits[] = $trait;
+                return null;
+            };
+            $relation =  $class->getRelationName($item['id']);
+            $relationSingular =  Str::singular($class->getRelationName($item['id']));
+
+            $infoClass = config("creator.cruds.$relation");
+
+            $namespace = !!$infoClass ? $infoClass['model'] : $this->beginNamespaceModels('folder\\') . Str::studly($relationSingular);
+
+            $funName = Str::{match (Arr::get($item, 'props.relation_type')) {
+                'hasMany' => 'plural',
+                default => 'singular'
+            }}(Str::camel($relationSingular));
+
+            $t = 'public function ' . $funName . '()
             {
-                return " . '$this' . "->{{relation_type}}({{namespace}});
-            }";
-            $name =  Str::singular($class->getRelationName($item['id']));
-            $namespaces[] = 'use '.(Arr::get($item, 'props.namespace') ?? Str::studly($this->rootNamespace()). "\\" . Str::studly($name)).';';
-            $t = str_replace('{{name}}', Str::{
-                match(Arr::get($item, 'props.relation_type')) {
-                    'hasMany' => 'plural',
-                    default => 'singular'
-                }
-            }(Str::camel($name)), $t);
-            $t = str_replace('{{relation_type}}', Arr::get($item, 'props.relation_type'), $t);
-            // $t = str_replace(
-            //     '{{namespace}}',
-            //     $namespace,
-            //     $t
-            // );
-            $t = str_replace(
-                '{{namespace}}',
-                Str::studly($name).'::class',
-                $t
-            );
+                return $this->' . Arr::get($item, 'props.relation_type') . '(`' . $namespace . '`);
+            }';
             return $t;
-        })->values()->toArray();
-        return [$relations, $namespaces];
+        })->filter()->values()->toArray();
+    }
+
+    public function setCast($class)
+    {
+        $relations = collect($class->getRelations());
+        $casts = [];
+        foreach ($relations as $item) {
+            $cast = Arr::get($item, 'props.cast');
+            if (!$cast) continue;
+            //$casts[Str::singular($class->getRelationName($item['id']))] = $cast;
+            $casts[] = "'".Str::singular($class->getRelationName($item['id']))."' => '$cast'";
+        }
+
+        return $casts;
+        // return $relations->map(function ($item) use ($class) {
+        //     $cast = Arr::get($item, 'props.cast');
+        //     if (!$cast) return null;
+
+        //     $relation = Str::singular($class->getRelationName($item['id']));
+
+        //     return [$relation => $cast];
+        // })->filter()->values()->toArray();
     }
 }

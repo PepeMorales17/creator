@@ -4,9 +4,9 @@ namespace {{namespace}};
 
 use Pp\Creator\Traits\Inputs\InputTrait;
 use Illuminate\Support\Facades\Validator;
+{{required}}
 
-
-class Create{{name}}Form
+class Create{{name:studly}}Form
 {
     use InputTrait;
 
