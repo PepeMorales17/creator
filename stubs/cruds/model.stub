@@ -37,7 +37,7 @@ class {{name:studly}} extends Model
     //     });
     // }
 
-    // const STOP_DELETE_MSG = 'No puedes borrar ';
+    const STOP_DELETE_MSG = 'No puedes borrar ';
 
     // Scopes
 
