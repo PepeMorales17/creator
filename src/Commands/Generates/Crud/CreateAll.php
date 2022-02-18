@@ -82,8 +82,11 @@ class CreateAll extends Command
         if ($this->option('force')) {
             $this->warn('exec... php artisan migrate:refresh --path=' . $migration . '  && php artisan create:menu');
             exec('php artisan migrate:refresh --path=' . $migration);
+        } else {
+            $this->warn('exec... php artisan migrate && php artisan create:menu');
+            exec('php artisan migrate');
         }
-        $this->call('create:menu');
+        exec('php artisan create:menu');
 
         return 0;
     }

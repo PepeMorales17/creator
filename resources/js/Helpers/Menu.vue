@@ -38,7 +38,7 @@ export default defineComponent({
 </script>
 <template>
     <ul>
-        <li v-for="(menu, menuKey) in formattedMenu" :key="menuKey">
+        <li v-for="(menu, menuKey) in formattedMenu" :key="menuKey" class=" hover:bg-blue-500">
             <Link
                 :href="route(menu.namespace)"
                 class="top-menu"
