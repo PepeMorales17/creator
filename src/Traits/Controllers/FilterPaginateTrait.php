@@ -22,14 +22,14 @@ trait FilterPaginateTrait {
         };
 
         return $model->when($search, function ($query, $term) use($table) {
-            $query->where(DB::raw($this->concatCols($table)), "LIKE", "%" . $term . "%");
+            $query->where(DB::raw($this->concatCols($table)), "LIKE", "%" . strtolower($term) . "%");
         });;
     }
 
     private function concatCols($table)
     {
         return 'CONCAT('.collect(Schema::getColumnListing($table))->map(function($item) use($table) {
-            return 'IFNULL('.$table.'.'.$item.',""), "◬"';
+            return 'LOWER(IFNULL('.$table.'.'.$item.',"")), "◬"';
         })->implode(', ').')';
     }
 
