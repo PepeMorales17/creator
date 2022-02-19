@@ -12,6 +12,7 @@ class {{name:plural}}Crud extends Crud
     // protected $optional = true;
     public $hasFiles = false;
     public $ifExistMigrationChangeName = true;
+    public $hasMenu = true;
 
     private $requiredClasses  = [
         'Model' => [],

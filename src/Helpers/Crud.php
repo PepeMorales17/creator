@@ -116,12 +116,9 @@ abstract class Crud
         ]);
     }
 
-    public function relation($id, $label, $optional = false, $col = null)
+    public function relation($id, $label, $props = [])
     {
-        return $this->attr($id, 'foreignId', $label, [
-            'col' => $col,
-            'optional' => $optional
-        ]);
+        return $this->attr($id, 'foreignId', $label, $props);
     }
 
     public function short($id, $label = null, $optional = true)

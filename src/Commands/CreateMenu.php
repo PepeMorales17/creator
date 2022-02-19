@@ -50,7 +50,8 @@ class CreateMenu extends Command
             collect(config('menus'))->map(function ($route, $class) {
                 if (is_string($route) || $route === null) {
                     $menu = !!$route ? $this->find($route) : null;
-                    $this->menus->push(...$class::menu($menu ? $menu->id : null));
+                    $menusCreated = $class::menu($menu ? $menu->id : null);
+                    if (!!$menusCreated) $this->menus->push(...$menusCreated);
                 }
 
                 if (is_array($route)) {

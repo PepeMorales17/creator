@@ -113,6 +113,8 @@ class CreateModel extends GeneratorCommand
         $relations = collect($class->getRelations());
         return $relations->map(function ($item) use ($class) {
             $trait = Arr::get($item, 'props.modelTrait');
+            $folder = Arr::get($item, 'props.folder');
+            $folder = $folder ?? $this->folder();
             if (!!$trait) {
                 $this->traits[] = $trait;
                 return null;
@@ -122,7 +124,7 @@ class CreateModel extends GeneratorCommand
 
             $infoClass = config("creator.cruds.$relation");
 
-            $namespace = !!$infoClass ? $infoClass['model'] : $this->beginNamespaceModels('folder\\') . Str::studly($relationSingular);
+            $namespace = !!$infoClass ? $infoClass['model'] : $this->beginNamespaceModels($folder ? $folder.'\\' : null) . Str::studly($relationSingular);
 
             $funName = Str::{match (Arr::get($item, 'props.relation_type')) {
                 'hasMany' => 'plural',
@@ -139,7 +141,7 @@ class CreateModel extends GeneratorCommand
 
     public function setCast($class)
     {
-        $relations = collect($class->getRelations());
+        $relations = collect($class->attrs());
         $casts = [];
         foreach ($relations as $item) {
             $cast = Arr::get($item, 'props.cast');
