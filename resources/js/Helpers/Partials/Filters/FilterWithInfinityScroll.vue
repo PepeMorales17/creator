@@ -1,8 +1,8 @@
 <template>
     <div class="">
-        <input type="text" name="filter" id="filter" v-model="term" @input="getData" class="w-full border-2 rounded-lg p-2" ref="pp" placeholder="Buscar" />
+        <input type="text" name="filter" id="filter" v-model="term" @input="getData" class="w-full border-2 rounded-lg p-2 form-control" ref="pp" placeholder="Buscar" />
     </div>
-    <div class="shadow rounded-lg border-gray-200 bg-white" :class="{ 'overflow-scroll h-96 overla': listenScrollOf === 'parent' }">
+    <div class="shadow rounded-lg border-gray-200" :class="{ 'overflow-scroll h-96 overla': listenScrollOf === 'parent' }">
         <slot></slot>
         <infinite-scroll v-model="localValue" :term="term" :listenScrollOf="listenScrollOf"></infinite-scroll>
         <axios-loading v-model="localValue" :term="term" :from="url" :params="{ term: term, ...params }" :urlData="urlData" ref="axio"></axios-loading>

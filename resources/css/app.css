@@ -13,17 +13,16 @@
  @import "./_tailwind.css";
 
  /*
-  |--------------------------------------------------------------------------
-  | Colors
-  |--------------------------------------------------------------------------
-  |
-  | Import all fonts used in the template, the font configuration can be
-  | seen in "tailwind.config.js".
-  |
-  | Please check this link for more details:
-  | https://tailwindcss.com/docs/theme
-  |
-  */
+   |--------------------------------------------------------------------------
+   | Colors
+   |--------------------------------------------------------------------------
+   |
+   | Configuration of the main and dark-mode colors.
+   |
+   | Please check this link for more details:
+   | https://tailwindcss.com/docs/customizing-colors#using-css-variables
+   |
+   */
  @import "./_colors.css";
 
  /*
@@ -55,7 +54,7 @@
   | 3rd Party Libraries
   |--------------------------------------------------------------------------
   |
-  | Import 3rd party library CSS/SASS files.
+  | Import 3rd party library CSS files.
   |
   */
  @import "@left4code/tw-starter/dist/css/_breadcrumb.css";
@@ -120,7 +119,7 @@
  @import "./components/_breadcrumb.css";
  @import "./components/_toastify.css";
  @import "./components/_toastify-content.css";
- @import "./components/_feather-icon.css";
+ @import "./components/_lucide-icon.css";
  @import "./components/_top-bar-boxed.css";
  @import "./components/_mobile-menu.css";
  @import "./components/_inbox-filter.css";

@@ -65,9 +65,7 @@ class {{name:studly}}Controller extends Controller
         $deletion = DB::transaction(function () use (${{name:camel}}) {
             return  ${{name:camel}}->delete();
         });
-        if (!$deletion) {
-            return $this->mainRedirect({{name:studly}}::STOP_DELETE_MSG, false);
-        }
-        return $this->mainRedirect('{{name:studly}} borrado');
+
+        return $this->mainRedirect($deletion ? '{{name:studly}} borrado' : {{name:studly}}::STOP_DELETE_MSG, $deletion);
     }
 }

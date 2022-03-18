@@ -26,8 +26,8 @@ export default defineComponent({
             MySelect: resolveComponent("my-select"),
             InputData: resolveComponent("input-data"),
             //MySelectFrom: resolveComponent("my-select-from"),
+            //MyTextarea: resolveComponent("editor-tag"),//"textarea",
             MyTextarea: "textarea",
-            //MyTextarea: "textarea",
             //InputFetch: resolveComponent("InputFetch"),
         };
         const resolveName = inputsNames[props.as];
@@ -38,6 +38,7 @@ export default defineComponent({
         MySelect: defineAsyncComponent(() => import("./Select.vue")),
         InputData: defineAsyncComponent(() => import("./InputData.vue")),
         InputTable: defineAsyncComponent(() => import("./InputTable.vue")),
+        EditorTag: defineAsyncComponent(() => import("@/Helpers/Partials/TextEdit/EditorTag.vue")),
         // MySelectFrom: defineAsyncComponent(() => import("./SelectFrom.vue")),
         // InputFetch: defineAsyncComponent(() => import("./InputFetch.vue")),
     },
@@ -93,38 +94,63 @@ export default defineComponent({
         layouts() {
             const { input, id } = this.getInput();
             return {
-                lsi: h("div", {
-                    ['data-input-form-group']: this.input.id + '-lsi'
-                }, [
-                    h(
-                        "label",
-                        {
-                            class: "flex border-b border-gray-200 h-12 py-3 items-center",
-                        },
-                        [
-                            h(
-                                "span",
-                                {
-                                    class: "flex-shrink-0 text-right px-2 ",
-                                },
-                                this.input.label
-                            ),
-                            h(this.resolveName, {
-                                class: "focus:outline-none px-3 border-0 w-full",
-                                placeholder: this.input.label,
-                                value: this.modelValue,
-                                id: id,
-                                ...input,
-                                ...this.$attrs,
-                                oninput: ($event) => this.$emit("update:modelValue", $event.target.value),
-                            }),
-                        ]
-                    ),
+                lsi: h(
+                    "div",
+                    {
+                        ["data-input-form-group"]: this.input.id + "-lsi",
+                    },
+                    [
+                        h(
+                            "label",
+                            {
+                                class: "flex border-b border-gray-200 h-12 py-3 items-center",
+                            },
+                            [
+                                h(
+                                    "span",
+                                    {
+                                        class: "flex-shrink-0 text-right px-2 ",
+                                    },
+                                    this.input.label
+                                ),
+                                h(this.resolveName, {
+                                    class: "focus:outline-none px-3 border-0 w-full form-control",
+                                    placeholder: this.input.label,
+                                    value: this.modelValue,
+                                    id: id,
+                                    ...input,
+                                    ...this.$attrs,
+                                    oninput: ($event) => this.$emit("update:modelValue", $event.target.value),
+                                }),
+                            ]
+                        ),
+                        this.hasErrors
+                            ? h(
+                                  "p",
+                                  {
+                                      class: "text-sm text-red-600 ml-2",
+                                  },
+                                  this.localErrors
+                              )
+                            : null,
+                    ]
+                ),
+                mido: h("div", {}, [
+                    h("label", { for: id, class: "form-label" }, this.input.label),
+                    h(this.resolveName, {
+                        class: "form-control",
+                        placeholder: this.input.label,
+                        value: this.modelValue,
+                        id: id,
+                        ...input,
+                        ...this.$attrs,
+                        oninput: ($event) => this.$emit("update:modelValue", $event.target.value),
+                    }),
                     this.hasErrors
                         ? h(
-                              "p",
+                              "div",
                               {
-                                  class: "text-sm text-red-600 ml-2",
+                                  class: "text-danger mt-2",
                               },
                               this.localErrors
                           )
@@ -132,7 +158,7 @@ export default defineComponent({
                 ]),
                 table: h(this.resolveName, {
                     class: " focus:outline-none border-0 w-full h-full",
-                    'input-in': 'table',
+                    "input-in": "table",
                     placeholder: this.input.label,
                     value: this.modelValue,
                     id: id,

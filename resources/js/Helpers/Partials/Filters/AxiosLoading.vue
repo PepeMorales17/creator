@@ -33,7 +33,6 @@ export default defineComponent({
     methods: {
         handleAxio() {
             this.loading = true;
-            console.log({ params: this.params, data: this.urlData }, this.getRoute());
             axios[this.action](this.getRoute(), { params: this.params })
                 .then((response) => {
                     this.$emit("update:modelValue", response.data);
@@ -41,7 +40,6 @@ export default defineComponent({
                 .finally(() => (this.loading = false));
         },
         getRoute() {
-            console.log({ params: this.params, data: this.urlData });
 
             if (this.from.search(".") > -1) {
                 return route(this.from, this.urlData);

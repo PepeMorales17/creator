@@ -68,6 +68,7 @@ class CreateForm extends GeneratorCommand
             $this->replaceStudlyInClass(),
             ['{{inputs}}', $this->resolveArray($this->setInputs(), false, null)],
             ['{{validations}}', $this->resolveArray($this->validations())],
+            ['{{defaultValues}}', $this->resolveArray($this->defaultValues())],
             $this->buildRequired([])
         ]);
 
@@ -126,6 +127,17 @@ class CreateForm extends GeneratorCommand
         collect($this->getCrudClass()->attrs())->map(function ($item) use (&$rules) {
             $t = Arr::get($item, 'props.rule');
             $rules[] = "'" . $item['id'] . "' => ". "'" .(!!$t ? $t :  (!!Arr::get($item, 'props.optional') ? 'nullable' : 'required')). "'";
+        });
+
+        return $rules;
+    }
+
+    private function defaultValues()
+    {
+        $rules = [];
+        collect($this->getCrudClass()->attrs())->map(function ($item) use (&$rules) {
+            $t = Arr::get($item, 'props.default');
+            $rules[] = "'" . $item['id'] . "' => ". (!!$t ? "'" .$t. "'" :  'null');
         });
 
         return $rules;

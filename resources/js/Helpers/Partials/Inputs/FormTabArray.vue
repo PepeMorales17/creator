@@ -36,8 +36,9 @@
 <script>
 import { defineComponent } from "vue";
 import InputGroup from "./InputGroup.vue";
-import TrashIcon from "@zhuowenli/vue-feather-icons/icons//TrashIcon";
-import PlusIcon from "@zhuowenli/vue-feather-icons/icons//PlusIcon";
+// import TrashIcon from "@zhuowenli/vue-feather-icons/icons//TrashIcon";
+// import PlusIcon from "@zhuowenli/vue-feather-icons/icons//PlusIcon";
+import {PlusIcon, TrashIcon} from "@/Helpers/Partials/Icons/AppIcons.js";
 
 export default defineComponent({
     props: ["form", "inputs", "emptyValue"],

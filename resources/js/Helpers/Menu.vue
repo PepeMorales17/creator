@@ -4,8 +4,8 @@ import { defineComponent } from "vue";
 import { helper as $h } from "@/utils/helper";
 import { Link } from "@inertiajs/inertia-vue3";
 
-import ChevronDownIcon from "@zhuowenli/vue-feather-icons/icons/ChevronDownIcon";
-
+//import ChevronDownIcon from "@zhuowenli/vue-feather-icons/icons/ChevronDownIcon";
+import {ChevronDownIcon} from "@/Helpers/Partials/Icons/AppIcons.js";
 
 export default defineComponent({
     name: 'TheMenu',

@@ -4,15 +4,15 @@
             <div class="m-4 p-4"><input type="checkbox" @change="selectAll" ref="check" /> Seleccionar todos</div>
         </template>
         <template #body="{ titles }">
-            <tbody class="bg-white divide-y divide-gray-200">
+            <tbody class="divide-y divide-gray-200">
                 <tr
                     class="simple-tr"
-                    :class="{ 'cursor-pointer hover:bg-gray-300': !!$attrs.onSelect, 'bg-gray-300': !!multiple && multiple[ind] }"
+                    :class="{ 'table-striped': !!$attrs.onSelect, 'bg-gray-300': !!multiple && multiple[ind] }"
                     v-for="(d, ind) in data"
                     :key="d.id || ind"
                     @click="!!$attrs.onSelect ? $emit('select', d) : !!multiple ? addToMultiple(d, ind) : null"
                 >
-                    <BaseTd id="action-td" v-if="!!$attrs.onEdit || !!$attrs.onDelete || !!$attrs.onView || !!$slots.edit" class="px-6 py-4 text-right text-sm font-medium flex">
+                    <BaseTd id="action-td" v-if="!!$attrs.onEdit || !!$attrs.onDelete || !!$attrs.onView || !!$slots.edit || !!$attrs.onTrash" class="px-6 py-4 text-right text-sm font-medium flex">
                         <slot name="edit" :item="d">
                             <EditIcon @click.stop="$emit('edit', d)" v-if="!!$attrs.onEdit" class="cursor-pointer w-5 h-5 m-auto" />
                         </slot>
@@ -46,9 +46,10 @@ export const TableHelper = {
 };
 import { defineComponent, reactive } from "vue";
 
-import EyeIcon from "@zhuowenli/vue-feather-icons/icons//EyeIcon";
-import {EditIcon} from "@zhuowenli/vue-feather-icons/dist/vue-feather-icons.cjs";
-import TrashIcon from "@zhuowenli/vue-feather-icons/icons//TrashIcon";
+// import EyeIcon from "@zhuowenli/vue-feather-icons/icons//EyeIcon";
+// import {EditIcon} from "@zhuowenli/vue-feather-icons/dist/vue-feather-icons.cjs";
+// import TrashIcon from "@zhuowenli/vue-feather-icons/icons//TrashIcon";
+import {EditIcon, TrashIcon, EyeIcon} from "@/Helpers/Partials/Icons/AppIcons.js";
 import BaseTable, { BaseTd } from "@/Helpers/Partials/Tables/BaseTable.vue";
 
 export default defineComponent({

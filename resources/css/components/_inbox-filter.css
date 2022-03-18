@@ -1,5 +1,6 @@
 .inbox-filter .inbox-filter__dropdown-menu {
-    width: 250px;
+    /**width: 250px;*/
+    @apply md:w-64;
 }
 
 .inbox-filter__dropdown-menu .dropdown-content {

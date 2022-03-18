@@ -27,7 +27,7 @@
 import { defineComponent, defineAsyncComponent } from "vue";
 
 export default defineComponent({
-    props: ["form", "input"],
+    props: ["form", "input",],
     inheritAttrs: false,
 
     components: {

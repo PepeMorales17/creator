@@ -10,15 +10,18 @@ class Create{{name:studly}}Form
 {
     use InputTrait;
 
+     public static function defaultValues()
+    {
+        return [{{defaultValues}}];
+    }
 
     public function getFormWithEmptyValue()
     {
         $inputs = {{inputs}};
-        $empty = array_fill_keys(collect($inputs)->pluck(0)->toArray(), null);
 
         return [
             'inputs' => $this->array_inputs($inputs),
-            'emptyValue' => $empty
+            'emptyValue' => self::defaultValues()
         ];
     }
 

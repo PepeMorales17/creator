@@ -75,7 +75,8 @@ export default defineComponent({
 </script>
 
 <script setup>
-import { MoreHorizontalIcon, FileIcon } from "@zhuowenli/vue-feather-icons/dist/vue-feather-icons.cjs";
+//import { MoreHorizontalIcon, FileIcon } from "@zhuowenli/vue-feather-icons/dist/vue-feather-icons.cjs";
+import {MoreHorizontalIcon, FileIcon } from "@/Helpers/Partials/Icons/AppIcons.js";
 import { files, Explore } from "./Finder.js";
 import FileView from "./FileView.vue";
 import { defineComponent } from "vue";

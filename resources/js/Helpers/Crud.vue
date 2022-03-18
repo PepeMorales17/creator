@@ -2,15 +2,16 @@
     <div class="rounded-lg relative">
         <div class="w-full lg:m-auto lg:w-10/12">
             <nav-links :menu="menu" />
-            <h1 class="text-lg font-bold p-5" v-if="!!title">{{ title }}</h1>
+            <h1 class="text-lg font-bold p-2" v-if="!!title">{{ title }}</h1>
             <jet-validation-errors class="mb-4" />
 
             <slot name="header"></slot>
 
             <div class="mt-4 w-full shadow-lg border-2 border-blue-50 rounded-lg">
                 <template v-if="route().current() === initUrl + '.index'">
-                    <h1 class="text-lg font-bold p-5">{{ titles.index ?? "" }}</h1>
+                    <h1 class="text-lg font-bold p-2">{{ titles.index ?? "" }}</h1>
                     <slot name="index">
+                        <slot name="in-index-after-table"></slot>
                         <template v-if="!!data_ && !!data_.data">
                             <filter-pag v-model="data_" :url="initUrl + '.index'" v-if="!!data_.data">
                                 <s-table
@@ -22,25 +23,27 @@
                             </filter-pag>
                         </template>
                         <template v-else>
-                            <s-table
-                                v-if="!!dataTable.data"
-                                :data="dataTable.data"
-                                @view="$inertia.visit(route(initUrl + '.show', uris.show ? uris.show($event.id) : $event.id), { preserveState: false })"
-                                @edit="$inertia.visit(route(initUrl + '.edit', uris.edit ? uris.edit($event.id) : $event.id), { preserveState: false })"
-                                @trash="trash($event.id)"
-                            />
-                            <s-table
-                                v-else
-                                :data="dataTable"
-                                @view="$inertia.visit(route(initUrl + '.show', uris.show ? uris.show($event.id) : $event.id), { preserveState: false })"
-                                @edit="$inertia.visit(route(initUrl + '.edit', uris.edit ? uris.edit($event.id) : $event.id), { preserveState: false })"
-                                @trash="trash($event.id)"
-                            />
+                            <template v-if="!!dataTable">
+                                <s-table
+                                    v-if="!!dataTable.data"
+                                    :data="dataTable.data"
+                                    @view="$inertia.visit(route(initUrl + '.show', uris.show ? uris.show($event.id) : $event.id), { preserveState: false })"
+                                    @edit="$inertia.visit(route(initUrl + '.edit', uris.edit ? uris.edit($event.id) : $event.id), { preserveState: false })"
+                                    @trash="trash($event.id)"
+                                />
+                                <s-table
+                                    v-else
+                                    :data="dataTable"
+                                    @view="$inertia.visit(route(initUrl + '.show', uris.show ? uris.show($event.id) : $event.id), { preserveState: false })"
+                                    @edit="$inertia.visit(route(initUrl + '.edit', uris.edit ? uris.edit($event.id) : $event.id), { preserveState: false })"
+                                    @trash="trash($event.id)"
+                                />
+                            </template>
                         </template>
                     </slot>
                 </template>
                 <template v-else-if="route().current() === initUrl + '.create'">
-                    <h1 class="text-lg font-bold p-5">{{ titles.create ?? "" }}</h1>
+                    <h1 class="text-lg font-bold p25">{{ titles.create ?? "" }}</h1>
                     <slot name="create" :form="form">
                         <!-- <input-group :input="input" :as="input.is" v-for="(input, index) in inputs.inputs" :key="index" v-model="form[input.key]" :form="form" :errors="form.errors" /> -->
                         <input-choose :input="input" :form="form" v-for="(input, index) in inputs.inputs" :key="index" />
@@ -51,7 +54,7 @@
                     </div>
                 </template>
                 <template v-else-if="route().current() === initUrl + '.edit'">
-                    <h1 class="text-lg font-bold p-5">{{ !!titles.edit ? titles.edit + "(ID " + item.id + ")" : "Editar id " + item.id }}</h1>
+                    <h1 class="text-lg font-bold p-2">{{ !!titles.edit ? titles.edit + "(ID " + item.id + ")" : "Editar id " + item.id }}</h1>
                     <slot name="edit" :form="form">
                         <slot name="create" :form="form">
                             <!-- <input-group :input="input" :as="input.is" v-for="(input, index) in inputs.inputs" :key="index" v-model="form[input.key]" :form="form" :errors="form.errors" /> -->
@@ -64,7 +67,7 @@
                     </div>
                 </template>
                 <template v-else-if="route().current() === initUrl + '.show' && !!item">
-                    <h1 class="text-lg font-bold p-5">{{ !!titles.show ? titles.show + "(ID" + item.id + ")" : "Ver id " + item.id }}</h1>
+                    <h1 class="text-lg font-bold p-2">{{ !!titles.show ? titles.show + "(ID" + item.id + ")" : "Ver id " + item.id }}</h1>
                     <slot name="show">
                         <slot name="showHeader"></slot>
                         <ul class="flex flex-col just">
@@ -110,15 +113,15 @@ export default defineComponent({
         return { form, data_ };
     },
 
-    mounted() {
-        document.addEventListener("keydown", this.goToNew);
-        document.addEventListener("keydown", this.save);
-    },
+    // mounted() {
+    //     document.addEventListener("keydown", this.goToNew);
+    //     document.addEventListener("keydown", this.save);
+    // },
 
-    beforeDestroy() {
-        document.removeEventListener("keydown", this.goToNew);
-        document.removeEventListener("keydown", this.save);
-    },
+    // beforeDestroy() {
+    //     document.removeEventListener("keydown", this.goToNew);
+    //     document.removeEventListener("keydown", this.save);
+    // },
 
     components: {
         Link,

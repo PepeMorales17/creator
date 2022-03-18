@@ -7,7 +7,7 @@
                 :class="[
                     'w-full py-1 text-sm leading-5 font-medium text-blue-700 rounded-lg',
                     'focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-60',
-                    selected(item) ? color + ' shadow' : 'text-blue-400 hover:bg-blue-50 hover:text-orange-50',
+                    selected(item) ? color + ' shadow' : 'text-blue-400 hover:bg-blue-50 hover:text-blue-500',
                 ]"
                 >{{ item.name }}
             </Link>

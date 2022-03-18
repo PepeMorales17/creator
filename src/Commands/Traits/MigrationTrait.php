@@ -86,8 +86,9 @@ trait MigrationTrait
     {
         $class = $this->getCrudClass();
         $attr = collect($class->attrs())->map(function ($input) {
+            if (Arr::get($input, 'props.noMigration')) return null;
             return $this->createCol($input);
-        });
+        })->filter();
 
         return $attr;
     }

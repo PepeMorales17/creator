@@ -13,7 +13,7 @@ class CreateAll extends Command
      *
      * @var string
      */
-    protected $signature = 'create:all {name} {folder} {--force} {--module=}';
+    protected $signature = 'create:all {name} {folder} {--force} {--module=} {--s}';
 
     /**
      * The console command description.
@@ -87,6 +87,10 @@ class CreateAll extends Command
             exec('php artisan migrate');
         }
         exec('php artisan create:menu');
+
+        if ($this->option('s')) {
+            $this->call('serve');
+        }
 
         return 0;
     }

@@ -4,15 +4,15 @@
             <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                 <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                     <slot name="beforeTable"></slot>
-                    <table class="min-w-full divide-y divide-gray-200">
+                    <table class="min-w-full table">
                         <slot name="head">
-                            <thead class="bg-gray-50">
+                            <thead class="">
                                 <tr>
                                     <slot name="theadInit"></slot>
-                                    <th scope="col" v-if="thOnInit" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
+                                    <th scope="col" v-if="thOnInit" class="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider"></th>
                                     <template v-for="(title, index) in titles" :key="index">
                                         <slot name="th" :title="title">
-                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider">
                                                 {{ title }}
                                             </th>
                                         </slot>
@@ -22,7 +22,7 @@
                             </thead>
                         </slot>
                         <slot name="body" :titles="titles">
-                            <tbody class="bg-white divide-y divide-gray-200">
+                            <tbody class="">
                                 <tr class="simple-tr" :class="{ 'cursor-pointer hover:bg-gray-300': !!$attrs.onSelect }" v-for="(d, ind) in data" :key="d.id || ind" @click="!!$attrs.onSelect ? $emit('select', d) : null">
                                     <template v-for="(key, index) in titles" :key="index">
                                         <td class="px-6 py-4 whitespace-nowrap">
@@ -42,9 +42,10 @@
 
 <script>
 import { defineComponent } from "vue";
-import EyeIcon from "@zhuowenli/vue-feather-icons/icons//EyeIcon";
-import PencilIcon from "@zhuowenli/vue-feather-icons/icons//PenToolIcon";
-import TrashIcon from "@zhuowenli/vue-feather-icons/icons//TrashIcon";
+// import EyeIcon from "@zhuowenli/vue-feather-icons/icons//EyeIcon";
+// import PencilIcon from "@zhuowenli/vue-feather-icons/icons//PenToolIcon";
+// import TrashIcon from "@zhuowenli/vue-feather-icons/icons//TrashIcon";
+import {PencilIcon, TrashIcon, EyeIcon} from "@/Helpers/Partials/Icons/AppIcons.js";
 
 export const BaseTd = defineComponent({
     template:  `

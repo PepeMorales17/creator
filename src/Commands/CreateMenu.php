@@ -13,7 +13,7 @@ class CreateMenu extends Command
      *
      * @var string
      */
-    protected $signature = 'create:menu';
+    protected $signature = 'create:menu {--s}';
 
     /**
      * The console command description.
@@ -62,6 +62,9 @@ class CreateMenu extends Command
         });
         $this->info('Se crearon los menus');
         $this->call('cache:clear');
+        if ($this->option('s')) {
+            $this->call('serve');
+        }
         return 0;
     }
 

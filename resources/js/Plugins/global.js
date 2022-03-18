@@ -24,14 +24,6 @@ export default {
                 }
                 if (type === "currency") return !!value ? this.currency(parseFloat(value)) : value;
             },
-            // getParameterByName(name, url = window.location.href) {
-            //     name = name.replace(/[\[\]]/g, "\\$&");
-            //     var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-            //         results = regex.exec(url);
-            //     if (!results) return null;
-            //     if (!results[2]) return "";
-            //     return decodeURIComponent(results[2].replace(/\+/g, " "));
-            // },
             formatByKey(key, value) {
                 const formats = {
                     total: (val) => this.format(val, "currency"),
@@ -72,6 +64,13 @@ export default {
         app.config.globalProperties.$s = {
             f(v) {
                 return isNaN(v) ? 0 : v === "" ? 0 : parseFloat(v ?? 0);
+            },
+            getTags(val, fn='match') {
+                if (!val) return [];
+                const sym = "(\\#|\\$|\\*|\\@|\\!|\\?|\\+)";
+                var match = new RegExp(`(${sym}[a-zA-Z0-9(_)]{1,})`, "gm");
+                match = val[fn](match);
+                return !!match ? match : [];
             },
         };
     },

@@ -3,9 +3,9 @@
         <div class="file box rounded-md px-5 pt-8 pb-5 sm:px-5 relative zoom-in">
             <a v-if="type == 'empty'" href="javascript:;" @dblclick="folderSelected" class="w-3/5 file__icon file__icon--empty-directory mx-auto"></a>
             <a v-else-if="type == 'folder'" href="javascript:;" @dblclick="folderSelected" class="text-yellow-900 w-3/5 file__icon file__icon--directory mx-auto"></a>
-            <a v-else-if="type == 'image'" :href="url" target="_blank" class="w-3/5 file__icon file__icon--image mx-auto">
+            <a v-else-if="type == 'image'" href="javascript:;" class="w-3/5 file__icon file__icon--image mx-auto">
                 <div class="file__icon--image__preview image-fit">
-                    <img :alt="name()" :src="url" />
+                    <img :alt="name()" :src="url" data-action="zoom"/>
                 </div>
             </a>
             <a v-else :href="type === 'pdf' && actions ? url : 'javascript:;'" :target="type === 'pdf' && actions ? '_blank' : ''" class="w-3/5 file__icon file__icon--file mx-auto">
@@ -15,9 +15,9 @@
             </a>
             <a href="javascript:;" class="block font-medium mt-4 text-center truncate" v-if="!isUpdatingName" @dblclick="updatingName">{{ name() }}</a>
             <input type="text" class="block font-medium mt-4 text-center" @keydown.enter="changeName" @keydown.esc="cancelChgName" @blur="cancelChgName" style="max-width: -webkit-fill-available" v-if="isUpdatingName" placeholder="name" v-model="newName" ref="inputName" />
-            <!-- <div class="text-slate-500 text-xs text-center mt-0.5">
-                {{ faker.files[0].size }}
-            </div> -->
+            <div class="text-slate-500 text-xs text-center mt-0.5">
+                {{ file.size }}
+            </div>
             <div class="absolute top-0 right-0 mr-2 mt-3 dropdown ml-auto" v-if="actions">
                 <a class="dropdown-toggle w-5 h-5 block" href="javascript:;" aria-expanded="false" data-tw-toggle="dropdown">
                     <MoreVerticalIcon class="w-5 h-5 text-slate-500" />
@@ -40,7 +40,8 @@
 </template>
 
 <script setup>
-import { MoreVerticalIcon, TrashIcon, DownloadCloudIcon, Edit3Icon } from "@zhuowenli/vue-feather-icons/dist/vue-feather-icons.cjs";
+//import { MoreVerticalIcon, TrashIcon, DownloadCloudIcon, Edit3Icon } from "@zhuowenli/vue-feather-icons/dist/vue-feather-icons.cjs";
+import {MoreVerticalIcon, TrashIcon, DownloadCloudIcon, Edit3Icon} from "@/Helpers/Partials/Icons/AppIcons.js";
 import { files, folder } from "./Finder.js";
 
 const originalName = ref(null);
@@ -57,6 +58,9 @@ export default defineComponent({
         actions: {
             default: false,
         },
+        forceDelete: {
+            default: false
+        }
     },
     // mounted() {
     //     this.originalName = this.name();
@@ -64,6 +68,9 @@ export default defineComponent({
     methods: {
         emitDelete() {
             this.cApp();
+            if (this.forceDelete) {
+                files.delete(this.file);
+            }
             this.$emit("deleted");
         },
         folderSelected() {
@@ -115,6 +122,7 @@ export default defineComponent({
             if (mime.indexOf("image") > -1) return "image";
             if (mime.indexOf("pdf") > -1) return "pdf";
             if (mime.indexOf("excel") > -1) return "xls";
+            if (mime.indexOf("csv") > -1) return "csv";
             if (mime.indexOf("spreadsheet") > -1) return "xls";
             if (mime.indexOf("word") > -1) return "doc";
             if (mime.indexOf("zip") > -1) return "zip";
@@ -129,7 +137,6 @@ export default defineComponent({
         },
         url() {
             if (["image", "pdf"].indexOf(this.type) == -1) return;
-            console.log(this.file);
             return this.file.url ?? (this.file instanceof File ? URL.createObjectURL(this.file) : null);
         },
     },

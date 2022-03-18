@@ -1,4 +1,4 @@
-import { FileIcon } from "@zhuowenli/vue-feather-icons/dist/vue-feather-icons.cjs";
+import {FileIcon} from "@/Helpers/Partials/Icons/AppIcons.js";
 const files = {
     upload(filesToUpload, folder = null, item = null) {
         var formData = new FormData();
