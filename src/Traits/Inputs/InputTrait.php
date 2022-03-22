@@ -24,6 +24,7 @@ trait InputTrait
         "tmodal" => "TableModal",
         "text" => "MyTextarea",
         "table" => "InputTable",
+        "tom" => "TomSelect",
         "fetch" => "InputFetch",
     ];
 
@@ -36,6 +37,7 @@ trait InputTrait
         "file" => ["type" => "file", 'format' => 'file'],
         "bool" => ["data" => [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Si']], "display" => "name"],
         "select" => [],
+        "tom" => [],
         "table" => [],
         "double" => ["type" => "number", "step" => "any", 'format' => 'number'],
         "currency" => ["type" => "number", "step" => "any", 'format' => 'currency'],
@@ -65,14 +67,26 @@ trait InputTrait
                 is_array($table) => $table,
                 $table === null => DB::table(Str::plural(str_replace('_id', '', $id)))->select($keyBy, $display)->get()->keyBy($keyBy),
                 default => []
-            }
-            // $table ?
-            // (is_string($table) ?
-            // DB::table($table)->select($keyBy, $display)->get()->keyBy($keyBy)
-            // : $table
-            // )
-            // : []
-            , "display" => $display
+            }, "display" => $display,
+        ]];
+    }
+
+    protected function tom($id, $label, $table = null, $keyBy = "id", $display = "name")
+    {
+        return [$id, $label, "tom", [
+            "data" =>
+            match (true) {
+                is_string($table) => DB::table($table)->select($keyBy, $display)->get()->keyBy($keyBy),
+                $table instanceof Builder => $table->select($keyBy, $display)->get()->keyBy($keyBy),
+                $table instanceof Collection => $table,
+                is_array($table) => $table,
+                $table === null => DB::table(Str::plural(str_replace('_id', '', $id)))->select($keyBy, $display)->get()->keyBy($keyBy),
+                default => []
+            }, "display" => $display,
+            'multiple' => true,
+            'options' => [
+                'placeholder' => $label
+            ]
         ]];
     }
 
