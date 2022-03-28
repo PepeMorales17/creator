@@ -40,6 +40,7 @@ return [
 
     /** QUIERES GUARDAR ARCHIVOS */
     'app_use_media' => true,
+    'table_munu' => 'menus',
 
     'cruds' => [
         /**CrudEnd */
