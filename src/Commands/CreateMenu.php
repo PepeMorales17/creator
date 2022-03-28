@@ -44,7 +44,7 @@ class CreateMenu extends Command
         $this->info('Se eliminara la informacion de la tabla de menus');
         $this->menus = collect([]);
 
-        DB::table(config('creator.table_munu'))->truncate();
+        DB::table(config('creator.table_menu'))->truncate();
         DB::transaction(function () {
             //dd(config('menus'));
             collect(config('menus'))->map(function ($route, $class) {
