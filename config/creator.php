@@ -41,6 +41,7 @@ return [
     /** QUIERES GUARDAR ARCHIVOS */
     'app_use_media' => true,
     'table_munu' => 'menus',
+    'class_menu' => 'Pp\Creator\Models\Menu',
 
     'cruds' => [
         /**CrudEnd */
