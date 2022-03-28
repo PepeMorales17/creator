@@ -80,7 +80,7 @@ class CreateController extends GeneratorCommand
 
     protected function createMenu()
     {
-        if (!Menu::where('namespace', $this->argument('name') . '.index')->exists()) {
+        if (!config('creator.class_menu')::where('namespace', $this->argument('name') . '.index')->exists()) {
             $this->getCrudClass()->menu();
         }
     }

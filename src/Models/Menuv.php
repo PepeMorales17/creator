@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 
-class Menu extends Model
+class Menuv extends Model
 {
     use HasFactory;
 
@@ -51,7 +51,7 @@ class Menu extends Model
 
     public static function setCache()
     {
-        Cache::forget('menus');
+        Cache::forget('menusv');
         static::tree();
     }
 
@@ -74,12 +74,12 @@ class Menu extends Model
     public function parent()
     {
 
-        return $this->hasOne(Menu::class, 'id', 'parent_id');
+        return $this->hasOne(Menuv::class, 'id', 'parent_id');
     }
 
     public function children()
     {
 
-        return $this->hasMany(Menu::class, 'parent_id', 'id');
+        return $this->hasMany(Menuv::class, 'parent_id', 'id');
     }
 }

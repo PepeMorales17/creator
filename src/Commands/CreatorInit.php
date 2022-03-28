@@ -105,7 +105,7 @@ class CreatorInit extends Command
         use Illuminate\Support\Str;
         ', $file);
         $file = str_replace('return array_merge(parent::share($request), [', 'return array_merge(parent::share($request), [
-    "main_menu" => Menu::tree(),
+    "main_menu" => config("creator.class_menu")::tree(),
     "flash" => function () use ($request) {
         return [
             "success" => $request->session()->get("success"),

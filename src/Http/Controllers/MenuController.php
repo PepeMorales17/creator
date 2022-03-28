@@ -43,7 +43,7 @@ class MenuController extends Controller
     public function index()
     {
 
-        return $this->justRenderIndex(Menu::view()->get());
+        return $this->justRenderIndex(config('creator.class_menu')::view()->get());
     }
 
     public function store(Request $request)
@@ -51,7 +51,7 @@ class MenuController extends Controller
         $data = $this->form()->validate($request->all());
 
         DB::transaction(function () use ($data) {
-            Menu::create($data);
+            config('creator.class_menu')::create($data);
         });
 
         return $this->mainRedirect('Menu guardado');
@@ -59,7 +59,7 @@ class MenuController extends Controller
 
     public function show($id)
     {
-        $model = Menu::view()->findOrFail($id);
+        $model = config('creator.class_menu')::view()->findOrFail($id);
         return $this->justShow($model);
     }
 

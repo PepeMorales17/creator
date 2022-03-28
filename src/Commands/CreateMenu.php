@@ -55,7 +55,7 @@ class CreateMenu extends Command
                 }
 
                 if (is_array($route)) {
-                    $this->menus->push(Menu::create($route));
+                    $this->menus->push(config('creator.class_menu')::create($route));
                 }
 
             });

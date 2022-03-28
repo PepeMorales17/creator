@@ -42,12 +42,12 @@ class DbFresh extends Command
     {
         Cache::forget('menus_recover');
         Cache::rememberForever('menus_recover', function () {
-            return Menu::all()->toArray();
+            return config('creator.class_menu')::all()->toArray();
         });
         $this->call('migrate:fresh', [
             '--seed' => $this->option('seed')
         ]);
-        Menu::insert(Cache::get('menus_recover'));
+        config('creator.class_menu')::insert(Cache::get('menus_recover'));
         $this->info('El menu fue reestablecido');
         return 0;
     }

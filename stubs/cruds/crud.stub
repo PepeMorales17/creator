@@ -37,14 +37,14 @@ class {{name:plural}}Crud extends Crud
     public static function menu($parent = null)
     {
         return DB::transaction(function () use($parent){
-            $index = Menu::create([
+            $index = config('creator.class_menu')::create([
                 "name" => self::READ_SINGLE,
                 "icon" => "",
                 "description" => "Todos los ".self::READ_PLURAL,
                 "namespace" => "{{name}}.index",
                 "parent_id" => $parent,
             ]);
-            $form = Menu::create([
+            $form = config('creator.class_menu')::create([
                 "name" => "Crear ".self::READ_SINGLE,
                 "icon" => "",
                 "description" => "Crear ".self::READ_SINGLE,
